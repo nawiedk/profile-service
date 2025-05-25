@@ -27,10 +27,10 @@ class CreateProfileServiceTest {
         Profile profile = new Profile(
                 2L,
                 "nawiedk",
-                "ML Engineer",
+                "Software Engineer",
                 "Düsseldorf",
-                "Engineer",
-                List.of("Python", "TensorFlow"),
+                "Software Engineer",
+                List.of("Java", "Spring", "Docker"),
                 "nawiedk.jpg",
                 true
         );
@@ -38,10 +38,10 @@ class CreateProfileServiceTest {
         ProfileEntity entity = new ProfileEntity(
                 2L,
                 "nawiedk",
-                "ML Engineer",
+                "Software Engineer",
                 "Düsseldorf",
-                "Engineer",
-                List.of("Python", "TensorFlow"),
+                "Software Engineer",
+                List.of("Java", "Spring", "Docker"),
                 "nawiedk.jpg",
                 true
         );
