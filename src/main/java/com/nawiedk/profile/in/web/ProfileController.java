@@ -1,6 +1,7 @@
 package com.nawiedk.profile.in.web;
 
 import com.nawiedk.profile.application.usecase.CreateProfileUseCase;
+import com.nawiedk.profile.application.usecase.DeleteProfileUseCase;
 import com.nawiedk.profile.application.usecase.UpdateProfileUseCase;
 import com.nawiedk.profile.in.web.dto.ProfileDto;
 import com.nawiedk.profile.application.usecase.GetProfileUseCase;
@@ -14,15 +15,18 @@ public class ProfileController {
     private final GetProfileUseCase getProfileUseCase;
     private final CreateProfileUseCase createProfileUseCase;
     private final UpdateProfileUseCase updateProfileUseCase;
+    private final DeleteProfileUseCase deleteProfileUseCase;
 
     public ProfileController(
             GetProfileUseCase getProfileUseCase,
             CreateProfileUseCase createProfileUseCase,
-            UpdateProfileUseCase updateProfileUseCase
+            UpdateProfileUseCase updateProfileUseCase,
+            DeleteProfileUseCase deleteProfileUseCase
     ) {
         this.getProfileUseCase = getProfileUseCase;
         this.createProfileUseCase = createProfileUseCase;
         this.updateProfileUseCase = updateProfileUseCase;
+        this.deleteProfileUseCase = deleteProfileUseCase;
     }
 
     @GetMapping("/{id}")
@@ -58,5 +62,10 @@ public class ProfileController {
                 dto.profileStatus
         );
         return updateProfileUseCase.update(id, updated);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        deleteProfileUseCase.deleteById(id);
     }
 }
