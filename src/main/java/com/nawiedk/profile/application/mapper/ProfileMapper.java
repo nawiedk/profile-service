@@ -14,7 +14,20 @@ public class ProfileMapper {
                 entity.getRole(),
                 entity.getSkills(),
                 entity.getImageUrl(),
-                entity.isProfileStatus()
+                entity.getProfileStatus()
+        );
+    }
+
+    public static ProfileEntity toEntity(Profile profile) {
+        return new ProfileEntity(
+                profile.getId(),
+                profile.getName(),
+                profile.getBio(),
+                profile.getLocation(),
+                profile.getRole(),
+                profile.getSkills(),
+                profile.getImageUrl(),
+                profile.getProfileStatus()
         );
     }
 }
