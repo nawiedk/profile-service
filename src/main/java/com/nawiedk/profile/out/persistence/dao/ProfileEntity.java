@@ -4,6 +4,7 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
 import java.util.List;
 
 @Entity
@@ -26,7 +27,8 @@ public class ProfileEntity {
     public ProfileEntity() {
     }
 
-    public ProfileEntity(Long id, String name, String bio, String location, String role, List<String> skills, String imageUrl, boolean profileStatus) {
+    public ProfileEntity(Long id, String name, String bio, String location, String role,
+                         List<String> skills, String imageUrl, boolean profileStatus) {
         this.id = id;
         this.name = name;
         this.bio = bio;
@@ -45,4 +47,12 @@ public class ProfileEntity {
     public List<String> getSkills() { return skills; }
     public String getImageUrl() { return imageUrl; }
     public boolean getProfileStatus() { return profileStatus; }
+
+    public void setName(String name) { this.name = name; }
+    public void setBio(String bio) { this.bio = bio; }
+    public void setLocation(String location) { this.location = location; }
+    public void setRole(String role) { this.role = role; }
+    public void setSkills(List<String> skills) { this.skills = skills; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public void setProfileStatus(boolean profileStatus) { this.profileStatus = profileStatus; }
 }

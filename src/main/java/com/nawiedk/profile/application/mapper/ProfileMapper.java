@@ -30,4 +30,15 @@ public class ProfileMapper {
                 profile.getProfileStatus()
         );
     }
+
+    public static void updateEntity(ProfileEntity entity, Profile updated) {
+        entity.setName(updated.getName());
+        entity.setBio(updated.getBio());
+        entity.setLocation(updated.getLocation());
+        entity.setRole(updated.getRole());
+        entity.setSkills(updated.getSkills());
+        entity.setImageUrl(updated.getImageUrl());
+        entity.setProfileStatus(updated.getProfileStatus());
+    }
+
 }
