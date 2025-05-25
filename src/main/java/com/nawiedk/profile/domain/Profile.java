@@ -1,5 +1,7 @@
 package com.nawiedk.profile.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class Profile {
@@ -10,9 +12,9 @@ public class Profile {
     private final String role;
     private final List<String> skills;
     private final String imageUrl;
-    private final boolean isPublic;
+    private final boolean profileStatus;
 
-    public Profile(Long id, String name, String bio, String location, String role, List<String> skills, String imageUrl, boolean isPublic) {
+    public Profile(Long id, String name, String bio, String location, String role, List<String> skills, String imageUrl, boolean profileStatus) {
         this.id = id;
         this.name = name;
         this.bio = bio;
@@ -20,7 +22,7 @@ public class Profile {
         this.role = role;
         this.skills = skills;
         this.imageUrl = imageUrl;
-        this.isPublic = isPublic;
+        this.profileStatus = profileStatus;
     }
 
     public Long getId() { return id; }
@@ -30,5 +32,5 @@ public class Profile {
     public String getRole() { return role; }
     public List<String> getSkills() { return skills; }
     public String getImageUrl() { return imageUrl; }
-    public boolean isPublic() { return isPublic; }
+    public boolean getProfileStatus() { return profileStatus; }
 }

@@ -14,7 +14,7 @@ public class ProfileMapper {
                 entity.getRole(),
                 entity.getSkills(),
                 entity.getImageUrl(),
-                entity.isPublic()
+                entity.isProfileStatus()
         );
     }
 }

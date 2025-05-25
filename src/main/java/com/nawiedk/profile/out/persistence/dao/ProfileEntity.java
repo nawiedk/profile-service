@@ -18,7 +18,7 @@ public class ProfileEntity {
     private String location;
     private String role;
     private String imageUrl;
-    private boolean isPublic;
+    private boolean profileStatus;
 
     @ElementCollection
     private List<String> skills;
@@ -26,7 +26,7 @@ public class ProfileEntity {
     public ProfileEntity() {
     }
 
-    public ProfileEntity(Long id, String name, String bio, String location, String role, List<String> skills, String imageUrl, boolean isPublic) {
+    public ProfileEntity(Long id, String name, String bio, String location, String role, List<String> skills, String imageUrl, boolean profileStatus) {
         this.id = id;
         this.name = name;
         this.bio = bio;
@@ -34,7 +34,7 @@ public class ProfileEntity {
         this.role = role;
         this.skills = skills;
         this.imageUrl = imageUrl;
-        this.isPublic = isPublic;
+        this.profileStatus = profileStatus;
     }
 
     public Long getId() { return id; }
@@ -44,5 +44,5 @@ public class ProfileEntity {
     public String getRole() { return role; }
     public List<String> getSkills() { return skills; }
     public String getImageUrl() { return imageUrl; }
-    public boolean isPublic() { return isPublic; }
+    public boolean isProfileStatus() { return profileStatus; }
 }
