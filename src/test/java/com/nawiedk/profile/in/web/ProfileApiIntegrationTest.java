@@ -49,7 +49,7 @@ class ProfileApiIntegrationTest {
     @Test
     @SuppressWarnings("unchecked")
     void postProfile_validationFails_returns400() {
-        ProfileDto dto = new ProfileDto(); // invalid: all required fields are missing
+        ProfileDto dto = new ProfileDto();
 
         ResponseEntity<Map> response = rest.postForEntity(url("/api/profiles"), dto, Map.class);
 
@@ -92,5 +92,25 @@ class ProfileApiIntegrationTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("Updated Name", response.getBody().getName());
+    }
+
+    @Test
+    void deleteProfile_removesProfileSuccessfully() {
+        ProfileDto dto = new ProfileDto();
+        dto.id = 99L;
+        dto.name = "Name";
+        dto.bio = "Desc";
+        dto.location = "Köln";
+        dto.role = "Engineer";
+        dto.skills = List.of("Java");
+        dto.imageUrl = "image.jpg";
+        dto.profileStatus = false;
+
+        rest.postForEntity(url("/api/profiles"), dto, Profile.class);
+
+        rest.delete(url("/api/profiles/99"));
+
+        ResponseEntity<String> response = rest.getForEntity(url("/api/profiles/99"), String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 }
