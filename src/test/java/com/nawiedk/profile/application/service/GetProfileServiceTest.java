@@ -44,7 +44,7 @@ class GetProfileServiceTest {
 
         assertEquals("Nawied Khaleqi", result.getName());
         assertEquals("Software Engineer", result.getRole());
-        assertTrue(result.isPublic());
+        assertTrue(result.getProfileStatus());
     }
 
     @Test
