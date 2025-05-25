@@ -29,7 +29,7 @@ class GetProfileServiceTest {
         Long id = 1L;
         ProfileEntity entity = new ProfileEntity(
                 id,
-                "Nawied Khaleqi",
+                "nawiedk",
                 "My Bio",
                 "Düsseldorf, Germany",
                 "Software Engineer",
@@ -42,7 +42,7 @@ class GetProfileServiceTest {
 
         Profile result = service.getProfileById(id);
 
-        assertEquals("Nawied Khaleqi", result.getName());
+        assertEquals("nawiedk", result.getName());
         assertEquals("Software Engineer", result.getRole());
         assertTrue(result.getProfileStatus());
     }
