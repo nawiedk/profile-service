@@ -44,5 +44,5 @@ public class ProfileEntity {
     public String getRole() { return role; }
     public List<String> getSkills() { return skills; }
     public String getImageUrl() { return imageUrl; }
-    public boolean isProfileStatus() { return profileStatus; }
+    public boolean getProfileStatus() { return profileStatus; }
 }
