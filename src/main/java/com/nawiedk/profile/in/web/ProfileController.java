@@ -2,10 +2,11 @@ package com.nawiedk.profile.in.web;
 
 import com.nawiedk.profile.application.usecase.CreateProfileUseCase;
 import com.nawiedk.profile.application.usecase.DeleteProfileUseCase;
-import com.nawiedk.profile.application.usecase.UpdateProfileUseCase;
-import com.nawiedk.profile.in.web.dto.ProfileDto;
 import com.nawiedk.profile.application.usecase.GetProfileUseCase;
+import com.nawiedk.profile.application.usecase.UpdateProfileUseCase;
 import com.nawiedk.profile.domain.Profile;
+import com.nawiedk.profile.in.web.dto.ProfileDto;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,7 +36,7 @@ public class ProfileController {
     }
 
     @PostMapping
-    public Profile create(@RequestBody ProfileDto dto) {
+    public Profile create(@Valid @RequestBody ProfileDto dto) {
         Profile profile = new Profile(
                 dto.id,
                 dto.name,
@@ -50,7 +51,7 @@ public class ProfileController {
     }
 
     @PutMapping("/{id}")
-    public Profile update(@PathVariable Long id, @RequestBody ProfileDto dto) {
+    public Profile update(@PathVariable Long id, @Valid @RequestBody ProfileDto dto) {
         Profile updated = new Profile(
                 id,
                 dto.name,
