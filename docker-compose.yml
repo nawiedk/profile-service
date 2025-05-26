@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15.2
+    container_name: profile_postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: profiledb
+      POSTGRES_USER: profileuser
+      POSTGRES_PASSWORD: profilepass
+    volumes:
+      - profile_db_data:/var/lib/postgresql/data
+
+  profile-service:
+    build: .
+    container_name: profile_service
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/profiledb
+      SPRING_DATASOURCE_USERNAME: profileuser
+      SPRING_DATASOURCE_PASSWORD: profilepass
+    ports:
+      - "8080:8080"
+
+volumes:
+  profile_db_data:
