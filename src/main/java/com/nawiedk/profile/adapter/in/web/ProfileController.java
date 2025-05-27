@@ -1,11 +1,11 @@
-package com.nawiedk.profile.in.web;
+package com.nawiedk.profile.adapter.in.web;
 
-import com.nawiedk.profile.application.usecase.CreateProfileUseCase;
-import com.nawiedk.profile.application.usecase.DeleteProfileUseCase;
-import com.nawiedk.profile.application.usecase.GetProfileUseCase;
-import com.nawiedk.profile.application.usecase.UpdateProfileUseCase;
+import com.nawiedk.profile.application.port.in.usecase.CreateProfileUseCase;
+import com.nawiedk.profile.application.port.in.usecase.DeleteProfileUseCase;
+import com.nawiedk.profile.application.port.in.usecase.GetProfileUseCase;
+import com.nawiedk.profile.application.port.in.usecase.UpdateProfileUseCase;
 import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.in.web.dto.ProfileDto;
+import com.nawiedk.profile.adapter.in.ui.dto.ProfileDto;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 

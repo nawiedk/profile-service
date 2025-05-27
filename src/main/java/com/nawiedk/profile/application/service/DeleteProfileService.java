@@ -1,7 +1,7 @@
 package com.nawiedk.profile.application.service;
 
-import com.nawiedk.profile.application.usecase.DeleteProfileUseCase;
-import com.nawiedk.profile.out.persistence.dao.ProfileRepository;
+import com.nawiedk.profile.application.port.in.usecase.DeleteProfileUseCase;
+import com.nawiedk.profile.adapter.out.persistence.repository.ProfileRepository;
 import org.springframework.stereotype.Service;
 
 @Service

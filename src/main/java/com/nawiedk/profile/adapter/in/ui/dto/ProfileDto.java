@@ -1,4 +1,4 @@
-package com.nawiedk.profile.in.web.dto;
+package com.nawiedk.profile.adapter.in.ui.dto;
 
 import jakarta.validation.constraints.*;
 import java.util.List;

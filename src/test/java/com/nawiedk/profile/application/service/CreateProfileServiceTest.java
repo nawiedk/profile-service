@@ -1,8 +1,8 @@
 package com.nawiedk.profile.application.service;
 
 import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.out.persistence.dao.ProfileEntity;
-import com.nawiedk.profile.out.persistence.dao.ProfileRepository;
+import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileEntity;
+import com.nawiedk.profile.adapter.out.persistence.repository.ProfileRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

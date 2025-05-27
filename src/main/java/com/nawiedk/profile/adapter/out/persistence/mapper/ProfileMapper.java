@@ -1,7 +1,7 @@
-package com.nawiedk.profile.application.mapper;
+package com.nawiedk.profile.adapter.out.persistence.mapper;
 
 import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.out.persistence.dao.ProfileEntity;
+import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileEntity;
 
 public class ProfileMapper {
 
