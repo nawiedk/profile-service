@@ -41,9 +41,9 @@ class CreateProfileServiceTest {
                 "Software Engineer",
                 "Düsseldorf",
                 "Software Engineer",
-                List.of("Java", "Spring", "Docker"),
                 "nawiedk.jpg",
-                true
+                true,
+                List.of("Java", "Spring", "Docker")
         );
 
         when(repository.save(any())).thenReturn(entity);

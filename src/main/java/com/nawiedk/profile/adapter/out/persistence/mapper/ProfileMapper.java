@@ -14,7 +14,7 @@ public class ProfileMapper {
                 entity.getRole(),
                 entity.getSkills(),
                 entity.getImageUrl(),
-                entity.getProfileStatus()
+                entity.isProfileStatus()
         );
     }
 
@@ -25,9 +25,9 @@ public class ProfileMapper {
                 profile.getBio(),
                 profile.getLocation(),
                 profile.getRole(),
-                profile.getSkills(),
                 profile.getImageUrl(),
-                profile.getProfileStatus()
+                profile.getProfileStatus(),
+                profile.getSkills()
         );
     }
 

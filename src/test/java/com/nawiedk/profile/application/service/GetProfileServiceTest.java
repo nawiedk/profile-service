@@ -33,9 +33,9 @@ class GetProfileServiceTest {
                 "My Bio",
                 "Düsseldorf, Germany",
                 "Software Engineer",
-                List.of("Java", "Spring", "Docker"),
                 "image.jpg",
-                true
+                true,
+                List.of("Java", "Spring", "Docker")
         );
 
         when(repository.findById(id)).thenReturn(Optional.of(entity));

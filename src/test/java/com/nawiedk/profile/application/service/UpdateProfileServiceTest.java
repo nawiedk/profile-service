@@ -28,13 +28,24 @@ class UpdateProfileServiceTest {
         Long id = 1L;
 
         ProfileEntity existing = new ProfileEntity(
-                id, "Nawiedk", "software Engineer", "düsseldorf", "software Engineer",
-                List.of("java", "spring", "docker"), "Nawiedk.jpg", false
+                id, "Nawiedk",
+                "software Engineer",
+                "düsseldorf",
+                "software Engineer",
+                "Nawiedk.jpg",
+                false,
+                List.of("java", "spring", "docker")
         );
 
         Profile update = new Profile(
-                id, "nawiedk", "Software Engineer", "Düsseldorf", "Software Engineer",
-                List.of("Java", "Spring", "Docker"), "nawiedk.jpg", true
+                id,
+                "nawiedk",
+                "Software Engineer",
+                "Düsseldorf",
+                "Software Engineer",
+                List.of("Java", "Spring", "Docker"),
+                "nawiedk.jpg",
+                true
         );
 
         when(repository.findById(id)).thenReturn(Optional.of(existing));
