@@ -1,13 +1,14 @@
 package com.nawiedk.profile.in.web;
 
 import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.in.web.dto.ProfileDto;
+import com.nawiedk.profile.adapter.in.ui.dto.ProfileDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Transactional
 class ProfileApiIntegrationTest {
 
     @LocalServerPort
@@ -68,7 +70,7 @@ class ProfileApiIntegrationTest {
     @Test
     void putProfile_updatesExistingProfile() {
         ProfileDto dto = new ProfileDto();
-        dto.id = 1L;
+        dto.id = 10L;
         dto.name = "Updated Name";
         dto.bio = "Updated Bio";
         dto.location = "Updated City";
@@ -83,7 +85,7 @@ class ProfileApiIntegrationTest {
         HttpEntity<ProfileDto> request = new HttpEntity<>(dto, headers);
 
         ResponseEntity<Profile> response = rest.exchange(
-                url("/api/profiles/1"),
+                url("/api/profiles/10"),
                 HttpMethod.PUT,
                 request,
                 Profile.class

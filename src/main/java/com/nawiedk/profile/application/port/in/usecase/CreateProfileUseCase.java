@@ -1,4 +1,4 @@
-package com.nawiedk.profile.application.usecase;
+package com.nawiedk.profile.application.port.in.usecase;
 
 import com.nawiedk.profile.domain.Profile;
 

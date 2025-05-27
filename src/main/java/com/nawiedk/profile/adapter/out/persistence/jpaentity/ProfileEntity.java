@@ -1,4 +1,4 @@
-package com.nawiedk.profile.out.persistence.dao;
+package com.nawiedk.profile.adapter.out.persistence.jpaentity;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.nawiedk.profile.in.web.error;
+package com.nawiedk.profile.adapter.in.ui.error;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;

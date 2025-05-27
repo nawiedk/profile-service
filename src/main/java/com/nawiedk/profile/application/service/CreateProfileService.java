@@ -1,13 +1,13 @@
 package com.nawiedk.profile.application.service;
 
-import com.nawiedk.profile.application.usecase.CreateProfileUseCase;
+import com.nawiedk.profile.application.port.in.usecase.CreateProfileUseCase;
 import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.out.persistence.dao.ProfileEntity;
-import com.nawiedk.profile.out.persistence.dao.ProfileRepository;
+import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileEntity;
+import com.nawiedk.profile.adapter.out.persistence.repository.ProfileRepository;
 import org.springframework.stereotype.Service;
 
-import static com.nawiedk.profile.application.mapper.ProfileMapper.toDomain;
-import static com.nawiedk.profile.application.mapper.ProfileMapper.toEntity;
+import static com.nawiedk.profile.adapter.out.persistence.mapper.ProfileMapper.toDomain;
+import static com.nawiedk.profile.adapter.out.persistence.mapper.ProfileMapper.toEntity;
 
 @Service
 public class CreateProfileService implements CreateProfileUseCase {
