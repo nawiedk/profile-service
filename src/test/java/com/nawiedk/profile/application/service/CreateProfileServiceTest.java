@@ -1,7 +1,7 @@
 package com.nawiedk.profile.application.service;
 
 import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileEntity;
+import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileJpaEntity;
 import com.nawiedk.profile.adapter.out.persistence.repository.ProfileRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ class CreateProfileServiceTest {
                 true
         );
 
-        ProfileEntity entity = new ProfileEntity(
+        ProfileJpaEntity entity = new ProfileJpaEntity(
                 2L,
                 "nawiedk",
                 "Software Engineer",
@@ -51,6 +51,6 @@ class CreateProfileServiceTest {
         Profile saved = service.create(profile);
 
         assertEquals("nawiedk", saved.getName());
-        assertTrue(saved.getProfileStatus());
+        assertTrue(saved.isProfileStatus());
     }
 }

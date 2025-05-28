@@ -1,11 +1,17 @@
 package com.nawiedk.profile.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.List;
+import java.util.Optional;
 
+@AllArgsConstructor
+@Getter
 public class Profile {
-    private final Long id;
+    private final ProfileId profileId;
+    @NotBlank
     private final String name;
     private final String bio;
     private final String location;
@@ -14,23 +20,19 @@ public class Profile {
     private final String imageUrl;
     private final boolean profileStatus;
 
-    public Profile(Long id, String name, String bio, String location, String role, List<String> skills, String imageUrl, boolean profileStatus) {
-        this.id = id;
-        this.name = name;
-        this.bio = bio;
-        this.location = location;
-        this.role = role;
-        this.skills = skills;
-        this.imageUrl = imageUrl;
-        this.profileStatus = profileStatus;
+    public record ProfileId(Long id){}
+
+
+    public static Profile profileWithId(ProfileId profileId, String name, String bio, String location, String role, List<String> skills, String imageUrl, boolean profileStatus) {
+        return new Profile(profileId, name, bio, location, role, skills, imageUrl, profileStatus);
     }
 
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public String getBio() { return bio; }
-    public String getLocation() { return location; }
-    public String getRole() { return role; }
-    public List<String> getSkills() { return skills; }
-    public String getImageUrl() { return imageUrl; }
-    public boolean getProfileStatus() { return profileStatus; }
+    public static Profile profileWithoutId(String name, String bio, String location, String role, List<String> skills, String imageUrl, boolean profileStatus) {
+        return new Profile(null, name, bio, location, role, skills, imageUrl, profileStatus);
+    }
+
+    public Optional<Profile.ProfileId> getId() {
+        return Optional.ofNullable(this.profileId);
+    }
+
 }

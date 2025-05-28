@@ -11,12 +11,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
-public class ProfileEntity {
+@EqualsAndHashCode(of = "profileId")
+public class ProfileJpaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long profileId;
     @Column(nullable = false, length = 100)
     private String name;
     @Column(length = 1000)

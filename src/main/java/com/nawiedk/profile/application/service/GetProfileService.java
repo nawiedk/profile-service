@@ -2,11 +2,11 @@ package com.nawiedk.profile.application.service;
 
 import com.nawiedk.profile.application.port.in.usecase.GetProfileUseCase;
 import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileEntity;
+import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileJpaEntity;
 import com.nawiedk.profile.adapter.out.persistence.repository.ProfileRepository;
 import org.springframework.stereotype.Service;
 
-import static com.nawiedk.profile.adapter.out.persistence.mapper.ProfileMapper.toDomain;
+import static com.nawiedk.profile.adapter.out.persistence.mapper.ProfileMapper.mapToDomainEntity;
 
 @Service
 public class GetProfileService implements GetProfileUseCase {
@@ -19,9 +19,9 @@ public class GetProfileService implements GetProfileUseCase {
 
     @Override
     public Profile getProfileById(Long id) {
-        ProfileEntity entity = repository.findById(id)
+        ProfileJpaEntity entity = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Profile not found"));
 
-        return toDomain(entity);
+        return mapToDomainEntity(entity);
     }
 }

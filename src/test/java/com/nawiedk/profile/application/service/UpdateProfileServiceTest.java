@@ -1,7 +1,7 @@
 package com.nawiedk.profile.application.service;
 
 import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileEntity;
+import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileJpaEntity;
 import com.nawiedk.profile.adapter.out.persistence.repository.ProfileRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ class UpdateProfileServiceTest {
     void updatesExistingProfile() {
         Long id = 1L;
 
-        ProfileEntity existing = new ProfileEntity(
+        ProfileJpaEntity existing = new ProfileJpaEntity(
                 id, "Nawiedk",
                 "software Engineer",
                 "düsseldorf",
@@ -55,6 +55,6 @@ class UpdateProfileServiceTest {
 
         assertEquals("nawiedk", result.getName());
         assertEquals("Software Engineer", result.getRole());
-        assertTrue(result.getProfileStatus());
+        assertTrue(result.isProfileStatus());
     }
 }

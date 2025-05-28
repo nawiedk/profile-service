@@ -29,6 +29,6 @@ class ProfileControllerTest {
         assertNotNull(response);
         assertEquals("Nawied Khaleqi", response.getName());
         assertEquals("Software Engineer", response.getRole());
-        assertTrue(response.getProfileStatus());
+        assertTrue(response.isProfileStatus());
     }
 }
