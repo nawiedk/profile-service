@@ -2,6 +2,7 @@ package com.nawiedk.profile.in.web;
 
 import com.nawiedk.profile.domain.Profile;
 import com.nawiedk.profile.adapter.in.ui.dto.ProfileDto;
+import com.nawiedk.profile.domain.ProfileStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,7 +40,7 @@ class ProfileApiIntegrationTest {
         dto.role = "Engineer";
         dto.skills = List.of("React", "Angular");
         dto.imageUrl = "test.jpg";
-        dto.profileStatus = true;
+        dto.profileStatus = ProfileStatus.ACTIVE;
 
         ResponseEntity<Profile> response = rest.postForEntity(url("/api/profiles"), dto, Profile.class);
 
@@ -70,14 +71,14 @@ class ProfileApiIntegrationTest {
     @Test
     void putProfile_updatesExistingProfile() {
         ProfileDto dto = new ProfileDto();
-        dto.id = 10L;
+        dto.id = 1L;
         dto.name = "Updated Name";
         dto.bio = "Updated Bio";
         dto.location = "Updated City";
         dto.role = "Updated Role";
         dto.skills = List.of("Updated", "Skills");
         dto.imageUrl = "updated.jpg";
-        dto.profileStatus = true;
+        dto.profileStatus = ProfileStatus.ACTIVE;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -85,7 +86,7 @@ class ProfileApiIntegrationTest {
         HttpEntity<ProfileDto> request = new HttpEntity<>(dto, headers);
 
         ResponseEntity<Profile> response = rest.exchange(
-                url("/api/profiles/10"),
+                url("/api/profiles/1"),
                 HttpMethod.PUT,
                 request,
                 Profile.class
@@ -106,7 +107,7 @@ class ProfileApiIntegrationTest {
         dto.role = "Engineer";
         dto.skills = List.of("Java");
         dto.imageUrl = "image.jpg";
-        dto.profileStatus = false;
+        dto.profileStatus = ProfileStatus.ACTIVE;
 
         rest.postForEntity(url("/api/profiles"), dto, Profile.class);
 

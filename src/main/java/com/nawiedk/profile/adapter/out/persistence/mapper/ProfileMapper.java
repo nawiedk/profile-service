@@ -17,7 +17,7 @@ public class ProfileMapper {
                 entity.getRole(),
                 entity.getSkills(),
                 entity.getImageUrl(),
-                entity.isProfileStatus()
+                entity.getProfileStatus()
         );
     }
 
@@ -28,11 +28,13 @@ public class ProfileMapper {
         entity.setBio(profile.getBio());
         entity.setLocation(profile.getLocation());
         entity.setRole(profile.getRole());
-        entity.setSkills(profile.getSkills());
         entity.setImageUrl(profile.getImageUrl());
-        entity.setProfileStatus(profile.isProfileStatus());
+        entity.setProfileStatus(profile.getProfileStatus());
+        entity.setSkills(profile.getSkills());
+        return entity;
     }
 
+    /*
     public static void updateEntity(ProfileJpaEntity entity, Profile updated) {
         entity.setName(updated.getName());
         entity.setBio(updated.getBio());
@@ -40,7 +42,7 @@ public class ProfileMapper {
         entity.setRole(updated.getRole());
         entity.setSkills(updated.getSkills());
         entity.setImageUrl(updated.getImageUrl());
-        entity.setProfileStatus(updated.isProfileStatus());
+        entity.setProfileStatus(updated.getProfileStatus());
     }
-
+    */
 }

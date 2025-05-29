@@ -1,6 +1,7 @@
 package com.nawiedk.profile.in.web;
 
 import com.nawiedk.profile.domain.Profile;
+import com.nawiedk.profile.domain.ProfileStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -29,6 +30,6 @@ class ProfileControllerTest {
         assertNotNull(response);
         assertEquals("Nawied Khaleqi", response.getName());
         assertEquals("Software Engineer", response.getRole());
-        assertTrue(response.isProfileStatus());
+        assertEquals(ProfileStatus.ACTIVE, response.getProfileStatus());
     }
 }

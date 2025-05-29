@@ -1,37 +1,53 @@
 package com.nawiedk.profile.application.service;
 
-import com.nawiedk.profile.adapter.out.persistence.repository.ProfileRepository;
-import org.junit.jupiter.api.BeforeEach;
+import com.nawiedk.profile.application.port.in.command.DeleteProfileCommand;
+import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class DeleteProfileServiceTest {
 
-    private ProfileRepository repository;
+    @Autowired
+    private ProfileRepositoryPort repositoryPort;
+
+    @Autowired
     private DeleteProfileService service;
 
-    @BeforeEach
-    void setUp() {
-        repository = mock(ProfileRepository.class);
-        service = new DeleteProfileService(repository);
+    @TestConfiguration
+    static class TestConfig {
+        @Bean
+        public ProfileRepositoryPort profileRepositoryPort() {
+            return mock(ProfileRepositoryPort.class);
+        }
     }
 
     @Test
-    void deletesExistingProfile() {
-        Long id = 1L;
-        when(repository.existsById(id)).thenReturn(true);
+    void deleteByIdSuccessfullyDeletesProfileWhenExists() {
+        Long profileId = 1L;
+        when(repositoryPort.existsById(profileId)).thenReturn(true);
+        doNothing().when(repositoryPort).deleteById(profileId);
 
-        service.deleteById(id);
+        service.deleteById(new DeleteProfileCommand(profileId));
 
-        verify(repository).deleteById(id);
+        verify(repositoryPort, times(1)).existsById(profileId);
+        verify(repositoryPort, times(1)).deleteById(profileId);
     }
 
     @Test
-    void throwsWhenProfileNotFound() {
-        when(repository.existsById(999L)).thenReturn(false);
+    void deleteByIdThrowsExceptionWhenProfileNotFound() {
+        Long profileId = 99L;
+        when(repositoryPort.existsById(profileId)).thenReturn(false);
 
-        assertThrows(RuntimeException.class, () -> service.deleteById(999L));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> service.deleteById(new DeleteProfileCommand(profileId)));
+        assertEquals("Profile not found", exception.getMessage());
+
+        verify(repositoryPort, times(1)).existsById(profileId);
+        verify(repositoryPort, never()).deleteById(profileId);
     }
 }

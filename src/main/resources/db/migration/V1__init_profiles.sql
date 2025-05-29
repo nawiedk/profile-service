@@ -1,11 +1,11 @@
 CREATE TABLE profiles (
-                          id BIGINT PRIMARY KEY,
+                          profile_id BIGINT PRIMARY KEY,
                           name VARCHAR(255) NOT NULL,
                           bio TEXT,
                           location VARCHAR(255),
                           role VARCHAR(255),
                           image_url VARCHAR(255),
-                          profile_status BOOLEAN
+                          profile_status VARCHAR(20)
 );
 
 CREATE TABLE profile_entity_skills (
@@ -13,7 +13,7 @@ CREATE TABLE profile_entity_skills (
                                        skills VARCHAR(255)
 );
 
-INSERT INTO profiles (id, name, bio, location, role, image_url, profile_status)
+INSERT INTO profiles (profile_id, name, bio, location, role, image_url, profile_status)
 VALUES (
            1,
            'Nawied Khaleqi',
@@ -21,7 +21,7 @@ VALUES (
            'Düsseldorf, Germany',
            'Software Engineer',
            'profile.jpg',
-           true
+           'ACTIVE'
        );
 
 INSERT INTO profile_entity_skills (profile_entity_id, skills) VALUES

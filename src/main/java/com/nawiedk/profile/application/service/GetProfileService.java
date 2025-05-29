@@ -1,27 +1,30 @@
 package com.nawiedk.profile.application.service;
 
+import com.nawiedk.profile.application.port.in.command.GetProfileCommand;
 import com.nawiedk.profile.application.port.in.usecase.GetProfileUseCase;
+import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
 import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileJpaEntity;
-import com.nawiedk.profile.adapter.out.persistence.repository.ProfileRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import static com.nawiedk.profile.adapter.out.persistence.mapper.ProfileMapper.mapToDomainEntity;
+import java.util.List;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class GetProfileService implements GetProfileUseCase {
 
-    private final ProfileRepository repository;
+    private final ProfileRepositoryPort repositoryPort;
 
-    public GetProfileService(ProfileRepository repository) {
-        this.repository = repository;
+    @Override
+    public Profile findProfileById(GetProfileCommand command) {
+        return repositoryPort.findById(command.id())
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
     }
 
     @Override
-    public Profile getProfileById(Long id) {
-        ProfileJpaEntity entity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Profile not found"));
-
-        return mapToDomainEntity(entity);
+    public List<Profile> findAll() {
+        return repositoryPort.findAll();
     }
 }

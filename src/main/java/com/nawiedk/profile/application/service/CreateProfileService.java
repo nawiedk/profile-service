@@ -1,26 +1,31 @@
 package com.nawiedk.profile.application.service;
 
+import com.nawiedk.profile.application.port.in.command.CreateProfileCommand;
 import com.nawiedk.profile.application.port.in.usecase.CreateProfileUseCase;
+import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
 import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileJpaEntity;
-import com.nawiedk.profile.adapter.out.persistence.repository.ProfileRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import static com.nawiedk.profile.adapter.out.persistence.mapper.ProfileMapper.mapToDomainEntity;
-import static com.nawiedk.profile.adapter.out.persistence.mapper.ProfileMapper.mapToJpaEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class CreateProfileService implements CreateProfileUseCase {
 
-    private final ProfileRepository repository;
-
-    public CreateProfileService(ProfileRepository repository) {
-        this.repository = repository;
-    }
+    private final ProfileRepositoryPort repositoryPort;
 
     @Override
-    public Profile create(Profile profile) {
-        ProfileJpaEntity saved = repository.save(mapToJpaEntity(profile));
-        return mapToDomainEntity(saved);
+    public Profile create(CreateProfileCommand command) {
+        Profile profile = Profile.profileWithoutId(
+                command.name(),
+                command.bio(),
+                command.location(),
+                command.role(),
+                command.skills(),
+                command.imageUrl(),
+                command.profileStatus()
+        );
+        return repositoryPort.save(profile);
     }
 }

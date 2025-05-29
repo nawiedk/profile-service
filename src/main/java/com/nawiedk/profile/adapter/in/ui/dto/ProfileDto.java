@@ -1,8 +1,15 @@
 package com.nawiedk.profile.adapter.in.ui.dto;
 
-import jakarta.validation.constraints.*;
-import java.util.List;
+import com.nawiedk.profile.domain.ProfileStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
+@Component
 public class ProfileDto {
 
     @NotNull
@@ -22,10 +29,10 @@ public class ProfileDto {
     public String role;
 
     @NotEmpty
-    public List<@NotBlank String> skills;
+    public Set<@NotBlank String> skills;
 
     @NotBlank
     public String imageUrl;
 
-    public boolean profileStatus;
+    public ProfileStatus profileStatus;
 }

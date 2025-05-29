@@ -1,9 +1,10 @@
 package com.nawiedk.profile.adapter.out.persistence.jpaentity;
 
+import com.nawiedk.profile.domain.ProfileStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "profiles")
@@ -17,19 +18,31 @@ public class ProfileJpaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long profileId;
+
     @Column(nullable = false, length = 100)
     private String name;
+
     @Column(length = 1000)
     private String bio;
+
     @Column(nullable = false)
     private String location;
+
     @Column(nullable = false, length = 100)
     private String role;
+
     @Column(nullable = false, length = 500)
     private String imageUrl;
-    @Column(nullable = false)
-    private boolean profileStatus;
 
-    @ElementCollection
-    private List<String> skills; //todo: change to relationship with different entity
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProfileStatus profileStatus;
+
+    @ManyToMany
+    @JoinTable(
+            name = "profile_skills",
+            joinColumns = @JoinColumn(name = "profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id")
+    )
+    private Set<SkillJpaEntity> skills;
 }

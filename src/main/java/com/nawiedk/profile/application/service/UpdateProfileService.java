@@ -1,31 +1,37 @@
 package com.nawiedk.profile.application.service;
 
+import com.nawiedk.profile.application.port.in.command.UpdateProfileCommand;
 import com.nawiedk.profile.application.port.in.usecase.UpdateProfileUseCase;
+import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
 import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileJpaEntity;
-import com.nawiedk.profile.adapter.out.persistence.repository.ProfileRepository;
+import com.nawiedk.profile.domain.Profile.ProfileId;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import static com.nawiedk.profile.adapter.out.persistence.mapper.ProfileMapper.mapToDomainEntity;
-import static com.nawiedk.profile.adapter.out.persistence.mapper.ProfileMapper.updateEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class UpdateProfileService implements UpdateProfileUseCase {
 
-    private final ProfileRepository repository;
-
-    public UpdateProfileService(ProfileRepository repository) {
-        this.repository = repository;
-    }
+    private final ProfileRepositoryPort repositoryPort;
 
     @Override
-    public Profile update(Long id, Profile updatedProfile) {
-        ProfileJpaEntity entity = repository.findById(id)
+    public Profile update(UpdateProfileCommand command) {
+        repositoryPort.findById(command.id())
                 .orElseThrow(() -> new RuntimeException("Profile not found"));
 
-        updateEntity(entity, updatedProfile);
+        Profile updatedProfileDomain = Profile.profileWithId(
+                new ProfileId(command.id()),
+                command.name(),
+                command.bio(),
+                command.location(),
+                command.role(),
+                command.skills(),
+                command.imageUrl(),
+                command.profileStatus()
+        );
 
-        ProfileJpaEntity saved = repository.save(entity);
-        return mapToDomainEntity(saved);
+        return repositoryPort.save(updatedProfileDomain);
     }
 }
