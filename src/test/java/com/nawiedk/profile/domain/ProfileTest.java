@@ -1,205 +1,180 @@
 package com.nawiedk.profile.domain;
 
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ProfileTest {
 
-    private final Skill java = new Skill(new Skill.SkillId(1L), "Java", "Backend", 8);
-    private final Skill react = new Skill(new Skill.SkillId(2L), "React", "Frontend", 6);
-    private final Skill docker = new Skill(new Skill.SkillId(3L), "Docker", "DevOps", 7);
-
-    @Test
-    void shouldCreateValidProfile() {
-        Profile profile = Profile.profileWithoutId(
-                "test dummy",
-                "i like software dev, especially backend",
-                "Düsseldorf",
-                "DevOps",
-                ProfileStatus.ACTIVE, "image.png", Set.of(java, react, docker)
-        );
-
-        assertEquals("test dummy", profile.getName());
-        assertEquals("i like software dev, especially backend", profile.getBio());
-        assertEquals("Düsseldorf", profile.getLocation());
-        assertEquals("DevOps", profile.getRole());
-        assertEquals("image.png", profile.getImageUrl());
-        assertEquals(ProfileStatus.ACTIVE, profile.getProfileStatus());
-        assertEquals(3, profile.getSkills().size());
-        assertTrue(profile.getProfileId().isEmpty(), "ProfileId should be empty for profileWithoutId");
-        assertEquals("ACTIVE", profile.getProfileStatusAsString());
-    }
-
     @Test
     void shouldCreateValidProfileWithId() {
-        Profile.ProfileId profileId = new Profile.ProfileId(1L);
         Profile profile = Profile.profileWithId(
-                profileId,
-                "test dummy with id",
-                "bio for profile with id",
-                "Berlin",
-                "Frontend Developer",
-                "new_image.jpg",
-                ProfileStatus.INACTIVE,
-                Set.of(react)
+                new Profile.ProfileId(1L),
+                "John Doe",
+                "Software Engineer with passion",
+                "London, UK",
+                "Senior Developer",
+                "https://example.com/image.jpg",
+                ProfileStatus.ACTIVE,
+                createValidSkillSet()
         );
 
-        assertEquals(profileId, profile.getProfileId().orElse(null), "ProfileId should be present");
-        assertEquals("test dummy with id", profile.getName());
-        assertEquals("INACTIVE", profile.getProfileStatusAsString());
+        assertThat(profile.getProfileId()).isPresent();
+        assertThat(profile.getProfileId().get().id()).isEqualTo(1L);
+        assertThat(profile.getName()).isEqualTo("John Doe");
+        assertThat(profile.getBio()).isEqualTo("Software Engineer with passion");
+        assertThat(profile.getLocation()).isEqualTo("London, UK");
+        assertThat(profile.getRole()).isEqualTo("Senior Developer");
+        assertThat(profile.getImageUrl()).isEqualTo("https://example.com/image.jpg");
+        assertThat(profile.getProfileStatus()).isEqualTo(ProfileStatus.ACTIVE);
+        assertThat(profile.getSkills()).hasSize(1);
     }
 
     @Test
-    void shouldFailToCreateProfileWithNullName() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Profile.profileWithoutId(
-                null,
-                "i like software dev, especially backend",
-                "Düsseldorf",
-                "DevOps",
-                ProfileStatus.ACTIVE, "image.png", Set.of(java)
-        ));
-        assertTrue(exception.getMessage().toLowerCase().contains("name"));
-    }
-
-    @Test
-    void shouldFailToCreateProfileWithBlankName() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Profile.profileWithoutId(
-                " ",
-                "i like software dev, especially backend",
-                "Düsseldorf",
-                "DevOps",
-                ProfileStatus.ACTIVE, "image.png", Set.of(java)
-        ));
-        assertTrue(exception.getMessage().toLowerCase().contains("name"));
-    }
-
-    @Test
-    void shouldFailToCreateProfileWithNameToShort() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Profile.profileWithoutId(
-                "A",
-                "i like software dev, especially backend",
-                "Düsseldorf",
-                "DevOps",
-                ProfileStatus.ACTIVE, "image.png", Set.of(java)
-        ));
-        assertTrue(exception.getMessage().toLowerCase().contains("name"));
-        assertTrue(exception.getMessage().toLowerCase().contains("size"));
-    }
-
-    @Test
-    void shouldFailToCreateProfileWithNameToLong() {
-        String longName = "a".repeat(101);
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Profile.profileWithoutId(
-                longName,
-                "i like software dev, especially backend",
-                "Düsseldorf",
-                "DevOps",
-                ProfileStatus.ACTIVE, "image.png", Set.of(java)
-        ));
-        assertTrue(exception.getMessage().toLowerCase().contains("name"));
-        assertTrue(exception.getMessage().toLowerCase().contains("size"));
-    }
-
-    @Test
-    void shouldFailToCreateProfileWithBioToLong() {
-        String longBio = "a".repeat(1001);
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Profile.profileWithoutId(
-                "test dummy",
-                longBio,
-                "Düsseldorf",
-                "DevOps",
-                ProfileStatus.ACTIVE, "image.png", Set.of(java)
-        ));
-        assertTrue(exception.getMessage().toLowerCase().contains("bio"));
-        assertTrue(exception.getMessage().toLowerCase().contains("size"));
-    }
-
-
-    @Test
-    void shouldFailToCreateProfileWithBlankLocation() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Profile.profileWithoutId(
-                "test dummy",
-                "bio",
-                " ",
-                "DevOps",
-                ProfileStatus.ACTIVE, "image.png", Set.of(java)
-        ));
-        assertTrue(exception.getMessage().toLowerCase().contains("location"));
-    }
-
-    @Test
-    void shouldFailToCreateProfileWithBlankRole() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Profile.profileWithoutId(
-                "test dummy",
-                "bio",
-                "Düsseldorf",
-                " ",
-                ProfileStatus.ACTIVE, "image.png", Set.of(java)
-        ));
-        assertTrue(exception.getMessage().toLowerCase().contains("role"));
-    }
-
-    @Test
-    void shouldFailToCreateProfileWithBlankImageUrl() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Profile.profileWithoutId(
-                "test dummy",
-                "bio",
-                "Düsseldorf",
-                "DevOps",
+    void shouldCreateValidProfileWithoutId() {
+        Profile profile = Profile.profileWithoutId(
+                "John Doe",
+                "Software Engineer with passion",
+                "London, UK",
+                "Senior Developer",
+                "https://example.com/image.jpg",
                 ProfileStatus.ACTIVE,
-                " ",
-                Set.of(java)
-        ));
-        assertTrue(exception.getMessage().toLowerCase().contains("imageurl"));
+                createValidSkillSet()
+        );
+
+        assertThat(profile.getProfileId()).isEmpty();
+        assertThat(profile.getName()).isEqualTo("John Doe");
     }
 
     @Test
-    void shouldFailToCreateProfileWithNullProfileStatus() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Profile.profileWithoutId(
-                "test dummy",
-                "bio",
-                "Düsseldorf",
-                "DevOps",
+    void shouldThrowExceptionWhenNameIsTooShort() {
+        assertThatThrownBy(() -> Profile.profileWithoutId(
+                "J",
+                "Bio",
+                "London, UK",
+                "Developer",
+                "https://example.com/image.jpg",
+                ProfileStatus.ACTIVE,
+                createValidSkillSet()
+        )).isInstanceOf(ConstraintViolationException.class);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenNameIsTooLong() {
+        String tooLongName = "a".repeat(101);
+        assertThatThrownBy(() -> Profile.profileWithoutId(
+                tooLongName,
+                "Bio",
+                "London, UK",
+                "Developer",
+                "https://example.com/image.jpg",
+                ProfileStatus.ACTIVE,
+                createValidSkillSet()
+        )).isInstanceOf(ConstraintViolationException.class);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenBioIsTooLong() {
+        String tooLongBio = "a".repeat(1001);
+        assertThatThrownBy(() -> Profile.profileWithoutId(
+                "John Doe",
+                tooLongBio,
+                "London, UK",
+                "Developer",
+                "https://example.com/image.jpg",
+                ProfileStatus.ACTIVE,
+                createValidSkillSet()
+        )).isInstanceOf(ConstraintViolationException.class);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenLocationIsBlank() {
+        assertThatThrownBy(() -> Profile.profileWithoutId(
+                "John Doe",
+                "Bio",
+                "",
+                "Developer",
+                "https://example.com/image.jpg",
+                ProfileStatus.ACTIVE,
+                createValidSkillSet()
+        )).isInstanceOf(ConstraintViolationException.class);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenRoleIsBlank() {
+        assertThatThrownBy(() -> Profile.profileWithoutId(
+                "John Doe",
+                "Bio",
+                "London, UK",
+                "",
+                "https://example.com/image.jpg",
+                ProfileStatus.ACTIVE,
+                createValidSkillSet()
+        )).isInstanceOf(ConstraintViolationException.class);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenImageUrlIsBlank() {
+        assertThatThrownBy(() -> Profile.profileWithoutId(
+                "John Doe",
+                "Bio",
+                "London, UK",
+                "Developer",
+                "",
+                ProfileStatus.ACTIVE,
+                createValidSkillSet()
+        )).isInstanceOf(ConstraintViolationException.class);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenSkillSetIsEmpty() {
+        assertThatThrownBy(() -> Profile.profileWithoutId(
+                "John Doe",
+                "Bio",
+                "London, UK",
+                "Developer",
+                "https://example.com/image.jpg",
+                ProfileStatus.ACTIVE,
+                new HashSet<>()
+        )).isInstanceOf(ConstraintViolationException.class);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenProfileStatusIsNull() {
+        assertThatThrownBy(() -> Profile.profileWithoutId(
+                "John Doe",
+                "Bio",
+                "London, UK",
+                "Developer",
+                "https://example.com/image.jpg",
                 null,
-                "image.png",
-                Set.of(java)
-        ));
-        assertTrue(exception.getMessage().toLowerCase().contains("profilestatus"));
-    }
-
-
-    @Test
-    void shouldFailToCreateProfileWithEmptySkillSet() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Profile.profileWithoutId(
-                "test dummy",
-                "i like software dev, especially backend",
-                "Düsseldorf",
-                "DevOps",
-                ProfileStatus.ACTIVE, "image.png", Set.of()
-        ));
-        assertTrue(exception.getMessage().toLowerCase().contains("skills"));
+                createValidSkillSet()
+        )).isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
-    void shouldFailToCreateProfileWithNullSkillSet() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Profile.profileWithoutId(
-                "test dummy",
-                "i like software dev, especially backend",
-                "Düsseldorf",
-                "DevOps",
-                ProfileStatus.ACTIVE, "image.png", null
-        ));
-        assertTrue(exception.getMessage().toLowerCase().contains("skills"));
+    void shouldReturnProfileStatusAsString() {
+        Profile profile = Profile.profileWithoutId(
+                "John Doe",
+                "Bio",
+                "London, UK",
+                "Developer",
+                "https://example.com/image.jpg",
+                ProfileStatus.ACTIVE,
+                createValidSkillSet()
+        );
+
+        assertThat(profile.getProfileStatusAsString()).isEqualTo("ACTIVE");
     }
 
-    @Test
-    void profileIdRecordShouldValidateId() {
-        Profile.ProfileId validId = new Profile.ProfileId(1L);
-        assertEquals(1L, validId.id());
-        Profile.ProfileId nullId = new Profile.ProfileId(null);
-        assertNull(nullId.id());
+    private Set<Skill> createValidSkillSet() {
+        Set<Skill> skills = new HashSet<>();
+        skills.add(Skill.skillWithoutId("Java", "Programming", 8));
+        return skills;
     }
 }

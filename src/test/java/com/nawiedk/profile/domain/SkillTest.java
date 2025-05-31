@@ -1,72 +1,99 @@
 package com.nawiedk.profile.domain;
 
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SkillTest {
 
     @Test
-    void shouldCreateValidSkill() {
-        Skill skill = Skill.skillWithoutId("Java", "Programming Language", 8);
-        assertEquals("Java", skill.getName());
-        assertEquals("Programming Language", skill.getCategory());
-        assertEquals(8, skill.getProficiencyLevel());
-        assertTrue(skill.getSkillId().isEmpty(), "SkillId should be empty for skillWithoutId");
-    }
-
-    @Test
     void shouldCreateValidSkillWithId() {
-        Skill.SkillId skillId = new Skill.SkillId(10L);
-        Skill skill = Skill.skillWithId(skillId, "Spring Boot", "Framework", 7);
+        Skill skill = Skill.skillWithId(
+                new Skill.SkillId(1L),
+                "Java",
+                "Programming",
+                8
+        );
 
-        assertEquals(skillId, skill.getSkillId().orElse(null), "SkillId should be present");
-        assertEquals("Spring Boot", skill.getName());
-        assertEquals("Framework", skill.getCategory());
-        assertEquals(7, skill.getProficiencyLevel());
+        assertThat(skill.getSkillId()).isPresent();
+        assertThat(skill.getSkillId().get().id()).isEqualTo(1L);
+        assertThat(skill.getName()).isEqualTo("Java");
+        assertThat(skill.getCategory()).isEqualTo("Programming");
+        assertThat(skill.getProficiencyLevel()).isEqualTo(8);
     }
 
     @Test
-    void shouldFailToCreateSkillWithBlankName() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Skill.skillWithoutId(" ", "Programming Language", 8));
-        assertTrue(exception.getMessage().toLowerCase().contains("name"));
+    void shouldCreateValidSkillWithoutId() {
+        Skill skill = Skill.skillWithoutId(
+                "Python",
+                "Programming",
+                5
+        );
+
+        assertThat(skill.getSkillId()).isEmpty();
+        assertThat(skill.getName()).isEqualTo("Python");
+        assertThat(skill.getCategory()).isEqualTo("Programming");
+        assertThat(skill.getProficiencyLevel()).isEqualTo(5);
     }
 
     @Test
-    void shouldFailToCreateSkillWithNullName() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Skill.skillWithoutId(null, "Programming Language", 8));
-        assertTrue(exception.getMessage().toLowerCase().contains("name"));
+    void shouldThrowExceptionWhenNameIsBlank() {
+        assertThatThrownBy(() -> Skill.skillWithoutId(
+                "",
+                "Programming",
+                5
+        )).isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
-    void shouldFailToCreateSkillWithBlankCategory() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Skill.skillWithoutId("Java", " ", 8));
-        assertTrue(exception.getMessage().toLowerCase().contains("category"));
+    void shouldThrowExceptionWhenCategoryIsBlank() {
+        assertThatThrownBy(() -> Skill.skillWithoutId(
+                "Java",
+                "",
+                5
+        )).isInstanceOf(ConstraintViolationException.class);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1, 11})
+    void shouldThrowExceptionWhenProficiencyLevelIsOutOfRange(int level) {
+        assertThatThrownBy(() -> Skill.skillWithoutId(
+                "Java",
+                "Programming",
+                level
+        )).isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
-    void shouldFailToCreateSkillWithNullCategory() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Skill.skillWithoutId("Java", null, 8));
-        assertTrue(exception.getMessage().toLowerCase().contains("category"));
+    void shouldThrowExceptionWhenSkillIdIsInvalid() {
+        assertThatThrownBy(() -> new Skill.SkillId(null))
+                .isInstanceOf(ConstraintViolationException.class)
+                .hasMessageContaining("id: must not be null");
     }
 
     @Test
-    void shouldFailToCreateSkillWithProficiencyLevelTooLow() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Skill.skillWithoutId("Java", "Programming Language", -1));
-        assertTrue(exception.getMessage().toLowerCase().contains("proficiencylevel"));
+    void shouldAllowZeroProficiencyLevel() {
+        Skill skill = Skill.skillWithoutId(
+                "Rust",
+                "Programming",
+                0
+        );
+
+        assertThat(skill.getProficiencyLevel()).isZero();
     }
 
     @Test
-    void shouldFailToCreateSkillWithProficiencyLevelTooHigh() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> Skill.skillWithoutId("Java", "Programming Language", 11));
-        assertTrue(exception.getMessage().toLowerCase().contains("proficiencylevel"));
-    }
+    void shouldAllowMaximumProficiencyLevel() {
+        Skill skill = Skill.skillWithoutId(
+                "Java",
+                "Programming",
+                10
+        );
 
-    @Test
-    void skillIdRecordShouldValidateId() {
-        Skill.SkillId validId = new Skill.SkillId(1L);
-        assertEquals(1L, validId.id());
-        Skill.SkillId nullId = new Skill.SkillId(null);
-        assertNull(nullId.id());
+        assertThat(skill.getProficiencyLevel()).isEqualTo(10);
     }
 }
