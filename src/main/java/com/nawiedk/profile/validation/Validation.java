@@ -1,20 +1,32 @@
 package com.nawiedk.profile.validation;
 
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+
 import java.util.Set;
 
 import static jakarta.validation.Validation.buildDefaultValidatorFactory;
 
 public class Validation {
 
-    private final static Validator validator = buildDefaultValidatorFactory().getValidator();
+    private static final Validator validator;
 
-    public static <T> void validate(T subject) {
-        Set<ConstraintViolation<T>> violations = validator.validate(subject);
+    static {
+        try (ValidatorFactory factory = buildDefaultValidatorFactory()) {
+            validator = factory.getValidator();
+        }
+    }
+
+    public static <T> void validate(T target) {
+        Set<ConstraintViolation<T>> violations = validator.validate(target);
         if (!violations.isEmpty()) {
-            throw new ConstraintViolationException(violations);
+            StringBuilder output = new StringBuilder("Validation failed: ");
+            for (ConstraintViolation<T> violation : violations) {
+                output.append(violation.getPropertyPath()).append(": ")
+                        .append(violation.getMessage()).append("; ");
+            }
+            throw new IllegalArgumentException(output.toString());
         }
     }
 }
