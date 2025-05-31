@@ -1,6 +1,7 @@
 package com.nawiedk.profile.validation;
 
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 
@@ -21,12 +22,7 @@ public class Validation {
     public static <T> void validate(T target) {
         Set<ConstraintViolation<T>> violations = validator.validate(target);
         if (!violations.isEmpty()) {
-            StringBuilder output = new StringBuilder("Validation failed: ");
-            for (ConstraintViolation<T> violation : violations) {
-                output.append(violation.getPropertyPath()).append(": ")
-                        .append(violation.getMessage()).append("; ");
-            }
-            throw new IllegalArgumentException(output.toString());
+            throw new ConstraintViolationException(violations);
         }
     }
 }

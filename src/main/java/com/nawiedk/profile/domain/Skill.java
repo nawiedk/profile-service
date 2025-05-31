@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.util.Optional;
@@ -36,7 +37,7 @@ public class Skill {
         validate(this);
     }
 
-    public record SkillId(Long id) {
+    public record SkillId(@NotNull Long id) {
         public SkillId(Long id) {
             this.id = id;
             validate(this);

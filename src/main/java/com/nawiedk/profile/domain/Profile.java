@@ -44,7 +44,7 @@ public class Profile {
 
     @Getter
     @NotEmpty
-    private final Set<Skill> skills;
+    private final Set<@Valid Skill> skills;
 
     public Profile(
             ProfileId profileId,
@@ -74,12 +74,11 @@ public class Profile {
         }
     }
 
-
     public static Profile profileWithId(ProfileId profileId, String name, String bio, String location, String role, String imageUrl, ProfileStatus profileStatus, Set<Skill> skills) {
         return new Profile(profileId, name, bio, location, role, imageUrl, profileStatus, skills);
     }
 
-    public static Profile profileWithoutId(String name, String bio, String location, String role, ProfileStatus profileStatus, String imageUrl, Set<Skill> skills) {
+    public static Profile profileWithoutId(String name, String bio, String location, String role, String imageUrl, ProfileStatus profileStatus, Set<Skill> skills) {
         return new Profile(null, name, bio, location, role, imageUrl, profileStatus, skills);
     }
 
