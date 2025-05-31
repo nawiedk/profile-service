@@ -1,38 +1,39 @@
-package com.nawiedk.profile.adapter.in.ui.dto;
+package com.nawiedk.profile.adapter.in.web.dto;
 
 import com.nawiedk.profile.domain.ProfileStatus;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.springframework.stereotype.Component;
+import lombok.Data;
 
 import java.util.Set;
 
-@Component
+@Data
 public class ProfileDto {
 
     @NotNull
-    public Long id;
+    private Long profileId;
 
     @NotBlank
     @Size(min = 2, max = 100)
-    public String name;
+    private String name;
 
     @Size(max = 1000)
-    public String bio;
+    private String bio;
 
     @NotBlank
-    public String location;
+    private String location;
 
     @NotBlank
-    public String role;
+    private String role;
+
+    @NotBlank
+    private String imageUrl;
+
+    private ProfileStatus profileStatus;
 
     @NotEmpty
-    public Set<@NotBlank String> skills;
-
-    @NotBlank
-    public String imageUrl;
-
-    public ProfileStatus profileStatus;
+    private Set<@Valid SkillDto> skills;
 }
