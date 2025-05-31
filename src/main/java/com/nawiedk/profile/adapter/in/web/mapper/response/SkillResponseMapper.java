@@ -1,0 +1,17 @@
+package com.nawiedk.profile.adapter.in.web.mapper.response;
+
+import com.nawiedk.profile.domain.Skill;
+import org.springframework.stereotype.Component;
+
+@Component
+public class SkillResponseMapper {
+
+    public SkillResponse mapToResponse(Skill entity) {
+        return new SkillResponse(
+                entity.getSkillId().map(Skill.SkillId::id).orElse(null),
+                entity.getName(),
+                entity.getCategory(),
+                entity.getProficiencyLevel()
+        );
+    }
+}
