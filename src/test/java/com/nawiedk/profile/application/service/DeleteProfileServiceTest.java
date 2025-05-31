@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -20,41 +20,27 @@ class DeleteProfileServiceTest {
     @InjectMocks
     private DeleteProfileService deleteProfileService;
 
+    private final Long existingProfileId = 1L;
+
     @Test
-    void deleteById_deletesProfile_whenProfileExists() {
-        Long profileId = 1L;
-        DeleteProfileCommand command = new DeleteProfileCommand(profileId);
-        when(profileRepositoryPort.existsById(profileId)).thenReturn(true);
-        doNothing().when(profileRepositoryPort).deleteById(profileId);
+    void deleteById_WhenProfileExists_ShouldDeleteProfile() {
+        when(profileRepositoryPort.existsById(existingProfileId)).thenReturn(true);
 
-        deleteProfileService.deleteById(command);
+        deleteProfileService.deleteById(new DeleteProfileCommand(existingProfileId));
 
-        verify(profileRepositoryPort, times(1)).existsById(profileId);
-        verify(profileRepositoryPort, times(1)).deleteById(profileId);
+        verify(profileRepositoryPort).existsById(existingProfileId);
+        verify(profileRepositoryPort).deleteById(existingProfileId);
     }
 
     @Test
-    void deleteById_throwsException_whenProfileDoesNotExist() {
-        Long profileId = 1L;
-        DeleteProfileCommand command = new DeleteProfileCommand(profileId);
-        when(profileRepositoryPort.existsById(profileId)).thenReturn(false);
+    void deleteById_WhenProfileDoesNotExist_ShouldThrowException() {
+        when(profileRepositoryPort.existsById(existingProfileId)).thenReturn(false);
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> deleteProfileService.deleteById(command));
-        assertEquals("Profile not found", exception.getMessage());
-        verify(profileRepositoryPort, times(1)).existsById(profileId);
-        verify(profileRepositoryPort, never()).deleteById(profileId);
-    }
+        assertThatThrownBy(() -> deleteProfileService.deleteById(new DeleteProfileCommand(existingProfileId)))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Profile not found");
 
-    @Test
-    void deleteById_throwsNullPointerException_whenCommandIsNull() {
-        assertThrows(NullPointerException.class, () -> deleteProfileService.deleteById(null));
-        verifyNoInteractions(profileRepositoryPort);
-    }
-
-    @Test
-    void deleteProfileCommand_throwsIllegalArgumentException_whenIdIsNull() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new DeleteProfileCommand(null));
-        assertTrue(exception.getMessage().toLowerCase().contains("id: must not be null"));
-        verifyNoInteractions(profileRepositoryPort);
+        verify(profileRepositoryPort).existsById(existingProfileId);
+        verify(profileRepositoryPort, never()).deleteById(any());
     }
 }

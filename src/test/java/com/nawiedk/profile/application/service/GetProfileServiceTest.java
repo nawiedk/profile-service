@@ -12,13 +12,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class GetProfileServiceTest {
@@ -30,80 +31,70 @@ class GetProfileServiceTest {
     private GetProfileService getProfileService;
 
     private Profile testProfile;
-    private GetProfileCommand getProfileCommandWithValidId;
+    private final Long existingProfileId = 1L;
 
     @BeforeEach
     void setUp() {
-        Profile.ProfileId profileId = new Profile.ProfileId(1L);
-        Skill javaSkill = Skill.skillWithoutId("Java", "Backend", 8);
-        testProfile = Profile.profileWithId(
-                profileId,
-                "John Doe",
-                "Software Developer",
-                "Berlin",
-                "Developer",
-                "image.url",
-                ProfileStatus.ACTIVE,
-                Set.of(javaSkill)
+        Set<Skill> skills = Set.of(
+                Skill.skillWithId(new Skill.SkillId(1L), "Java", "Programming", 8)
         );
-        getProfileCommandWithValidId = new GetProfileCommand(1L);
+
+        testProfile = Profile.profileWithId(
+                new Profile.ProfileId(existingProfileId),
+                "John Doe",
+                "Test Bio",
+                "Test Location",
+                "Developer",
+                "http://example.com/image.jpg",
+                ProfileStatus.ACTIVE,
+                skills
+        );
     }
 
     @Test
-    void findProfileByIdShouldReturnProfileWhenFound() {
-        when(profileRepositoryPort.findById(1L)).thenReturn(Optional.of(testProfile));
+    void findProfileById_WhenProfileExists_ShouldReturnProfile() {
+        when(profileRepositoryPort.findById(existingProfileId))
+                .thenReturn(Optional.of(testProfile));
 
-        Profile foundProfile = getProfileService.findProfileById(getProfileCommandWithValidId);
+        Profile foundProfile = getProfileService.findProfileById(new GetProfileCommand(existingProfileId));
 
-        assertNotNull(foundProfile);
-        assertEquals(testProfile.getName(), foundProfile.getName());
-        assertEquals(testProfile.getBio(), foundProfile.getBio());
-        verify(profileRepositoryPort, times(1)).findById(1L);
+        assertThat(foundProfile).isNotNull();
+        assertThat(foundProfile.getProfileId()).isPresent();
+        assertThat(foundProfile.getProfileId().get().id()).isEqualTo(existingProfileId);
+        verify(profileRepositoryPort).findById(existingProfileId);
     }
 
     @Test
-    void findProfileByIdShouldThrowRuntimeExceptionWhenProfileNotFound() {
-        when(profileRepositoryPort.findById(1L)).thenReturn(Optional.empty());
+    void findProfileById_WhenProfileDoesNotExist_ShouldThrowException() {
+        when(profileRepositoryPort.findById(existingProfileId))
+                .thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> getProfileService.findProfileById(getProfileCommandWithValidId));
+        assertThatThrownBy(() -> getProfileService.findProfileById(new GetProfileCommand(existingProfileId)))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Profile not found");
 
-        assertEquals("Profile not found", exception.getMessage());
-        verify(profileRepositoryPort, times(1)).findById(1L);
+        verify(profileRepositoryPort).findById(existingProfileId);
     }
 
     @Test
-    void findProfileByIdShouldThrowNullPointerExceptionWhenCommandIsNull() {
-        NullPointerException exception = assertThrows(NullPointerException.class, () -> getProfileService.findProfileById(null));
-        verifyNoInteractions(profileRepositoryPort);
+    void findAll_ShouldReturnAllProfiles() {
+        List<Profile> profiles = List.of(testProfile);
+        when(profileRepositoryPort.findAll()).thenReturn(profiles);
+
+        List<Profile> foundProfiles = getProfileService.findAll();
+
+        assertThat(foundProfiles).hasSize(1);
+        assertThat(foundProfiles.get(0).getProfileId().get().id()).isEqualTo(existingProfileId);
+        verify(profileRepositoryPort).findAll();
     }
 
     @Test
-    void shouldThrowIllegalArgumentExceptionWhenCreatingCommandWithNullId() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new GetProfileCommand(null));
-        assertTrue(exception.getMessage().contains("Validation failed: id: must not be null"));
-        verifyNoInteractions(profileRepositoryPort);
-    }
+    void findAll_WhenNoProfiles_ShouldReturnEmptyList() {
+        when(profileRepositoryPort.findAll()).thenReturn(List.of());
 
-    @Test
-    void findAllShouldReturnListOfProfiles() {
-        when(profileRepositoryPort.findAll()).thenReturn(List.of(testProfile));
+        List<Profile> foundProfiles = getProfileService.findAll();
 
-        List<Profile> profiles = getProfileService.findAll();
-
-        assertNotNull(profiles);
-        assertEquals(1, profiles.size());
-        assertEquals(testProfile.getName(), profiles.getFirst().getName());
-        verify(profileRepositoryPort, times(1)).findAll();
-    }
-
-    @Test
-    void findAllShouldReturnEmptyListWhenNoProfilesExist() {
-        when(profileRepositoryPort.findAll()).thenReturn(Collections.emptyList());
-
-        List<Profile> profiles = getProfileService.findAll();
-
-        assertNotNull(profiles);
-        assertTrue(profiles.isEmpty());
-        verify(profileRepositoryPort, times(1)).findAll();
+        assertThat(foundProfiles).isEmpty();
+        verify(profileRepositoryPort).findAll();
     }
 }

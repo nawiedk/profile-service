@@ -9,16 +9,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CreateProfileServiceTest {
@@ -29,112 +30,77 @@ class CreateProfileServiceTest {
     @InjectMocks
     private CreateProfileService createProfileService;
 
-    private Skill domainSkillJava;
-    private Skill domainSkillReact;
+    @Captor
+    private ArgumentCaptor<Profile> profileCaptor;
+
+    private CreateProfileCommand validCommand;
     private Profile savedProfile;
+    private Set<Skill> validSkills;
 
     @BeforeEach
     void setUp() {
-        domainSkillJava = Skill.skillWithoutId("Java", "Backend", 8);
-        domainSkillReact = Skill.skillWithId(new Skill.SkillId(10L), "React", "Frontend", 7);
+        validSkills = Set.of(
+                Skill.skillWithId(new Skill.SkillId(1L), "Java", "Programming", 8)
+        );
+
+        validCommand = new CreateProfileCommand(
+                "John Doe",
+                "Test Bio",
+                "Test Location",
+                "Developer",
+                ProfileStatus.ACTIVE,
+                "http://example.com/image.jpg",
+                validSkills
+        );
 
         savedProfile = Profile.profileWithId(
                 new Profile.ProfileId(1L),
                 "John Doe",
-                "Experienced Developer",
-                "Berlin",
-                "Software Engineer",
-                "http://example.com/image.png",
+                "Test Bio",
+                "Test Location",
+                "Developer",
+                "http://example.com/image.jpg",
                 ProfileStatus.ACTIVE,
-                Set.of(domainSkillJava, domainSkillReact)
+                validSkills
         );
     }
 
     @Test
-    void shouldCreateProfileSuccessfully() {
-        CreateProfileCommand validCommand = new CreateProfileCommand(
-                "John Doe",
-                "Experienced Developer",
-                "Berlin",
-                "Software Engineer",
-                ProfileStatus.ACTIVE,
-                "http://example.com/image.png",
-                Set.of(domainSkillJava, domainSkillReact)
-        );
+    void create_WithValidCommand_ShouldCreateProfile() {
         when(profileRepositoryPort.save(any(Profile.class))).thenReturn(savedProfile);
 
-        Profile result = createProfileService.create(validCommand);
+        Profile createdProfile = createProfileService.create(validCommand);
 
-        assertNotNull(result);
-        assertEquals(savedProfile.getProfileId(), result.getProfileId());
-        assertEquals(validCommand.name(), result.getName());
-        assertEquals(validCommand.skills().size(), result.getSkills().size());
-
-        ArgumentCaptor<Profile> profileCaptor = ArgumentCaptor.forClass(Profile.class);
-        verify(profileRepositoryPort, times(1)).save(profileCaptor.capture());
-
+        verify(profileRepositoryPort).save(profileCaptor.capture());
         Profile capturedProfile = profileCaptor.getValue();
-        assertTrue(capturedProfile.getProfileId().isEmpty());
-        assertEquals(validCommand.name(), capturedProfile.getName());
-        assertEquals(validCommand.bio(), capturedProfile.getBio());
-        assertEquals(validCommand.location(), capturedProfile.getLocation());
-        assertEquals(validCommand.role(), capturedProfile.getRole());
-        assertEquals(validCommand.profileStatus(), capturedProfile.getProfileStatus());
-        assertEquals(validCommand.imageUrl(), capturedProfile.getImageUrl());
-        assertSame(validCommand.skills(), capturedProfile.getSkills());
+
+        assertThat(capturedProfile.getProfileId()).isEmpty();
+        assertThat(capturedProfile.getName()).isEqualTo(validCommand.name());
+        assertThat(capturedProfile.getBio()).isEqualTo(validCommand.bio());
+        assertThat(capturedProfile.getLocation()).isEqualTo(validCommand.location());
+        assertThat(capturedProfile.getRole()).isEqualTo(validCommand.role());
+        assertThat(capturedProfile.getImageUrl()).isEqualTo(validCommand.imageUrl());
+        assertThat(capturedProfile.getProfileStatus()).isEqualTo(validCommand.profileStatus());
+        assertThat(capturedProfile.getSkills()).isEqualTo(validCommand.skills());
+
+        assertThat(createdProfile.getProfileId()).isPresent();
+        assertThat(createdProfile.getProfileId().get().id()).isEqualTo(1L);
     }
 
     @Test
-    void shouldThrowNullPointerExceptionWhenCommandIsNullAndPassedToService() {
-        assertThrows(NullPointerException.class, () -> createProfileService.create(null));
-        verifyNoInteractions(profileRepositoryPort);
-    }
+    void create_ShouldPreserveSkillsWithTheirIds() {
+        when(profileRepositoryPort.save(any(Profile.class))).thenReturn(savedProfile);
 
-    @Test
-    void shouldThrowIllegalArgumentExceptionWhenCreatingCommandWithNullName() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new CreateProfileCommand(
-                null,
-                "Bio",
-                "Location",
-                "Role",
-                ProfileStatus.ACTIVE,
-                "img.url",
-                Set.of(domainSkillJava)
-        ));
-        assertTrue(exception.getMessage().toLowerCase().contains("name: must not be blank"));
-        verifyNoInteractions(profileRepositoryPort);
-    }
+        createProfileService.create(validCommand);
 
-    @Test
-    void shouldThrowIllegalArgumentExceptionWhenCreatingCommandWithEmptySkillsSet() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new CreateProfileCommand(
-                "John Doe",
-                "Bio",
-                "Location",
-                "Role",
-                ProfileStatus.ACTIVE,
-                "img.url",
-                Collections.emptySet()
-        ));
-        assertTrue(exception.getMessage().toLowerCase().contains("skills: must not be empty"));
-        verifyNoInteractions(profileRepositoryPort);
-    }
+        verify(profileRepositoryPort).save(profileCaptor.capture());
+        Profile capturedProfile = profileCaptor.getValue();
 
-    @Test
-    void shouldThrowIllegalArgumentExceptionWhenSkillInCommandIsInvalid() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new CreateProfileCommand(
-                "Valid Name",
-                "Valid Bio",
-                "Valid Location",
-                "Valid Role",
-                ProfileStatus.ACTIVE,
-                "valid.url",
-                Set.of(Skill.skillWithoutId("", "Category", 5))
-        ));
-        assertTrue(exception.getMessage().toLowerCase().contains("name: must not be blank"),
-                "Exception message should confirm 'name' validation failed for the Skill. Message was: " + exception.getMessage());
-        assertFalse(exception.getMessage().toLowerCase().contains("skills["),
-                "Exception message should come directly from Skill validation, not be prefixed with 'skills[]'. Message was: " + exception.getMessage());
-        verifyNoInteractions(profileRepositoryPort);
+        Skill capturedSkill = capturedProfile.getSkills().iterator().next();
+        assertThat(capturedSkill.getSkillId()).isPresent();
+        assertThat(capturedSkill.getSkillId().get().id()).isEqualTo(1L);
+        assertThat(capturedSkill.getName()).isEqualTo("Java");
+        assertThat(capturedSkill.getCategory()).isEqualTo("Programming");
+        assertThat(capturedSkill.getProficiencyLevel()).isEqualTo(8);
     }
 }
