@@ -27,9 +27,7 @@ public class UpdateProfileService implements UpdateProfileUseCase {
                 command.bio(),
                 command.location(),
                 command.role(),
-                command.skills(),
-                command.imageUrl(),
-                command.profileStatus()
+                command.imageUrl(), command.profileStatus(), command.skills()
         );
 
         return repositoryPort.save(updatedProfileDomain);

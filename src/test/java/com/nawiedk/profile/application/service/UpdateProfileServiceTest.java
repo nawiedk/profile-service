@@ -3,110 +3,162 @@ package com.nawiedk.profile.application.service;
 import com.nawiedk.profile.application.port.in.command.UpdateProfileCommand;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
 import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.domain.Profile.ProfileId;
 import com.nawiedk.profile.domain.ProfileStatus;
+import com.nawiedk.profile.domain.Skill;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class UpdateProfileServiceTest {
 
-    @Autowired
-    private ProfileRepositoryPort repositoryPort;
+    @Mock
+    private ProfileRepositoryPort profileRepositoryPort;
 
-    @Autowired
-    private UpdateProfileService service;
+    @InjectMocks
+    private UpdateProfileService updateProfileService;
 
-    @TestConfiguration
-    static class TestConfig {
-        @Bean
-        public ProfileRepositoryPort profileRepositoryPort() {
-            return mock(ProfileRepositoryPort.class);
-        }
-    }
+    private Long existingProfileId;
+    private Profile mockExistingProfile;
+    private Set<Skill> validSkills;
 
-    @Test
-    void updateProfileSuccessfullyWhenExists() {
-        Long profileId = 1L;
-        Profile existingProfile = Profile.profileWithId(
-                new ProfileId(profileId),
+    @BeforeEach
+    void setUp() {
+        existingProfileId = 1L;
+
+        Skill validSkill = new Skill(null, "Java", "Programming", 5);
+        validSkills = new HashSet<>();
+        validSkills.add(validSkill);
+
+        mockExistingProfile = new Profile(
+                new Profile.ProfileId(existingProfileId),
                 "Old Name",
                 "Old Bio",
                 "Old Location",
                 "Old Role",
-                List.of("Old Skill"),
-                "old_image.jpg",
-                ProfileStatus.ACTIVE
+                "http://oldimage.url",
+                ProfileStatus.ACTIVE,
+                validSkills
         );
-
-        UpdateProfileCommand command = new UpdateProfileCommand(
-                profileId,
-                "New Name",
-                "New Bio",
-                "New Location",
-                "New Role",
-                Arrays.asList("New Skill", "Another Skill"),
-                "new_image.jpg",
-                ProfileStatus.ACTIVE
-        );
-
-        Profile updatedProfile = Profile.profileWithId(
-                new ProfileId(profileId),
-                "New Name",
-                "New Bio",
-                "New Location",
-                "New Role",
-                Arrays.asList("New Skill", "Another Skill"),
-                "new_image.jpg",
-                ProfileStatus.ACTIVE
-        );
-
-        when(repositoryPort.findById(profileId)).thenReturn(Optional.of(existingProfile));
-        when(repositoryPort.save(any(Profile.class))).thenReturn(updatedProfile);
-
-        Profile result = service.update(command);
-
-        assertNotNull(result);
-        assertEquals(profileId, result.getId().map(ProfileId::id).orElse(null));
-        assertEquals("New Name", result.getName());
-        assertEquals("New Bio", result.getBio());
-        assertEquals(ProfileStatus.ACTIVE, result.getProfileStatus());
-        assertTrue(result.getSkills().contains("New Skill"));
-
-        verify(repositoryPort, times(1)).findById(profileId);
-        verify(repositoryPort, times(1)).save(any(Profile.class));
     }
 
     @Test
-    void updateProfileThrowsExceptionWhenProfileNotFound() {
-        Long profileId = 99L;
+    void update_givenValidCommandAndExistingProfile_constructsProfileFromCommandAndSaves() {
         UpdateProfileCommand command = new UpdateProfileCommand(
-                profileId,
-                "Name",
-                "Bio",
-                "Location",
-                "Role",
-                List.of("Skill"),
-                "image.jpg",
-                ProfileStatus.ACTIVE
+                existingProfileId,
+                "New Name",
+                "New Bio",
+                "New Location",
+                "New Role",
+                ProfileStatus.ON_LEAVE,
+                "http://newimage.url",
+                validSkills
         );
 
-        when(repositoryPort.findById(profileId)).thenReturn(Optional.empty());
+        when(profileRepositoryPort.findById(existingProfileId)).thenReturn(Optional.of(mockExistingProfile));
+        when(profileRepositoryPort.save(any(Profile.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> service.update(command));
+        Profile resultProfile = updateProfileService.update(command);
+
+        ArgumentCaptor<Profile> profileCaptor = ArgumentCaptor.forClass(Profile.class);
+        verify(profileRepositoryPort).save(profileCaptor.capture());
+        Profile capturedProfile = profileCaptor.getValue();
+
+        assertNotNull(resultProfile);
+        assertTrue(capturedProfile.getProfileId().isPresent(), "ProfileId should be present");
+        assertEquals(command.id(), capturedProfile.getProfileId().get().id(), "Profile ID should match command ID");
+        assertEquals(command.name(), capturedProfile.getName());
+        assertEquals(command.bio(), capturedProfile.getBio());
+        assertEquals(command.location(), capturedProfile.getLocation());
+        assertEquals(command.role(), capturedProfile.getRole());
+        assertEquals(command.profileStatus(), capturedProfile.getProfileStatus());
+        assertEquals(command.imageUrl(), capturedProfile.getImageUrl());
+        assertEquals(command.skills(), capturedProfile.getSkills());
+
+        assertEquals(capturedProfile, resultProfile);
+
+        verify(profileRepositoryPort, times(1)).findById(existingProfileId);
+        verify(profileRepositoryPort, times(1)).save(any(Profile.class));
+    }
+
+    @Test
+    void update_givenNonExistingProfileId_throwsRuntimeException() {
+        Long nonExistentId = 2L;
+        UpdateProfileCommand command = new UpdateProfileCommand(
+                nonExistentId, "New Name", "New Bio", "New Location", "New Role",
+                ProfileStatus.ACTIVE, "http://newimage.url", validSkills
+        );
+
+        when(profileRepositoryPort.findById(nonExistentId)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> updateProfileService.update(command));
+
         assertEquals("Profile not found", exception.getMessage());
+        verify(profileRepositoryPort, times(1)).findById(nonExistentId);
+        verify(profileRepositoryPort, never()).save(any(Profile.class));
+    }
 
-        verify(repositoryPort, times(1)).findById(profileId);
-        verify(repositoryPort, never()).save(any(Profile.class));
+    @Test
+    void update_givenNullCommand_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> updateProfileService.update(null));
+        verifyNoInteractions(profileRepositoryPort);
+    }
+
+    @Test
+    void update_commandWithNullProfileStatus_throwsIllegalArgumentExceptionFromProfileDomain() {
+        UpdateProfileCommand commandWithNullStatus = new UpdateProfileCommand(
+                existingProfileId,
+                "New Name",
+                "New Bio",
+                "New Location",
+                "New Role",
+                null,
+                "http://newimage.url",
+                validSkills
+        );
+
+        when(profileRepositoryPort.findById(existingProfileId)).thenReturn(Optional.of(mockExistingProfile));
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> updateProfileService.update(commandWithNullStatus));
+
+        assertTrue(exception.getMessage().contains("profileStatus: must not be null") || exception.getMessage().contains("status: must not be null"));
+        verify(profileRepositoryPort, times(1)).findById(existingProfileId);
+        verify(profileRepositoryPort, never()).save(any(Profile.class));
+    }
+
+    @Test
+    void updateProfileCommand_constructor_throwsIllegalArgumentException_whenIdIsNull() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new UpdateProfileCommand(null, "Name", "Bio", "Location", "Role", ProfileStatus.ACTIVE, "http://image.url", validSkills));
+        assertTrue(exception.getMessage().contains("id: must not be null"));
+    }
+
+    @Test
+    void updateProfileCommand_constructor_throwsIllegalArgumentException_whenNameIsBlank() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new UpdateProfileCommand(existingProfileId, "", "Bio", "Location", "Role", ProfileStatus.ACTIVE, "http://image.url", validSkills));
+        assertTrue(exception.getMessage().contains("name: must not be blank"));
+        assertTrue(exception.getMessage().contains("name: size must be between 2 and 100"));
+    }
+
+    @Test
+    void updateProfileCommand_constructor_throwsIllegalArgumentException_whenSkillsAreEmpty() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new UpdateProfileCommand(existingProfileId, "Name", "Bio", "Location", "Role", ProfileStatus.ACTIVE, "http://image.url", new HashSet<>()));
+        assertTrue(exception.getMessage().contains("skills: must not be empty"));
+    }
+
+    @Test
+    void updateProfileCommand_constructor_throwsIllegalArgumentException_whenSkillInSetIsInvalid() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new Skill(null, "", "Category", 3));
+        assertTrue(exception.getMessage().contains("name: must not be blank"));
     }
 }
