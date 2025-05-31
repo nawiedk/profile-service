@@ -17,7 +17,7 @@ public class SkillMapper {
 
     public SkillJpaEntity mapToJpaEntity(Skill skill) {
         SkillJpaEntity entity = new SkillJpaEntity();
-        entity.setSkillId(skill.getId().map(Skill.SkillId::id).orElse(null));
+        entity.setSkillId(skill.getSkillId().map(Skill.SkillId::id).orElse(null));
         entity.setName(skill.getName());
         entity.setCategory(skill.getCategory());
         entity.setProficiencyLevel(skill.getProficiencyLevel());
