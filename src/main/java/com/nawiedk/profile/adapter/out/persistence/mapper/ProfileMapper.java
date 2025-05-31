@@ -1,12 +1,18 @@
 package com.nawiedk.profile.adapter.out.persistence.mapper;
 
-import com.nawiedk.profile.domain.Profile;
 import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileJpaEntity;
-import org.springframework.stereotype.Component;
+import com.nawiedk.profile.domain.Profile;
 import com.nawiedk.profile.domain.Profile.ProfileId;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class ProfileMapper {
+
+    private final SkillMapper skillMapper;
 
     public Profile mapToDomainEntity(ProfileJpaEntity entity) {
         return Profile.profileWithId(
@@ -15,22 +21,22 @@ public class ProfileMapper {
                 entity.getBio(),
                 entity.getLocation(),
                 entity.getRole(),
-                entity.getSkills(),
                 entity.getImageUrl(),
-                entity.getProfileStatus()
+                entity.getProfileStatus(),
+                entity.getSkills().stream().map(skillMapper::mapToDomainEntity).collect(Collectors.toSet())
         );
     }
 
     public ProfileJpaEntity mapToJpaEntity(Profile profile) {
         ProfileJpaEntity entity = new ProfileJpaEntity();
-        entity.setProfileId(profile.getId().map(ProfileId::id).orElse(null));
+        entity.setProfileId(profile.getProfileId().map(ProfileId::id).orElse(null));
         entity.setName(profile.getName());
         entity.setBio(profile.getBio());
         entity.setLocation(profile.getLocation());
         entity.setRole(profile.getRole());
         entity.setImageUrl(profile.getImageUrl());
         entity.setProfileStatus(profile.getProfileStatus());
-        entity.setSkills(profile.getSkills());
+        entity.setSkills(profile.getSkills().stream().map(skillMapper::mapToJpaEntity).collect(Collectors.toSet()));
         return entity;
     }
 
