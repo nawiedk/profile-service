@@ -3,103 +3,107 @@ package com.nawiedk.profile.application.service;
 import com.nawiedk.profile.application.port.in.command.GetProfileCommand;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
 import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.domain.Profile.ProfileId;
 import com.nawiedk.profile.domain.ProfileStatus;
+import com.nawiedk.profile.domain.Skill;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class GetProfileServiceTest {
 
-    @Autowired
-    private ProfileRepositoryPort repositoryPort;
+    @Mock
+    private ProfileRepositoryPort profileRepositoryPort;
 
-    @Autowired
-    private GetProfileService service;
+    @InjectMocks
+    private GetProfileService getProfileService;
 
-    @TestConfiguration
-    static class TestConfig {
-        @Bean
-        public ProfileRepositoryPort profileRepositoryPort() {
-            return mock(ProfileRepositoryPort.class);
-        }
-    }
+    private Profile testProfile;
+    private GetProfileCommand getProfileCommandWithValidId;
 
-    @Test
-    void getProfileByIdReturnsProfileWhenFound() {
-        Long profileId = 1L;
-        GetProfileCommand command = new GetProfileCommand(profileId);
-        Profile expectedProfile = Profile.profileWithId(
-                new ProfileId(profileId),
-                "Test User",
-                "Bio",
-                "Location",
-                "Role",
-                Arrays.asList("Skill1", "Skill2"),
-                "image.jpg",
-                ProfileStatus.ACTIVE
+    @BeforeEach
+    void setUp() {
+        Profile.ProfileId profileId = new Profile.ProfileId(1L);
+        Skill javaSkill = Skill.skillWithoutId("Java", "Backend", 8);
+        testProfile = Profile.profileWithId(
+                profileId,
+                "John Doe",
+                "Software Developer",
+                "Berlin",
+                "Developer",
+                "image.url",
+                ProfileStatus.ACTIVE,
+                Set.of(javaSkill)
         );
-
-        when(repositoryPort.findById(profileId)).thenReturn(Optional.of(expectedProfile));
-
-        Profile result = service.findProfileById(command);
-
-        assertNotNull(result);
-        assertEquals(expectedProfile.getId(), result.getId());
-        assertEquals(expectedProfile.getName(), result.getName());
-        verify(repositoryPort, times(1)).findById(profileId);
+        getProfileCommandWithValidId = new GetProfileCommand(1L);
     }
 
     @Test
-    void getProfileByIdThrowsExceptionWhenNotFound() {
-        Long profileId = 99L;
-        GetProfileCommand command = new GetProfileCommand(profileId);
+    void findProfileByIdShouldReturnProfileWhenFound() {
+        when(profileRepositoryPort.findById(1L)).thenReturn(Optional.of(testProfile));
 
-        when(repositoryPort.findById(profileId)).thenReturn(Optional.empty());
+        Profile foundProfile = getProfileService.findProfileById(getProfileCommandWithValidId);
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> service.findProfileById(command));
+        assertNotNull(foundProfile);
+        assertEquals(testProfile.getName(), foundProfile.getName());
+        assertEquals(testProfile.getBio(), foundProfile.getBio());
+        verify(profileRepositoryPort, times(1)).findById(1L);
+    }
+
+    @Test
+    void findProfileByIdShouldThrowRuntimeExceptionWhenProfileNotFound() {
+        when(profileRepositoryPort.findById(1L)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> getProfileService.findProfileById(getProfileCommandWithValidId));
+
         assertEquals("Profile not found", exception.getMessage());
-        verify(repositoryPort, times(1)).findById(profileId);
+        verify(profileRepositoryPort, times(1)).findById(1L);
     }
 
     @Test
-    void getAllProfilesReturnsListOfProfiles() {
-        List<Profile> expectedProfiles = Arrays.asList(
-                Profile.profileWithId(new ProfileId(1L), "User A", "Bio A", "Loc A", "Role A", List.of("S1"), "imgA.jpg", ProfileStatus.ACTIVE),
-                Profile.profileWithId(new ProfileId(2L), "User B", "Bio B", "Loc B", "Role B", List.of("S2"), "imgB.jpg", ProfileStatus.INACTIVE)
-        );
-
-        when(repositoryPort.findAll()).thenReturn(expectedProfiles);
-
-        List<Profile> result = service.findAll();
-
-        assertNotNull(result);
-        assertEquals(2, result.size());
-        assertEquals(expectedProfiles.get(0).getName(), result.get(0).getName());
-        assertEquals(expectedProfiles.get(1).getName(), result.get(1).getName());
-        verify(repositoryPort, times(1)).findAll();
+    void findProfileByIdShouldThrowNullPointerExceptionWhenCommandIsNull() {
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> getProfileService.findProfileById(null));
+        verifyNoInteractions(profileRepositoryPort);
     }
 
     @Test
-    void getAllProfilesReturnsEmptyListWhenNoProfilesExist() {
-        List<Profile> expectedProfiles = List.of();
+    void shouldThrowIllegalArgumentExceptionWhenCreatingCommandWithNullId() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new GetProfileCommand(null));
+        assertTrue(exception.getMessage().contains("Validation failed: id: must not be null"));
+        verifyNoInteractions(profileRepositoryPort);
+    }
 
-        when(repositoryPort.findAll()).thenReturn(expectedProfiles);
+    @Test
+    void findAllShouldReturnListOfProfiles() {
+        when(profileRepositoryPort.findAll()).thenReturn(List.of(testProfile));
 
-        List<Profile> result = service.findAll();
+        List<Profile> profiles = getProfileService.findAll();
 
-        assertNotNull(result);
-        assertTrue(result.isEmpty());
-        verify(repositoryPort, times(1)).findAll();
+        assertNotNull(profiles);
+        assertEquals(1, profiles.size());
+        assertEquals(testProfile.getName(), profiles.getFirst().getName());
+        verify(profileRepositoryPort, times(1)).findAll();
+    }
+
+    @Test
+    void findAllShouldReturnEmptyListWhenNoProfilesExist() {
+        when(profileRepositoryPort.findAll()).thenReturn(Collections.emptyList());
+
+        List<Profile> profiles = getProfileService.findAll();
+
+        assertNotNull(profiles);
+        assertTrue(profiles.isEmpty());
+        verify(profileRepositoryPort, times(1)).findAll();
     }
 }
