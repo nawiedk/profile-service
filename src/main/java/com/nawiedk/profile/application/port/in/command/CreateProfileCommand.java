@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
-import static com.nawiedk.profile.validation.Validation.validate;
+import static com.nawiedk.profile.domain.validation.Validation.validate;
 
 public record CreateProfileCommand(
         @NotBlank @Size(min = 2, max = 100) String name,

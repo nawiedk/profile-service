@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
-import static com.nawiedk.profile.validation.Validation.validate;
+import static com.nawiedk.profile.domain.validation.Validation.validate;
 
 public record UpdateProfileCommand(
         @NotNull Long id,
