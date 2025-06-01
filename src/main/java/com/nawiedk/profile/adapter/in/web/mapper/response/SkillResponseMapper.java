@@ -1,6 +1,6 @@
 package com.nawiedk.profile.adapter.in.web.mapper.response;
 
-import com.nawiedk.profile.domain.Skill;
+import com.nawiedk.profile.domain.model.Skill;
 import org.springframework.stereotype.Component;
 
 @Component

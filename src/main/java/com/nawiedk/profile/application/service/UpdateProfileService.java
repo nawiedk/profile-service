@@ -3,8 +3,8 @@ package com.nawiedk.profile.application.service;
 import com.nawiedk.profile.application.port.in.command.UpdateProfileCommand;
 import com.nawiedk.profile.application.port.in.usecase.UpdateProfileUseCase;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
-import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.domain.Profile.ProfileId;
+import com.nawiedk.profile.domain.model.Profile;
+import com.nawiedk.profile.domain.model.Profile.ProfileId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +27,7 @@ public class UpdateProfileService implements UpdateProfileUseCase {
                 command.bio(),
                 command.location(),
                 command.role(),
-                command.imageUrl(), command.profileStatus(), command.skills()
+                command.imageUrl(), command.profileStatusEnum(), command.skills()
         );
 
         return repositoryPort.save(updatedProfileDomain);

@@ -1,5 +1,8 @@
 package com.nawiedk.profile.domain;
 
+import com.nawiedk.profile.domain.model.Profile;
+import com.nawiedk.profile.domain.model.ProfileStatusEnum;
+import com.nawiedk.profile.domain.model.Skill;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +23,7 @@ class ProfileTest {
                 "London, UK",
                 "Senior Developer",
                 "https://example.com/image.jpg",
-                ProfileStatus.ACTIVE,
+                ProfileStatusEnum.ACTIVE,
                 createValidSkillSet()
         );
 
@@ -31,7 +34,7 @@ class ProfileTest {
         assertThat(profile.getLocation()).isEqualTo("London, UK");
         assertThat(profile.getRole()).isEqualTo("Senior Developer");
         assertThat(profile.getImageUrl()).isEqualTo("https://example.com/image.jpg");
-        assertThat(profile.getProfileStatus()).isEqualTo(ProfileStatus.ACTIVE);
+        assertThat(profile.getProfileStatusEnum()).isEqualTo(ProfileStatusEnum.ACTIVE);
         assertThat(profile.getSkills()).hasSize(1);
     }
 
@@ -43,7 +46,7 @@ class ProfileTest {
                 "London, UK",
                 "Senior Developer",
                 "https://example.com/image.jpg",
-                ProfileStatus.ACTIVE,
+                ProfileStatusEnum.ACTIVE,
                 createValidSkillSet()
         );
 
@@ -59,7 +62,7 @@ class ProfileTest {
                 "London, UK",
                 "Developer",
                 "https://example.com/image.jpg",
-                ProfileStatus.ACTIVE,
+                ProfileStatusEnum.ACTIVE,
                 createValidSkillSet()
         )).isInstanceOf(ConstraintViolationException.class);
     }
@@ -73,7 +76,7 @@ class ProfileTest {
                 "London, UK",
                 "Developer",
                 "https://example.com/image.jpg",
-                ProfileStatus.ACTIVE,
+                ProfileStatusEnum.ACTIVE,
                 createValidSkillSet()
         )).isInstanceOf(ConstraintViolationException.class);
     }
@@ -87,7 +90,7 @@ class ProfileTest {
                 "London, UK",
                 "Developer",
                 "https://example.com/image.jpg",
-                ProfileStatus.ACTIVE,
+                ProfileStatusEnum.ACTIVE,
                 createValidSkillSet()
         )).isInstanceOf(ConstraintViolationException.class);
     }
@@ -100,7 +103,7 @@ class ProfileTest {
                 "",
                 "Developer",
                 "https://example.com/image.jpg",
-                ProfileStatus.ACTIVE,
+                ProfileStatusEnum.ACTIVE,
                 createValidSkillSet()
         )).isInstanceOf(ConstraintViolationException.class);
     }
@@ -113,7 +116,7 @@ class ProfileTest {
                 "London, UK",
                 "",
                 "https://example.com/image.jpg",
-                ProfileStatus.ACTIVE,
+                ProfileStatusEnum.ACTIVE,
                 createValidSkillSet()
         )).isInstanceOf(ConstraintViolationException.class);
     }
@@ -126,7 +129,7 @@ class ProfileTest {
                 "London, UK",
                 "Developer",
                 "",
-                ProfileStatus.ACTIVE,
+                ProfileStatusEnum.ACTIVE,
                 createValidSkillSet()
         )).isInstanceOf(ConstraintViolationException.class);
     }
@@ -139,7 +142,7 @@ class ProfileTest {
                 "London, UK",
                 "Developer",
                 "https://example.com/image.jpg",
-                ProfileStatus.ACTIVE,
+                ProfileStatusEnum.ACTIVE,
                 new HashSet<>()
         )).isInstanceOf(ConstraintViolationException.class);
     }
@@ -165,7 +168,7 @@ class ProfileTest {
                 "London, UK",
                 "Developer",
                 "https://example.com/image.jpg",
-                ProfileStatus.ACTIVE,
+                ProfileStatusEnum.ACTIVE,
                 createValidSkillSet()
         );
 

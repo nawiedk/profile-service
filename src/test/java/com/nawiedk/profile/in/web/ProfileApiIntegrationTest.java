@@ -7,7 +7,7 @@ import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileJpaEntity;
 import com.nawiedk.profile.adapter.out.persistence.jpaentity.SkillJpaEntity;
 import com.nawiedk.profile.adapter.out.persistence.repository.ProfileRepository;
 import com.nawiedk.profile.adapter.out.persistence.repository.SkillRepository;
-import com.nawiedk.profile.domain.ProfileStatus;
+import com.nawiedk.profile.domain.model.ProfileStatusEnum;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,7 +77,7 @@ class ProfileApiIntegrationTest {
         dto.setLocation("Location for " + name);
         dto.setRole("Role for " + name);
         dto.setImageUrl("http://example.com/" + name.replace(" ", "").toLowerCase() + ".jpg");
-        dto.setProfileStatus(ProfileStatus.ACTIVE);
+        dto.setProfileStatusEnum(ProfileStatusEnum.ACTIVE);
         dto.setSkills(skills);
         return dto;
     }

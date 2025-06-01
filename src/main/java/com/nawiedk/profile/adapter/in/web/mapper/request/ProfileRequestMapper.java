@@ -20,7 +20,7 @@ public class ProfileRequestMapper {
                 dto.getBio(),
                 dto.getLocation(),
                 dto.getRole(),
-                dto.getProfileStatus(),
+                dto.getProfileStatusEnum(),
                 dto.getImageUrl(),
                 dto.getSkills().stream().map(skillRequestMapper::mapToDomainEntity).collect(Collectors.toSet())
         );
@@ -33,7 +33,7 @@ public class ProfileRequestMapper {
                 dto.getBio(),
                 dto.getLocation(),
                 dto.getRole(),
-                dto.getProfileStatus(),
+                dto.getProfileStatusEnum(),
                 dto.getImageUrl(),
                 dto.getSkills().stream().map(skillRequestMapper::mapToDomainEntity).collect(Collectors.toSet())
         );

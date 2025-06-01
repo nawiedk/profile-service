@@ -1,6 +1,6 @@
 package com.nawiedk.profile.adapter.in.web.dto;
 
-import com.nawiedk.profile.domain.ProfileStatus;
+import com.nawiedk.profile.domain.model.ProfileStatusEnum;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -39,7 +39,7 @@ class ProfileDtoTest {
         validDto.setLocation("Test Location");
         validDto.setRole("Developer");
         validDto.setImageUrl("http://example.com/image.jpg");
-        validDto.setProfileStatus(ProfileStatus.ACTIVE);
+        validDto.setProfileStatusEnum(ProfileStatusEnum.ACTIVE);
         validDto.setSkills(Set.of(validSkill));
     }
 

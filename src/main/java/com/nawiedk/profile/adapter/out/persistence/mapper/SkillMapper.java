@@ -1,7 +1,7 @@
 package com.nawiedk.profile.adapter.out.persistence.mapper;
 
 import com.nawiedk.profile.adapter.out.persistence.jpaentity.SkillJpaEntity;
-import com.nawiedk.profile.domain.Skill;
+import com.nawiedk.profile.domain.model.Skill;
 import org.springframework.stereotype.Component;
 
 @Component

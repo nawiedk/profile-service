@@ -10,7 +10,7 @@ import com.nawiedk.profile.application.port.in.usecase.CreateProfileUseCase;
 import com.nawiedk.profile.application.port.in.usecase.DeleteProfileUseCase;
 import com.nawiedk.profile.application.port.in.usecase.GetProfileUseCase;
 import com.nawiedk.profile.application.port.in.usecase.UpdateProfileUseCase;
-import com.nawiedk.profile.domain.Profile;
+import com.nawiedk.profile.domain.model.Profile;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

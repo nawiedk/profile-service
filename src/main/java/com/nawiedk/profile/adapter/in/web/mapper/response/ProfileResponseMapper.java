@@ -1,6 +1,6 @@
 package com.nawiedk.profile.adapter.in.web.mapper.response;
 
-import com.nawiedk.profile.domain.Profile;
+import com.nawiedk.profile.domain.model.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

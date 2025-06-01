@@ -1,4 +1,4 @@
-package com.nawiedk.profile.domain;
+package com.nawiedk.profile.domain.model;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +10,7 @@ import lombok.Getter;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.nawiedk.profile.validation.Validation.validate;
+import static com.nawiedk.profile.domain.validation.Validation.validate;
 
 public class Profile {
 
@@ -21,6 +21,7 @@ public class Profile {
     @NotBlank
     @Size(min = 2, max = 100)
     private final String name;
+
 
     @Getter
     @Size(max = 1000)
@@ -40,7 +41,7 @@ public class Profile {
 
     @Getter
     @NotNull
-    private final ProfileStatus profileStatus;
+    private final ProfileStatusEnum profileStatusEnum;
 
     @Getter
     @NotEmpty
@@ -53,7 +54,7 @@ public class Profile {
             String location,
             String role,
             String imageUrl,
-            ProfileStatus profileStatus,
+            ProfileStatusEnum profileStatusEnum,
             Set<Skill> skills
     ) {
         this.profileId = profileId;
@@ -62,7 +63,7 @@ public class Profile {
         this.location = location;
         this.role = role;
         this.imageUrl = imageUrl;
-        this.profileStatus = profileStatus;
+        this.profileStatusEnum = profileStatusEnum;
         this.skills = skills;
         validate(this);
     }
@@ -74,12 +75,12 @@ public class Profile {
         }
     }
 
-    public static Profile profileWithId(ProfileId profileId, String name, String bio, String location, String role, String imageUrl, ProfileStatus profileStatus, Set<Skill> skills) {
-        return new Profile(profileId, name, bio, location, role, imageUrl, profileStatus, skills);
+    public static Profile profileWithId(ProfileId profileId, String name, String bio, String location, String role, String imageUrl, ProfileStatusEnum profileStatusEnum, Set<Skill> skills) {
+        return new Profile(profileId, name, bio, location, role, imageUrl, profileStatusEnum, skills);
     }
 
-    public static Profile profileWithoutId(String name, String bio, String location, String role, String imageUrl, ProfileStatus profileStatus, Set<Skill> skills) {
-        return new Profile(null, name, bio, location, role, imageUrl, profileStatus, skills);
+    public static Profile profileWithoutId(String name, String bio, String location, String role, String imageUrl, ProfileStatusEnum profileStatusEnum, Set<Skill> skills) {
+        return new Profile(null, name, bio, location, role, imageUrl, profileStatusEnum, skills);
     }
 
     public Optional<Profile.ProfileId> getProfileId() {
@@ -87,7 +88,7 @@ public class Profile {
     }
 
     public String getProfileStatusAsString() {
-        return this.profileStatus.toString();
+        return this.profileStatusEnum.toString();
     }
 
 }

@@ -3,9 +3,11 @@ package com.nawiedk.profile.adapter.out.persistence.adapterimpl;
 import com.nawiedk.profile.adapter.out.persistence.mapper.ProfileMapper;
 import com.nawiedk.profile.adapter.out.persistence.repository.ProfileRepository;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
-import com.nawiedk.profile.domain.Profile;
+import com.nawiedk.profile.domain.model.Profile;
+import com.nawiedk.profile.domain.model.ProfileStatusEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +15,6 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class ProfilePersistenceAdapter implements ProfileRepositoryPort {
-
-    //todo: finish methods
 
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
@@ -50,55 +50,88 @@ public class ProfilePersistenceAdapter implements ProfileRepositoryPort {
                 .toList();
     }
 
-    /*
     @Override
-    public List<Profile> findBySearchCriteria(String nameKeyword, String role, String location, String skillKeyword, ProfileStatus status) {
-        return List.of();
+    public List<Profile> findBySearchCriteria(
+            String nameKeyword,
+            String role,
+            String location,
+            String skillKeyword,
+            ProfileStatusEnum status
+    ) {
+        return profileRepository.findBySearchCriteria(nameKeyword, role, location, skillKeyword, status)
+                .stream()
+                .map(profileMapper::mapToDomainEntity)
+                .toList();
     }
 
     @Override
     public List<Profile> findByRole(String role) {
-        return List.of();
+        return profileRepository.findByRole(role)
+                .stream()
+                .map(profileMapper::mapToDomainEntity)
+                .toList();
     }
 
     @Override
     public List<Profile> findByLocation(String location) {
-        return List.of();
+        return profileRepository.findByLocation(location)
+                .stream()
+                .map(profileMapper::mapToDomainEntity)
+                .toList();
     }
 
     @Override
     public List<Profile> findBySkillKeyword(String skillKeyword) {
-        return List.of();
+        return profileRepository.findBySkillKeyword(skillKeyword)
+                .stream()
+                .map(profileMapper::mapToDomainEntity)
+                .toList();
     }
 
     @Override
     public List<Profile> findByTeamId(Long teamId) {
-        return List.of();
+        return profileRepository.findByTeamId(teamId)
+                .stream()
+                .map(profileMapper::mapToDomainEntity)
+                .toList();
     }
 
     @Override
     public List<Profile> findByManagerId(Long managerId) {
-        return List.of();
+        return profileRepository.findByManagerId(managerId)
+                .stream()
+                .map(profileMapper::mapToDomainEntity)
+                .toList();
     }
 
     @Override
-    public List<Profile> findByProfileStatus(ProfileStatus status) {
-        return List.of();
+    public List<Profile> findByProfileStatus(ProfileStatusEnum status) {
+        return profileRepository.findByProfileStatus(status)
+                .stream()
+                .map(profileMapper::mapToDomainEntity)
+                .toList();
     }
 
     @Override
-    public Profile updateProfileStatus(Long id, ProfileStatus newStatus) {
-        return null;
+    @Transactional
+    public Profile updateProfileStatus(Long id, ProfileStatusEnum newStatus) {
+        return profileRepository.findById(id)
+                .map(entity -> {
+                    entity.setProfileStatusEnum(newStatus);
+                    return profileMapper.mapToDomainEntity(profileRepository.save(entity));
+                })
+                .orElseThrow(() -> new IllegalArgumentException("Profile not found with id: " + id));
     }
 
     @Override
     public Optional<Profile> findByUserId(Long userId) {
-        return Optional.empty();
+        return profileRepository.findByUserId(userId)
+                .map(profileMapper::mapToDomainEntity);
     }
 
     @Override
     public Optional<Profile> findByExternalSystemId(String externalSystemId) {
-        return Optional.empty();
+        return profileRepository.findByExternalSystemId(externalSystemId)
+                .map(profileMapper::mapToDomainEntity);
     }
-     */
 }

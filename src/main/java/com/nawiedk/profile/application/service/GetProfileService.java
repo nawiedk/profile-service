@@ -3,7 +3,7 @@ package com.nawiedk.profile.application.service;
 import com.nawiedk.profile.application.port.in.command.GetProfileCommand;
 import com.nawiedk.profile.application.port.in.usecase.GetProfileUseCase;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
-import com.nawiedk.profile.domain.Profile;
+import com.nawiedk.profile.domain.model.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

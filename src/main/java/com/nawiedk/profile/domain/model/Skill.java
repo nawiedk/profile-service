@@ -1,4 +1,4 @@
-package com.nawiedk.profile.domain;
+package com.nawiedk.profile.domain.model;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -9,7 +9,7 @@ import lombok.Getter;
 
 import java.util.Optional;
 
-import static com.nawiedk.profile.validation.Validation.validate;
+import static com.nawiedk.profile.domain.validation.Validation.validate;
 
 public class Skill {
 

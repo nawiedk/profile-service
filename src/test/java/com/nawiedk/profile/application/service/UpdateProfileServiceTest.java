@@ -2,9 +2,9 @@ package com.nawiedk.profile.application.service;
 
 import com.nawiedk.profile.application.port.in.command.UpdateProfileCommand;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
-import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.domain.ProfileStatus;
-import com.nawiedk.profile.domain.Skill;
+import com.nawiedk.profile.domain.model.Profile;
+import com.nawiedk.profile.domain.model.ProfileStatusEnum;
+import com.nawiedk.profile.domain.model.Skill;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,7 +53,7 @@ class UpdateProfileServiceTest {
                 "Old Location",
                 "Old Role",
                 "http://example.com/old-image.jpg",
-                ProfileStatus.ACTIVE,
+                ProfileStatusEnum.ACTIVE,
                 validSkills
         );
 
@@ -63,7 +63,7 @@ class UpdateProfileServiceTest {
                 "New Bio",
                 "New Location",
                 "New Role",
-                ProfileStatus.ON_LEAVE,
+                ProfileStatusEnum.ON_LEAVE,
                 "http://example.com/new-image.jpg",
                 validSkills
         );
@@ -75,7 +75,7 @@ class UpdateProfileServiceTest {
                 validCommand.location(),
                 validCommand.role(),
                 validCommand.imageUrl(),
-                validCommand.profileStatus(),
+                validCommand.profileStatusEnum(),
                 validCommand.skills()
         );
     }
@@ -97,7 +97,7 @@ class UpdateProfileServiceTest {
         assertThat(capturedProfile.getLocation()).isEqualTo(validCommand.location());
         assertThat(capturedProfile.getRole()).isEqualTo(validCommand.role());
         assertThat(capturedProfile.getImageUrl()).isEqualTo(validCommand.imageUrl());
-        assertThat(capturedProfile.getProfileStatus()).isEqualTo(validCommand.profileStatus());
+        assertThat(capturedProfile.getProfileStatusEnum()).isEqualTo(validCommand.profileStatusEnum());
         assertThat(capturedProfile.getSkills()).isEqualTo(validCommand.skills());
 
         assertThat(result).isEqualTo(updatedProfile);

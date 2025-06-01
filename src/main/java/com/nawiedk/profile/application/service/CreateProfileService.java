@@ -3,7 +3,7 @@ package com.nawiedk.profile.application.service;
 import com.nawiedk.profile.application.port.in.command.CreateProfileCommand;
 import com.nawiedk.profile.application.port.in.usecase.CreateProfileUseCase;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
-import com.nawiedk.profile.domain.Profile;
+import com.nawiedk.profile.domain.model.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +23,7 @@ public class CreateProfileService implements CreateProfileUseCase {
                 command.location(),
                 command.role(),
                 command.imageUrl(),
-                command.profileStatus(),
+                command.profileStatusEnum(),
                 command.skills()
         );
         return repositoryPort.save(profile);

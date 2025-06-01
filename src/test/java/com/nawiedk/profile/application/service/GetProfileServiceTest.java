@@ -2,9 +2,9 @@ package com.nawiedk.profile.application.service;
 
 import com.nawiedk.profile.application.port.in.command.GetProfileCommand;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
-import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.domain.ProfileStatus;
-import com.nawiedk.profile.domain.Skill;
+import com.nawiedk.profile.domain.model.Profile;
+import com.nawiedk.profile.domain.model.ProfileStatusEnum;
+import com.nawiedk.profile.domain.model.Skill;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +46,7 @@ class GetProfileServiceTest {
                 "Test Location",
                 "Developer",
                 "http://example.com/image.jpg",
-                ProfileStatus.ACTIVE,
+                ProfileStatusEnum.ACTIVE,
                 skills
         );
     }

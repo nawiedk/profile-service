@@ -1,6 +1,6 @@
 package com.nawiedk.profile.adapter.in.web.dto;
 
-import com.nawiedk.profile.domain.ProfileStatus;
+import com.nawiedk.profile.domain.model.ProfileStatusEnum;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -32,7 +32,7 @@ public class ProfileDto {
     @NotBlank
     private String imageUrl;
 
-    private ProfileStatus profileStatus;
+    private ProfileStatusEnum profileStatusEnum;
 
     @NotEmpty
     private Set<@Valid SkillDto> skills;

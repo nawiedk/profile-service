@@ -1,8 +1,8 @@
 package com.nawiedk.profile.adapter.out.persistence.mapper;
 
 import com.nawiedk.profile.adapter.out.persistence.jpaentity.ProfileJpaEntity;
-import com.nawiedk.profile.domain.Profile;
-import com.nawiedk.profile.domain.Profile.ProfileId;
+import com.nawiedk.profile.domain.model.Profile;
+import com.nawiedk.profile.domain.model.Profile.ProfileId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +22,7 @@ public class ProfileMapper {
                 entity.getLocation(),
                 entity.getRole(),
                 entity.getImageUrl(),
-                entity.getProfileStatus(),
+                entity.getProfileStatusEnum(),
                 entity.getSkills().stream().map(skillMapper::mapToDomainEntity).collect(Collectors.toSet())
         );
     }
@@ -35,7 +35,7 @@ public class ProfileMapper {
         entity.setLocation(profile.getLocation());
         entity.setRole(profile.getRole());
         entity.setImageUrl(profile.getImageUrl());
-        entity.setProfileStatus(profile.getProfileStatus());
+        entity.setProfileStatusEnum(profile.getProfileStatusEnum());
         entity.setSkills(profile.getSkills().stream().map(skillMapper::mapToJpaEntity).collect(Collectors.toSet()));
         return entity;
     }

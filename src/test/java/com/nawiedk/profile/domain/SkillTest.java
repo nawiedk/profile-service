@@ -1,5 +1,6 @@
 package com.nawiedk.profile.domain;
 
+import com.nawiedk.profile.domain.model.Skill;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -65,7 +66,9 @@ class SkillTest {
                 "Java",
                 "Programming",
                 level
-        )).isInstanceOf(ConstraintViolationException.class);
+        ))
+                .isInstanceOf(ConstraintViolationException.class)
+                .hasMessageContaining("proficiencyLevel: must be");
     }
 
     @Test
