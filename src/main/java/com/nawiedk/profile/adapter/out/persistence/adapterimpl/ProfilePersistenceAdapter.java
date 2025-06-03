@@ -4,10 +4,9 @@ import com.nawiedk.profile.adapter.out.persistence.mapper.ProfileMapper;
 import com.nawiedk.profile.adapter.out.persistence.repository.ProfileRepository;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
 import com.nawiedk.profile.domain.model.Profile;
-import com.nawiedk.profile.domain.model.ProfileStatusEnum;
+import com.nawiedk.profile.domain.util.ProfileSearchCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,18 +51,19 @@ public class ProfilePersistenceAdapter implements ProfileRepositoryPort {
 
     @Override
     public List<Profile> findBySearchCriteria(
-            String nameKeyword,
-            String role,
-            String location,
-            String skillKeyword,
-            ProfileStatusEnum status
+            ProfileSearchCriteria searchCriteria
     ) {
-        return profileRepository.findBySearchCriteria(nameKeyword, role, location, skillKeyword, status)
+        return profileRepository.findBySearchCriteria(searchCriteria.name(),
+                        searchCriteria.role(),
+                        searchCriteria.location(),
+                        searchCriteria.skill(),
+                        searchCriteria.status())
                 .stream()
                 .map(profileMapper::mapToDomainEntity)
                 .toList();
     }
 
+    /*
     @Override
     public List<Profile> findByRole(String role) {
         return profileRepository.findByRole(role)
@@ -81,7 +81,7 @@ public class ProfilePersistenceAdapter implements ProfileRepositoryPort {
     }
 
     @Override
-    public List<Profile> findBySkillKeyword(String skillKeyword) {
+    public List<Profile> findBySkill(String skillKeyword) {
         return profileRepository.findBySkillKeyword(skillKeyword)
                 .stream()
                 .map(profileMapper::mapToDomainEntity)
@@ -105,7 +105,7 @@ public class ProfilePersistenceAdapter implements ProfileRepositoryPort {
     }
 
     @Override
-    public List<Profile> findByProfileStatus(ProfileStatusEnum status) {
+    public List<Profile> findByProfileStatus(ProfileStatus status) {
         return profileRepository.findByProfileStatus(status)
                 .stream()
                 .map(profileMapper::mapToDomainEntity)
@@ -114,10 +114,10 @@ public class ProfilePersistenceAdapter implements ProfileRepositoryPort {
 
     @Override
     @Transactional
-    public Profile updateProfileStatus(Long id, ProfileStatusEnum newStatus) {
+    public Profile updateProfileStatus(Long id, ProfileStatus newStatus) {
         return profileRepository.findById(id)
                 .map(entity -> {
-                    entity.setProfileStatusEnum(newStatus);
+                    entity.setProfileStatus(newStatus);
                     return profileMapper.mapToDomainEntity(profileRepository.save(entity));
                 })
                 .orElseThrow(() -> new IllegalArgumentException("Profile not found with id: " + id));
@@ -134,4 +134,5 @@ public class ProfilePersistenceAdapter implements ProfileRepositoryPort {
         return profileRepository.findByExternalSystemId(externalSystemId)
                 .map(profileMapper::mapToDomainEntity);
     }
+    */
 }

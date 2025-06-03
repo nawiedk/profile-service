@@ -11,8 +11,8 @@ import com.nawiedk.profile.application.port.in.usecase.DeleteProfileUseCase;
 import com.nawiedk.profile.application.port.in.usecase.GetProfileUseCase;
 import com.nawiedk.profile.application.port.in.usecase.UpdateProfileUseCase;
 import com.nawiedk.profile.domain.model.Profile;
-import com.nawiedk.profile.domain.model.ProfileStatusEnum;
 import com.nawiedk.profile.domain.model.Skill;
+import com.nawiedk.profile.domain.util.ProfileStatus;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -73,7 +73,7 @@ class ProfileServiceIntegrationTest {
                 "Initial Bio",
                 "Initial Location",
                 "Developer",
-                ProfileStatusEnum.ACTIVE,
+                ProfileStatus.ACTIVE,
                 "http://example.com/image.jpg",
                 initialSkills
         );
@@ -85,7 +85,7 @@ class ProfileServiceIntegrationTest {
         // Retrieve the created profile
         Profile retrievedProfile = getProfileUseCase.findProfileById(new GetProfileCommand(profileId));
         assertThat(retrievedProfile.getName()).isEqualTo("John Doe");
-        assertThat(retrievedProfile.getProfileStatusEnum()).isEqualTo(ProfileStatusEnum.ACTIVE);
+        assertThat(retrievedProfile.getProfileStatus()).isEqualTo(ProfileStatus.ACTIVE);
 
         // Update the profile
         Set<Skill> updatedSkills = Set.of(
@@ -99,14 +99,14 @@ class ProfileServiceIntegrationTest {
                 "Updated Bio",
                 "Updated Location",
                 "Senior Developer",
-                ProfileStatusEnum.ON_LEAVE,
+                ProfileStatus.ON_LEAVE,
                 "http://example.com/new-image.jpg",
                 updatedSkills
         );
 
         Profile updatedProfile = updateProfileUseCase.update(updateCommand);
         assertThat(updatedProfile.getName()).isEqualTo("John Doe Updated");
-        assertThat(updatedProfile.getProfileStatusEnum()).isEqualTo(ProfileStatusEnum.ON_LEAVE);
+        assertThat(updatedProfile.getProfileStatus()).isEqualTo(ProfileStatus.ON_LEAVE);
         assertThat(updatedProfile.getSkills()).hasSize(2);
 
         // Verify the update through get
@@ -131,7 +131,7 @@ class ProfileServiceIntegrationTest {
                 "First Bio",
                 "First Location",
                 "Developer",
-                ProfileStatusEnum.ACTIVE,
+                ProfileStatus.ACTIVE,
                 "http://example.com/first.jpg",
                 Set.of(Skill.skillWithId(new Skill.SkillId(javaSkill.getSkillId()), "Java", "Programming", 8))
         );
@@ -143,7 +143,7 @@ class ProfileServiceIntegrationTest {
                 "Second Bio",
                 "Second Location",
                 "Designer",
-                ProfileStatusEnum.ACTIVE,
+                ProfileStatus.ACTIVE,
                 "http://example.com/second.jpg",
                 Set.of(Skill.skillWithId(new Skill.SkillId(uiuxSkill.getSkillId()), "UI/UX", "Design", 9))
         );
@@ -164,7 +164,7 @@ class ProfileServiceIntegrationTest {
                 "Bio",
                 "Location",
                 "Role",
-                ProfileStatusEnum.ACTIVE,
+                ProfileStatus.ACTIVE,
                 "http://example.com/image.jpg",
                 Set.of(Skill.skillWithId(new Skill.SkillId(javaSkill.getSkillId()), "Java", "Programming", 8))
         );
@@ -183,7 +183,7 @@ class ProfileServiceIntegrationTest {
                 "Bio",
                 "Location",
                 "Role",
-                ProfileStatusEnum.ACTIVE,
+                ProfileStatus.ACTIVE,
                 "http://example.com/image.jpg",
                 Set.of(Skill.skillWithId(new Skill.SkillId(javaSkill.getSkillId()), "Java", "Programming", 8))
         );
@@ -196,7 +196,7 @@ class ProfileServiceIntegrationTest {
                 "Bio",
                 "Location",
                 "Role",
-                ProfileStatusEnum.ACTIVE,
+                ProfileStatus.ACTIVE,
                 "http://example.com/image.jpg",
                 Set.of(Skill.skillWithId(new Skill.SkillId(javaSkill.getSkillId()), "Java", "Programming", 11))
         );

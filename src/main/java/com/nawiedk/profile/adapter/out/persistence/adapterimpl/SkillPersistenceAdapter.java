@@ -42,8 +42,8 @@ public class SkillPersistenceAdapter {
                 .toList();
     }
 
-    public Optional<Skill> findByName(String name) {
-        return skillRepository.findByName(name)
-                .map(skillMapper::mapToDomainEntity);
-    }
+//    public Optional<Skill> findByName(String name) {
+//        return skillRepository.findByName(name)
+//                .map(skillMapper::mapToDomainEntity);
+//    }
 } 

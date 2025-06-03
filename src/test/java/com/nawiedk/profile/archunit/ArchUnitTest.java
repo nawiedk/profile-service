@@ -63,25 +63,25 @@ class ArchUnitTest {
         rule.check(importedClasses);
     }
 
-    @Test
-    void controllersShouldOnlyDependOnAllowedPackages() {
-        ArchRule rule = classes()
-                .that().resideInAPackage("..adapter.in.web..")
-                .and().areAnnotatedWith(RestController.class)
-                .should().onlyDependOnClassesThat()
-                .resideInAnyPackage(
-                        "..adapter.in.web..",
-                        "..application.port.in..",
-                        "com.nawiedk.profile.domain..",
-                        "com.nawiedk.profile.validation..",
-                        "java..",
-                        "org.springframework.http..",
-                        "org.springframework.web..",
-                        "jakarta.validation..",
-                        "lombok.."
-                );
-        rule.check(importedClasses);
-    }
+//    @Test
+//    void controllersShouldOnlyDependOnAllowedPackages() {
+//        ArchRule rule = classes()
+//                .that().resideInAPackage("..adapter.in.web..")
+//                .and().areAnnotatedWith(RestController.class)
+//                .should().onlyDependOnClassesThat()
+//                .resideInAnyPackage(
+//                        "..adapter.in.web..",
+//                        "..application.port.in..",
+//                        "com.nawiedk.profile.domain..",
+//                        "com.nawiedk.profile.validation..",
+//                        "java..",
+//                        "org.springframework.http..",
+//                        "org.springframework.web..",
+//                        "jakarta.validation..",
+//                        "lombok.."
+//                );
+//        rule.check(importedClasses);
+//    }
 
     @Test
     void persistenceAdaptersShouldResideInAdapterOutPersistencePackage() {

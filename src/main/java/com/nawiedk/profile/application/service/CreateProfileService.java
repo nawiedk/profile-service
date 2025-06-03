@@ -23,7 +23,7 @@ public class CreateProfileService implements CreateProfileUseCase {
                 command.location(),
                 command.role(),
                 command.imageUrl(),
-                command.profileStatusEnum(),
+                command.profileStatus(),
                 command.skills()
         );
         return repositoryPort.save(profile);

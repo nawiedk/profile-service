@@ -22,7 +22,7 @@ public class ProfileMapper {
                 entity.getLocation(),
                 entity.getRole(),
                 entity.getImageUrl(),
-                entity.getProfileStatusEnum(),
+                entity.getProfileStatus(),
                 entity.getSkills().stream().map(skillMapper::mapToDomainEntity).collect(Collectors.toSet())
         );
     }
@@ -35,7 +35,7 @@ public class ProfileMapper {
         entity.setLocation(profile.getLocation());
         entity.setRole(profile.getRole());
         entity.setImageUrl(profile.getImageUrl());
-        entity.setProfileStatusEnum(profile.getProfileStatusEnum());
+        entity.setProfileStatus(profile.getProfileStatus());
         entity.setSkills(profile.getSkills().stream().map(skillMapper::mapToJpaEntity).collect(Collectors.toSet()));
         return entity;
     }

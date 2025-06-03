@@ -3,8 +3,8 @@ package com.nawiedk.profile.application.service;
 import com.nawiedk.profile.application.port.in.command.CreateProfileCommand;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
 import com.nawiedk.profile.domain.model.Profile;
-import com.nawiedk.profile.domain.model.ProfileStatusEnum;
 import com.nawiedk.profile.domain.model.Skill;
+import com.nawiedk.profile.domain.util.ProfileStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +48,7 @@ class CreateProfileServiceTest {
                 "Test Bio",
                 "Test Location",
                 "Developer",
-                ProfileStatusEnum.ACTIVE,
+                ProfileStatus.ACTIVE,
                 "http://example.com/image.jpg",
                 validSkills
         );
@@ -60,7 +60,7 @@ class CreateProfileServiceTest {
                 "Test Location",
                 "Developer",
                 "http://example.com/image.jpg",
-                ProfileStatusEnum.ACTIVE,
+                ProfileStatus.ACTIVE,
                 validSkills
         );
     }
@@ -80,7 +80,7 @@ class CreateProfileServiceTest {
         assertThat(capturedProfile.getLocation()).isEqualTo(validCommand.location());
         assertThat(capturedProfile.getRole()).isEqualTo(validCommand.role());
         assertThat(capturedProfile.getImageUrl()).isEqualTo(validCommand.imageUrl());
-        assertThat(capturedProfile.getProfileStatusEnum()).isEqualTo(validCommand.profileStatusEnum());
+        assertThat(capturedProfile.getProfileStatus()).isEqualTo(validCommand.profileStatus());
         assertThat(capturedProfile.getSkills()).isEqualTo(validCommand.skills());
 
         assertThat(createdProfile.getProfileId()).isPresent();

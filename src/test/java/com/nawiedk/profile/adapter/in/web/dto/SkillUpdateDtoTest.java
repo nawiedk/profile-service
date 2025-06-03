@@ -14,10 +14,10 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SkillDtoTest {
+class SkillUpdateDtoTest {
 
     private Validator validator;
-    private SkillDto validDto;
+    private SkillUpdateDto validDto;
 
     @BeforeEach
     void setUp() {
@@ -25,7 +25,7 @@ class SkillDtoTest {
             validator = factory.getValidator();
         }
 
-        validDto = new SkillDto();
+        validDto = new SkillUpdateDto();
         validDto.setSkillId(1L);
         validDto.setName("Java");
         validDto.setCategory("Programming");
@@ -34,14 +34,14 @@ class SkillDtoTest {
 
     @Test
     void shouldValidateValidDto() {
-        Set<ConstraintViolation<SkillDto>> violations = validator.validate(validDto);
+        Set<ConstraintViolation<SkillUpdateDto>> violations = validator.validate(validDto);
         assertThat(violations).isEmpty();
     }
 
     @Test
     void shouldValidate_WhenSkillIdIsNull() {
         validDto.setSkillId(null);
-        Set<ConstraintViolation<SkillDto>> violations = validator.validate(validDto);
+        Set<ConstraintViolation<SkillUpdateDto>> violations = validator.validate(validDto);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getPropertyPath().toString()).isEqualTo("skillId");
     }
@@ -51,7 +51,7 @@ class SkillDtoTest {
     @ValueSource(strings = {" "})
     void shouldValidate_WhenNameIsInvalid(String name) {
         validDto.setName(name);
-        Set<ConstraintViolation<SkillDto>> violations = validator.validate(validDto);
+        Set<ConstraintViolation<SkillUpdateDto>> violations = validator.validate(validDto);
         assertThat(violations).hasSizeGreaterThanOrEqualTo(1);
         assertThat(violations.stream()
                 .map(violation -> violation.getPropertyPath().toString()))
@@ -63,7 +63,7 @@ class SkillDtoTest {
     @ValueSource(strings = {" "})
     void shouldValidate_WhenCategoryIsInvalid(String category) {
         validDto.setCategory(category);
-        Set<ConstraintViolation<SkillDto>> violations = validator.validate(validDto);
+        Set<ConstraintViolation<SkillUpdateDto>> violations = validator.validate(validDto);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getPropertyPath().toString()).isEqualTo("category");
     }
@@ -71,7 +71,7 @@ class SkillDtoTest {
     @Test
     void shouldValidate_WhenProficiencyLevelIsTooLow() {
         validDto.setProficiencyLevel(-1);
-        Set<ConstraintViolation<SkillDto>> violations = validator.validate(validDto);
+        Set<ConstraintViolation<SkillUpdateDto>> violations = validator.validate(validDto);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getPropertyPath().toString()).isEqualTo("proficiencyLevel");
     }
@@ -79,7 +79,7 @@ class SkillDtoTest {
     @Test
     void shouldValidate_WhenProficiencyLevelIsTooHigh() {
         validDto.setProficiencyLevel(11);
-        Set<ConstraintViolation<SkillDto>> violations = validator.validate(validDto);
+        Set<ConstraintViolation<SkillUpdateDto>> violations = validator.validate(validDto);
         assertThat(violations).hasSize(1);
         assertThat(violations.iterator().next().getPropertyPath().toString()).isEqualTo("proficiencyLevel");
     }

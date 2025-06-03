@@ -1,7 +1,7 @@
 package com.nawiedk.profile.application.port.out;
 
 import com.nawiedk.profile.domain.model.Profile;
-import com.nawiedk.profile.domain.model.ProfileStatusEnum;
+import com.nawiedk.profile.domain.util.ProfileSearchCriteria;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,32 +18,28 @@ public interface ProfileRepositoryPort {
     List<Profile> findAll();
 
     List<Profile> findBySearchCriteria(
-            String nameKeyword,
-            String role,
-            String location,
-            String skillKeyword,
-            ProfileStatusEnum status
+            ProfileSearchCriteria searchCriteria
     );
 
+    /*
     List<Profile> findByRole(String role);
 
     List<Profile> findByLocation(String location);
 
-    List<Profile> findBySkillKeyword(String skillKeyword);
+    List<Profile> findBySkill(String skillKeyword);
 
     List<Profile> findByTeamId(Long teamId);
 
     List<Profile> findByManagerId(Long managerId);
 
-    List<Profile> findByProfileStatus(ProfileStatusEnum status);
+    List<Profile> findByProfileStatus(ProfileStatus status);
 
-    Profile updateProfileStatus(Long id, ProfileStatusEnum newStatus);
+    Profile updateProfileStatus(Long id, ProfileStatus newStatus);
 
     Optional<Profile> findByUserId(Long userId);
 
     Optional<Profile> findByExternalSystemId(String externalSystemId);
 
-    /*
     List<Profile> findBySearchCriteria(
             String nameKeyword,
             String role,

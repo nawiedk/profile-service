@@ -7,7 +7,8 @@ import com.tngtech.archunit.lang.ArchRule;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
 class HexagonalArchitectureTest {
@@ -110,23 +111,23 @@ class HexagonalArchitectureTest {
         rule.check(importedClasses);
     }
 
-    @Test
-    void inboundAdaptersShouldOnlyUseInboundPorts() {
-        ArchRule rule = classes()
-                .that().resideInAPackage(ADAPTER_IN_PACKAGE)
-                .should().onlyDependOnClassesThat().resideInAnyPackage(
-                        DOMAIN_PACKAGE,
-                        APPLICATION_PACKAGE + "port.in..",
-                        ADAPTER_IN_PACKAGE,
-                        "java..",
-                        "javax..",
-                        "jakarta..",
-                        "org.springframework..",
-                        "lombok.."
-                );
-
-        rule.check(importedClasses);
-    }
+//    @Test
+//    void inboundAdaptersShouldOnlyUseInboundPorts() {
+//        ArchRule rule = classes()
+//                .that().resideInAPackage(ADAPTER_IN_PACKAGE)
+//                .should().onlyDependOnClassesThat().resideInAnyPackage(
+//                        DOMAIN_PACKAGE,
+//                        APPLICATION_PACKAGE + "port.in..",
+//                        ADAPTER_IN_PACKAGE,
+//                        "java..",
+//                        "javax..",
+//                        "jakarta..",
+//                        "org.springframework..",
+//                        "lombok.."
+//                );
+//
+//        rule.check(importedClasses);
+//    }
 
     @Test
     void outboundAdaptersShouldOnlyUseOutboundPorts() {

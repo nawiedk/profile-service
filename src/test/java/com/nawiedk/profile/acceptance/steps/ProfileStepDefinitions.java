@@ -2,12 +2,12 @@ package com.nawiedk.profile.acceptance.steps;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nawiedk.profile.adapter.in.web.dto.ProfileDto;
-import com.nawiedk.profile.adapter.in.web.dto.SkillDto;
+import com.nawiedk.profile.adapter.in.web.dto.ProfileUpdateDto;
+import com.nawiedk.profile.adapter.in.web.dto.SkillUpdateDto;
 import com.nawiedk.profile.adapter.in.web.mapper.response.ProfileResponse;
 import com.nawiedk.profile.adapter.out.persistence.repository.ProfileRepository;
 import com.nawiedk.profile.adapter.out.persistence.repository.SkillRepository;
-import com.nawiedk.profile.domain.model.ProfileStatusEnum;
+import com.nawiedk.profile.domain.util.ProfileStatus;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -46,7 +46,7 @@ public class ProfileStepDefinitions {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private ProfileDto currentProfileDto;
+    private ProfileUpdateDto currentProfileUpdateDto;
     private ResponseEntity<String> lastResponse;
     private Map<String, Object> scenarioContext = new HashMap<>();
 
@@ -93,26 +93,26 @@ public class ProfileStepDefinitions {
 
     @Given("I have a new profile DTO with name {string}, bio {string}, location {string}, role {string} and skill {string} with ID {long} and proficiency {int}")
     public void iHaveANewProfileDto(String name, String bio, String location, String role, String skillName, Long skillId, int proficiency) {
-        currentProfileDto = new ProfileDto();
-        currentProfileDto.setName(name);
-        currentProfileDto.setBio(bio);
-        currentProfileDto.setLocation(location);
-        currentProfileDto.setRole(role);
-        currentProfileDto.setImageUrl("http://example.com/image.jpg");
-        currentProfileDto.setProfileStatusEnum(ProfileStatusEnum.ACTIVE);
+        currentProfileUpdateDto = new ProfileUpdateDto();
+        currentProfileUpdateDto.setName(name);
+        currentProfileUpdateDto.setBio(bio);
+        currentProfileUpdateDto.setLocation(location);
+        currentProfileUpdateDto.setRole(role);
+        currentProfileUpdateDto.setImageUrl("http://example.com/image.jpg");
+        currentProfileUpdateDto.setProfileStatus(ProfileStatus.ACTIVE);
 
-        SkillDto skillDto = new SkillDto();
-        skillDto.setSkillId(skillId);
-        skillDto.setName(skillName);
-        skillDto.setCategory("From Test Data");
-        skillDto.setProficiencyLevel(proficiency);
-        currentProfileDto.setSkills(Set.of(skillDto));
+        SkillUpdateDto skillUpdateDto = new SkillUpdateDto();
+        skillUpdateDto.setSkillId(skillId);
+        skillUpdateDto.setName(skillName);
+        skillUpdateDto.setCategory("From Test Data");
+        skillUpdateDto.setProficiencyLevel(proficiency);
+        currentProfileUpdateDto.setSkills(Set.of(skillUpdateDto));
     }
 
     @When("I send a POST request to {string} with the new profile DTO")
     public void iSendAPostRequestToWithTheNewProfileDto(String path) {
         String url = "http://localhost:" + port + path;
-        lastResponse = restTemplate.postForEntity(url, currentProfileDto, String.class);
+        lastResponse = restTemplate.postForEntity(url, currentProfileUpdateDto, String.class);
     }
 
     @Then("the HTTP response status should be {int}")
@@ -147,25 +147,25 @@ public class ProfileStepDefinitions {
     @Given("I have an updated profile DTO for profileId {string} with name {string}, bio {string}, location {string}, role {string}")
     public void iHaveAnUpdatedProfileDtoForProfileId(String profileIdKey, String name, String bio, String location, String role) {
         Long profileId = (Long) scenarioContext.get(profileIdKey);
-        currentProfileDto = new ProfileDto();
-        currentProfileDto.setProfileId(profileId);
-        currentProfileDto.setName(name);
-        currentProfileDto.setBio(bio);
-        currentProfileDto.setLocation(location);
-        currentProfileDto.setRole(role);
-        currentProfileDto.setImageUrl("http://example.com/updated_image.jpg");
-        currentProfileDto.setProfileStatusEnum(ProfileStatusEnum.ON_LEAVE);
-        currentProfileDto.setSkills(new HashSet<>());
+        currentProfileUpdateDto = new ProfileUpdateDto();
+        currentProfileUpdateDto.setProfileId(profileId);
+        currentProfileUpdateDto.setName(name);
+        currentProfileUpdateDto.setBio(bio);
+        currentProfileUpdateDto.setLocation(location);
+        currentProfileUpdateDto.setRole(role);
+        currentProfileUpdateDto.setImageUrl("http://example.com/updated_image.jpg");
+        currentProfileUpdateDto.setProfileStatus(ProfileStatus.ON_LEAVE);
+        currentProfileUpdateDto.setSkills(new HashSet<>());
     }
 
     @Given("the updated DTO includes skill {string} with ID {long} and proficiency {int}")
     public void theUpdatedDtoIncludesSkill(String skillName, Long skillId, int proficiency) {
-        SkillDto skillDto = new SkillDto();
-        skillDto.setSkillId(skillId);
-        skillDto.setName(skillName);
-        skillDto.setCategory("From Test Data");
-        skillDto.setProficiencyLevel(proficiency);
-        currentProfileDto.getSkills().add(skillDto);
+        SkillUpdateDto skillUpdateDto = new SkillUpdateDto();
+        skillUpdateDto.setSkillId(skillId);
+        skillUpdateDto.setName(skillName);
+        skillUpdateDto.setCategory("From Test Data");
+        skillUpdateDto.setProficiencyLevel(proficiency);
+        currentProfileUpdateDto.getSkills().add(skillUpdateDto);
     }
 
     @When("I send a PUT request to {string} with the updated profile DTO")
@@ -175,7 +175,7 @@ public class ProfileStepDefinitions {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<ProfileDto> requestEntity = new HttpEntity<>(currentProfileDto, headers);
+        HttpEntity<ProfileUpdateDto> requestEntity = new HttpEntity<>(currentProfileUpdateDto, headers);
 
         lastResponse = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, String.class);
     }

@@ -107,22 +107,22 @@ class SkillPersistenceAdapterTest {
         assertThat(foundOptional).isEmpty();
     }
 
-    @Test
-    void findByName_shouldReturnDomainSkill_whenSkillExists() {
-        Optional<Skill> foundOptional = skillPersistenceAdapter.findByName("Java");
-
-        assertThat(foundOptional).isPresent();
-        Skill foundSkill = foundOptional.get();
-        assertThat(foundSkill.getName()).isEqualTo("Java");
-        assertThat(foundSkill.getCategory()).isEqualTo("Programming Language");
-        assertThat(foundSkill.getProficiencyLevel()).isEqualTo(8);
-    }
-
-    @Test
-    void findByName_shouldReturnEmptyOptional_whenSkillDoesNotExist() {
-        Optional<Skill> foundOptional = skillPersistenceAdapter.findByName("NonExistent");
-        assertThat(foundOptional).isEmpty();
-    }
+//    @Test
+//    void findByName_shouldReturnDomainSkill_whenSkillExists() {
+//        Optional<Skill> foundOptional = skillPersistenceAdapter.findByName("Java");
+//
+//        assertThat(foundOptional).isPresent();
+//        Skill foundSkill = foundOptional.get();
+//        assertThat(foundSkill.getName()).isEqualTo("Java");
+//        assertThat(foundSkill.getCategory()).isEqualTo("Programming Language");
+//        assertThat(foundSkill.getProficiencyLevel()).isEqualTo(8);
+//    }
+//
+//    @Test
+//    void findByName_shouldReturnEmptyOptional_whenSkillDoesNotExist() {
+//        Optional<Skill> foundOptional = skillPersistenceAdapter.findByName("NonExistent");
+//        assertThat(foundOptional).isEmpty();
+//    }
 
     @Test
     void deleteById_shouldRemoveSkill() {

@@ -1,8 +1,8 @@
 package com.nawiedk.profile.adapter.in.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nawiedk.profile.adapter.in.web.dto.ProfileDto;
-import com.nawiedk.profile.adapter.in.web.dto.SkillDto;
+import com.nawiedk.profile.adapter.in.web.dto.ProfileUpdateDto;
+import com.nawiedk.profile.adapter.in.web.dto.SkillUpdateDto;
 import com.nawiedk.profile.adapter.in.web.mapper.request.ProfileRequestMapper;
 import com.nawiedk.profile.adapter.in.web.mapper.response.ProfileResponse;
 import com.nawiedk.profile.adapter.in.web.mapper.response.ProfileResponseMapper;
@@ -13,8 +13,8 @@ import com.nawiedk.profile.application.port.in.usecase.DeleteProfileUseCase;
 import com.nawiedk.profile.application.port.in.usecase.GetProfileUseCase;
 import com.nawiedk.profile.application.port.in.usecase.UpdateProfileUseCase;
 import com.nawiedk.profile.domain.model.Profile;
-import com.nawiedk.profile.domain.model.ProfileStatusEnum;
 import com.nawiedk.profile.domain.model.Skill;
+import com.nawiedk.profile.domain.util.ProfileStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ class ProfileControllerTest {
     @MockBean
     private ProfileRequestMapper profileRequestMapper;
 
-    private ProfileDto validProfileDto;
+    private ProfileUpdateDto validProfileUpdateDto;
     private Profile domainProfile;
     private ProfileResponse profileResponse;
     private CreateProfileCommand createProfileCommand;
@@ -67,22 +67,22 @@ class ProfileControllerTest {
     @BeforeEach
     void setUp() {
         // Setup valid SkillDto
-        SkillDto skillDto = new SkillDto();
-        skillDto.setSkillId(1L);
-        skillDto.setName("Java");
-        skillDto.setCategory("Programming");
-        skillDto.setProficiencyLevel(8);
+        SkillUpdateDto skillUpdateDto = new SkillUpdateDto();
+        skillUpdateDto.setSkillId(1L);
+        skillUpdateDto.setName("Java");
+        skillUpdateDto.setCategory("Programming");
+        skillUpdateDto.setProficiencyLevel(8);
 
         // Setup valid ProfileDto
-        validProfileDto = new ProfileDto();
-        validProfileDto.setProfileId(1L);
-        validProfileDto.setName("John Doe");
-        validProfileDto.setBio("Test Bio");
-        validProfileDto.setLocation("Test Location");
-        validProfileDto.setRole("Developer");
-        validProfileDto.setImageUrl("http://example.com/image.jpg");
-        validProfileDto.setProfileStatusEnum(ProfileStatusEnum.ACTIVE);
-        validProfileDto.setSkills(Set.of(skillDto));
+        validProfileUpdateDto = new ProfileUpdateDto();
+        validProfileUpdateDto.setProfileId(1L);
+        validProfileUpdateDto.setName("John Doe");
+        validProfileUpdateDto.setBio("Test Bio");
+        validProfileUpdateDto.setLocation("Test Location");
+        validProfileUpdateDto.setRole("Developer");
+        validProfileUpdateDto.setImageUrl("http://example.com/image.jpg");
+        validProfileUpdateDto.setProfileStatus(ProfileStatus.ACTIVE);
+        validProfileUpdateDto.setSkills(Set.of(skillUpdateDto));
 
         // Setup domain Profile
         Skill skill = Skill.skillWithId(new Skill.SkillId(1L), "Java", "Programming", 8);
@@ -93,7 +93,7 @@ class ProfileControllerTest {
                 "Test Location",
                 "Developer",
                 "http://example.com/image.jpg",
-                ProfileStatusEnum.ACTIVE,
+                ProfileStatus.ACTIVE,
                 Set.of(skill)
         );
 
@@ -115,7 +115,7 @@ class ProfileControllerTest {
                 "Test Bio",
                 "Test Location",
                 "Developer",
-                ProfileStatusEnum.ACTIVE,
+                ProfileStatus.ACTIVE,
                 "http://example.com/image.jpg",
                 Set.of(skill)
         );
@@ -126,7 +126,7 @@ class ProfileControllerTest {
                 "Test Bio",
                 "Test Location",
                 "Developer",
-                ProfileStatusEnum.ACTIVE,
+                ProfileStatus.ACTIVE,
                 "http://example.com/image.jpg",
                 Set.of(skill)
         );
@@ -180,7 +180,7 @@ class ProfileControllerTest {
 
         mockMvc.perform(post("/api/profiles")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(validProfileDto)))
+                        .content(objectMapper.writeValueAsString(validProfileUpdateDto)))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "http://localhost/api/profiles/1"))
                 .andExpect(jsonPath("$.name").value("John Doe"));
@@ -192,11 +192,11 @@ class ProfileControllerTest {
 
     @Test
     void create_whenInvalidInput_shouldReturnBadRequest() throws Exception {
-        validProfileDto.setName(""); // Invalid name
+        validProfileUpdateDto.setName(""); // Invalid name
 
         mockMvc.perform(post("/api/profiles")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(validProfileDto)))
+                        .content(objectMapper.writeValueAsString(validProfileUpdateDto)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -208,7 +208,7 @@ class ProfileControllerTest {
 
         mockMvc.perform(put("/api/profiles/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(validProfileDto)))
+                        .content(objectMapper.writeValueAsString(validProfileUpdateDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("John Doe"));
 
@@ -224,17 +224,17 @@ class ProfileControllerTest {
 
         mockMvc.perform(put("/api/profiles/{id}", 999L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(validProfileDto)))
+                        .content(objectMapper.writeValueAsString(validProfileUpdateDto)))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void update_whenInvalidInput_shouldReturnBadRequest() throws Exception {
-        validProfileDto.setName(""); // Invalid name
+        validProfileUpdateDto.setName(""); // Invalid name
 
         mockMvc.perform(put("/api/profiles/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(validProfileDto)))
+                        .content(objectMapper.writeValueAsString(validProfileUpdateDto)))
                 .andExpect(status().isBadRequest());
     }
 

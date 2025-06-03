@@ -1,10 +1,9 @@
 package com.nawiedk.profile.application.port.in.command;
 
-import com.nawiedk.profile.domain.model.ProfileStatusEnum;
 import com.nawiedk.profile.domain.model.Skill;
+import com.nawiedk.profile.domain.util.ProfileStatus;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -18,11 +17,11 @@ public record UpdateProfileCommand(
         @Size(max = 1000) String bio,
         @NotBlank String location,
         @NotBlank String role,
-        ProfileStatusEnum profileStatusEnum,
+        ProfileStatus profileStatus,
         @NotBlank String imageUrl,
-        @NotEmpty Set<@Valid Skill> skills
+        Set<@Valid Skill> skills
 ) {
-    public UpdateProfileCommand(Long id, String name, String bio, String location, String role, ProfileStatusEnum profileStatusEnum, String imageUrl, Set<Skill> skills) {
+    public UpdateProfileCommand(Long id, String name, String bio, String location, String role, ProfileStatus profileStatus, String imageUrl, Set<Skill> skills) {
         this.id = id;
         this.name = name;
         this.bio = bio;
@@ -30,7 +29,7 @@ public record UpdateProfileCommand(
         this.role = role;
         this.skills = skills;
         this.imageUrl = imageUrl;
-        this.profileStatusEnum = profileStatusEnum;
+        this.profileStatus = profileStatus;
         validate(this);
     }
 }

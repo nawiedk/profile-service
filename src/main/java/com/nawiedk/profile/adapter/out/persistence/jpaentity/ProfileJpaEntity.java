@@ -1,6 +1,6 @@
 package com.nawiedk.profile.adapter.out.persistence.jpaentity;
 
-import com.nawiedk.profile.domain.model.ProfileStatusEnum;
+import com.nawiedk.profile.domain.util.ProfileStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,19 +36,19 @@ public class ProfileJpaEntity {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ProfileStatusEnum profileStatusEnum;
+    private ProfileStatus profileStatus;
 
-    @Column(unique = true)
-    private Long userId;
+//    @Column(unique = true)
+//    private Long userId;
 
-    @Column(unique = true, length = 100)
-    private String externalSystemId;
+//    @Column(unique = true, length = 100)
+//    private String externalSystemId;
 
-    @Column
-    private Long teamId;
+//    @Column
+//    private Long teamId;
 
-    @Column
-    private Long managerId;
+//    @Column
+//    private Long managerId;
 
     @ManyToMany
     @JoinTable(
