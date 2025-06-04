@@ -70,7 +70,7 @@ public class Profile {
     }
 
     public record ProfileId(Long id) {
-        public ProfileId(Long id) {
+        public ProfileId(@NotNull Long id) {
             if (id == null)
                 throw new ConstraintViolationException("Profile ID cannot be null", new HashSet<>());
             this.id = id;

@@ -38,7 +38,9 @@ public class Skill {
     }
 
     public record SkillId(@NotNull Long id) {
-        public SkillId(Long id) {
+        public SkillId(@NotNull Long id) {
+            if (id == null)
+                throw new IllegalArgumentException("Skill ID cannot be null");
             this.id = id;
             validate(this);
         }
