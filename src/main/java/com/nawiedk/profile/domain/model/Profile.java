@@ -1,12 +1,14 @@
 package com.nawiedk.profile.domain.model;
 
 import com.nawiedk.profile.domain.util.ProfileStatus;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -69,6 +71,8 @@ public class Profile {
 
     public record ProfileId(Long id) {
         public ProfileId(Long id) {
+            if (id == null)
+                throw new ConstraintViolationException("Profile ID cannot be null", new HashSet<>());
             this.id = id;
             validate(this);
         }
