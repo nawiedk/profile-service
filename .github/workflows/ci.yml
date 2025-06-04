@@ -67,5 +67,4 @@ jobs:
           key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
           script: |
             cd /var/www/profile-service
-            chmod +x deploy.sh
             ./deploy.sh
