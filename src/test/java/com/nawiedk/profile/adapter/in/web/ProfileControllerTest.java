@@ -18,6 +18,7 @@ import com.nawiedk.profile.domain.util.ProfileStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -31,7 +32,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(ProfileController.class)
+@WebMvcTest(value = ProfileController.class,
+        excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 class ProfileControllerTest {
 
     @Autowired
@@ -258,4 +260,4 @@ class ProfileControllerTest {
 
         verify(deleteProfileUseCase).deleteById(any());
     }
-} 
+}
