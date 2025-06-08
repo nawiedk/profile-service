@@ -23,7 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/profiles")
+@RequestMapping("/profiles")
 @RequiredArgsConstructor
 public class ProfileController {
 
