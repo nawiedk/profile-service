@@ -48,7 +48,7 @@ class ProfileApiIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        baseUrl = "http://localhost:" + port + "/api/profiles";
+        baseUrl = "http://localhost:" + port + "/profiles";
         skillRepository.deleteAll();
         profileRepository.deleteAll();
         skillJavaEntity = skillRepository.save(new SkillJpaEntity(null, "Java", "Programming", 8));

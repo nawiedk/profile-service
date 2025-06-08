@@ -139,7 +139,7 @@ class ProfileControllerTest {
         when(getProfileUseCase.findAll()).thenReturn(List.of(domainProfile));
         when(profileResponseMapper.mapToResponse(any(Profile.class))).thenReturn(profileResponse);
 
-        mockMvc.perform(get("/api/profiles"))
+        mockMvc.perform(get("/profiles"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].profileId").value(1))
@@ -154,7 +154,7 @@ class ProfileControllerTest {
         when(getProfileUseCase.findProfileById(any())).thenReturn(domainProfile);
         when(profileResponseMapper.mapToResponse(domainProfile)).thenReturn(profileResponse);
 
-        mockMvc.perform(get("/api/profiles/{id}", 1L))
+        mockMvc.perform(get("/profiles/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.profileId").value(1))
@@ -168,7 +168,7 @@ class ProfileControllerTest {
     void getById_whenProfileNotFound_shouldReturnNotFound() throws Exception {
         when(getProfileUseCase.findProfileById(any())).thenThrow(new RuntimeException("Profile not found"));
 
-        mockMvc.perform(get("/api/profiles/{id}", 999L))
+        mockMvc.perform(get("/profiles/{id}", 999L))
                 .andExpect(status().isNotFound());
 
         verify(getProfileUseCase).findProfileById(any());
@@ -180,11 +180,11 @@ class ProfileControllerTest {
         when(createProfileUseCase.create(any())).thenReturn(domainProfile);
         when(profileResponseMapper.mapToResponse(any())).thenReturn(profileResponse);
 
-        mockMvc.perform(post("/api/profiles")
+        mockMvc.perform(post("/profiles")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validProfileUpdateDto)))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "http://localhost/api/profiles/1"))
+                .andExpect(header().string("Location", "http://localhost/profiles/1"))
                 .andExpect(jsonPath("$.name").value("John Doe"));
 
         verify(profileRequestMapper).generateCreateProfileCommand(any());
@@ -196,7 +196,7 @@ class ProfileControllerTest {
     void create_whenInvalidInput_shouldReturnBadRequest() throws Exception {
         validProfileUpdateDto.setName(""); // Invalid name
 
-        mockMvc.perform(post("/api/profiles")
+        mockMvc.perform(post("/profiles")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validProfileUpdateDto)))
                 .andExpect(status().isBadRequest());
@@ -208,7 +208,7 @@ class ProfileControllerTest {
         when(updateProfileUseCase.update(any())).thenReturn(domainProfile);
         when(profileResponseMapper.mapToResponse(any())).thenReturn(profileResponse);
 
-        mockMvc.perform(put("/api/profiles/{id}", 1L)
+        mockMvc.perform(put("/profiles/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validProfileUpdateDto)))
                 .andExpect(status().isOk())
@@ -224,7 +224,7 @@ class ProfileControllerTest {
         when(profileRequestMapper.generateUpdateProfileCommand(any())).thenReturn(updateProfileCommand);
         when(updateProfileUseCase.update(any())).thenThrow(new RuntimeException("Profile not found"));
 
-        mockMvc.perform(put("/api/profiles/{id}", 999L)
+        mockMvc.perform(put("/profiles/{id}", 999L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validProfileUpdateDto)))
                 .andExpect(status().isNotFound());
@@ -234,7 +234,7 @@ class ProfileControllerTest {
     void update_whenInvalidInput_shouldReturnBadRequest() throws Exception {
         validProfileUpdateDto.setName(""); // Invalid name
 
-        mockMvc.perform(put("/api/profiles/{id}", 1L)
+        mockMvc.perform(put("/profiles/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validProfileUpdateDto)))
                 .andExpect(status().isBadRequest());
@@ -244,7 +244,7 @@ class ProfileControllerTest {
     void delete_whenProfileExists_shouldReturnNoContent() throws Exception {
         doNothing().when(deleteProfileUseCase).deleteById(any());
 
-        mockMvc.perform(delete("/api/profiles/{id}", 1L))
+        mockMvc.perform(delete("/profiles/{id}", 1L))
                 .andExpect(status().isNoContent());
 
         verify(deleteProfileUseCase).deleteById(any());
@@ -255,7 +255,7 @@ class ProfileControllerTest {
         doThrow(new RuntimeException("Profile not found"))
                 .when(deleteProfileUseCase).deleteById(any());
 
-        mockMvc.perform(delete("/api/profiles/{id}", 999L))
+        mockMvc.perform(delete("/profiles/{id}", 999L))
                 .andExpect(status().isNotFound());
 
         verify(deleteProfileUseCase).deleteById(any());
