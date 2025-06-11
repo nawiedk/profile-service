@@ -10,7 +10,6 @@ public class SkillMapper {
         return Skill.skillWithId(
                 new Skill.SkillId(entity.getSkillId()),
                 entity.getName(),
-                entity.getCategory(),
                 entity.getProficiencyLevel()
         );
     }
@@ -19,7 +18,6 @@ public class SkillMapper {
         SkillJpaEntity entity = new SkillJpaEntity();
         entity.setSkillId(skill.getSkillId().map(Skill.SkillId::id).orElse(null));
         entity.setName(skill.getName());
-        entity.setCategory(skill.getCategory());
         entity.setProficiencyLevel(skill.getProficiencyLevel());
         return entity;
     }

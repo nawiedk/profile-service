@@ -2,6 +2,7 @@ package com.nawiedk.profile.adapter.out.persistence.adapterimpl;
 
 import com.nawiedk.profile.adapter.out.persistence.mapper.SkillMapper;
 import com.nawiedk.profile.adapter.out.persistence.repository.SkillRepository;
+import com.nawiedk.profile.application.port.out.SkillRepositoryPort;
 import com.nawiedk.profile.domain.model.Skill;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class SkillPersistenceAdapter {
+public class SkillPersistenceAdapter implements SkillRepositoryPort {
 
     private final SkillRepository skillRepository;
     private final SkillMapper skillMapper;
@@ -22,17 +23,17 @@ public class SkillPersistenceAdapter {
         );
     }
 
-    public Optional<Skill> findById(Long id) {
-        return skillRepository.findById(id)
+    public Optional<Skill> findSkillBySkillId(Long skillId) {
+        return skillRepository.findById(skillId)
                 .map(skillMapper::mapToDomainEntity);
     }
 
-    public void deleteById(Long id) {
-        skillRepository.deleteById(id);
+    public void deleteBySkillId(Long skillId) {
+        skillRepository.deleteById(skillId);
     }
 
-    public boolean existsById(Long id) {
-        return skillRepository.existsById(id);
+    public boolean existsBySkillId(Long skillId) {
+        return skillRepository.existsById(skillId);
     }
 
     public List<Skill> findAll() {
@@ -42,8 +43,9 @@ public class SkillPersistenceAdapter {
                 .toList();
     }
 
-//    public Optional<Skill> findByName(String name) {
-//        return skillRepository.findByName(name)
-//                .map(skillMapper::mapToDomainEntity);
-//    }
+    @Override
+    public Optional<Skill> findByName(String name) {
+        return skillRepository.findByName(name)
+                .map(skillMapper::mapToDomainEntity);
+    }
 } 

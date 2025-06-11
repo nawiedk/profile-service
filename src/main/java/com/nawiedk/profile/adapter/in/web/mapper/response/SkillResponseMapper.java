@@ -10,7 +10,6 @@ public class SkillResponseMapper {
         return new SkillResponse(
                 entity.getSkillId().map(Skill.SkillId::id).orElse(null),
                 entity.getName(),
-                entity.getCategory(),
                 entity.getProficiencyLevel()
         );
     }

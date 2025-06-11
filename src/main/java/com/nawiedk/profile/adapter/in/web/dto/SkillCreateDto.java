@@ -11,9 +11,6 @@ public class SkillCreateDto {
     @NotBlank
     private String name;
 
-    @NotBlank
-    private String category;
-
     @Min(0)
     @Max(10)
     private int proficiencyLevel;

@@ -21,18 +21,13 @@ public class Skill {
     private final String name;
 
     @Getter
-    @NotBlank
-    private final String category;
-
-    @Getter
     @Min(0)
     @Max(10)
     private final int proficiencyLevel;
 
-    public Skill(SkillId skillId, String name, String category, int proficiencyLevel) {
+    public Skill(SkillId skillId, String name, int proficiencyLevel) {
         this.skillId = skillId;
         this.name = name;
-        this.category = category;
         this.proficiencyLevel = proficiencyLevel;
         validate(this);
     }
@@ -46,12 +41,12 @@ public class Skill {
         }
     }
 
-    public static Skill skillWithId(SkillId skillId, String name, String category, int proficiencyLevel) {
-        return new Skill(skillId, name, category, proficiencyLevel);
+    public static Skill skillWithId(SkillId skillId, String name, int proficiencyLevel) {
+        return new Skill(skillId, name, proficiencyLevel);
     }
 
-    public static Skill skillWithoutId(String name, String category, int proficiencyLevel) {
-        return new Skill(null, name, category, proficiencyLevel);
+    public static Skill skillWithoutId(String name, int proficiencyLevel) {
+        return new Skill(null, name, proficiencyLevel);
     }
 
     public Optional<SkillId> getSkillId() {
