@@ -11,17 +11,19 @@ import java.util.stream.Collectors;
 public class ProfileResponseMapper {
 
     private final SkillResponseMapper skillResponseMapper;
+    private final ProjectResponseMapper projectResponseMapper;
 
     public ProfileResponse mapToResponse(Profile entity) {
         return new ProfileResponse(
-                entity.getProfileId().map(Profile.ProfileId::id).orElse(null),
+                entity.getProfileId().map(Profile.ProfileId::profileId).orElse(null),
                 entity.getName(),
                 entity.getBio(),
                 entity.getLocation(),
                 entity.getRole(),
                 entity.getImageUrl(),
                 entity.getProfileStatusAsString(),
-                entity.getSkills().stream().map(skillResponseMapper::mapToResponse).collect(Collectors.toSet())
+                entity.getSkills().stream().map(skillResponseMapper::mapToResponse).collect(Collectors.toSet()),
+                entity.getProjects().stream().map(projectResponseMapper::mapToResponse).collect(Collectors.toSet())
         );
     }
 }

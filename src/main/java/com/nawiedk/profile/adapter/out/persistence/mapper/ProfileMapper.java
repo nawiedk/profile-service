@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class ProfileMapper {
 
     private final SkillMapper skillMapper;
+    private final ProjectMapper projectMapper;
 
     public Profile mapToDomainEntity(ProfileJpaEntity entity) {
         return Profile.profileWithId(
@@ -23,13 +24,14 @@ public class ProfileMapper {
                 entity.getRole(),
                 entity.getImageUrl(),
                 entity.getProfileStatus(),
-                entity.getSkills().stream().map(skillMapper::mapToDomainEntity).collect(Collectors.toSet())
+                entity.getSkills().stream().map(skillMapper::mapToDomainEntity).collect(Collectors.toSet()),
+                entity.getProjects().stream().map(projectMapper::mapToDomainEntity).collect(Collectors.toSet())
         );
     }
 
     public ProfileJpaEntity mapToJpaEntity(Profile profile) {
         ProfileJpaEntity entity = new ProfileJpaEntity();
-        entity.setProfileId(profile.getProfileId().map(ProfileId::id).orElse(null));
+        entity.setProfileId(profile.getProfileId().map(ProfileId::profileId).orElse(null));
         entity.setName(profile.getName());
         entity.setBio(profile.getBio());
         entity.setLocation(profile.getLocation());
@@ -37,18 +39,7 @@ public class ProfileMapper {
         entity.setImageUrl(profile.getImageUrl());
         entity.setProfileStatus(profile.getProfileStatus());
         entity.setSkills(profile.getSkills().stream().map(skillMapper::mapToJpaEntity).collect(Collectors.toSet()));
+        entity.setProjects(profile.getProjects().stream().map(projectMapper::mapToJpaEntity).collect(Collectors.toSet()));
         return entity;
     }
-
-    /*
-    public static void updateEntity(ProfileJpaEntity entity, Profile updated) {
-        entity.setName(updated.getName());
-        entity.setBio(updated.getBio());
-        entity.setLocation(updated.getLocation());
-        entity.setRole(updated.getRole());
-        entity.setSkills(updated.getSkills());
-        entity.setImageUrl(updated.getImageUrl());
-        entity.setProfileStatus(updated.getProfileStatus());
-    }
-    */
 }

@@ -38,18 +38,6 @@ public class ProfileJpaEntity {
     @Enumerated(EnumType.STRING)
     private ProfileStatus profileStatus;
 
-//    @Column(unique = true)
-//    private Long userId;
-
-//    @Column(unique = true, length = 100)
-//    private String externalSystemId;
-
-//    @Column
-//    private Long teamId;
-
-//    @Column
-//    private Long managerId;
-
     @ManyToMany
     @JoinTable(
             name = "profile_skills",
@@ -57,4 +45,12 @@ public class ProfileJpaEntity {
             inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
     private Set<SkillJpaEntity> skills;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "profile_projects",
+            joinColumns = @JoinColumn(name = "profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
+    private Set<ProjectJpaEntity> projects;
 }

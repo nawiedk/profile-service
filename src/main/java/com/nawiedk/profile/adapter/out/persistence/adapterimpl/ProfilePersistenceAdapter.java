@@ -26,19 +26,19 @@ public class ProfilePersistenceAdapter implements ProfileRepositoryPort {
     }
 
     @Override
-    public Optional<Profile> findById(Long id) {
-        return profileRepository.findById(id)
+    public Optional<Profile> findProfileByProfileId(Long profileId) {
+        return profileRepository.findById(profileId)
                 .map(profileMapper::mapToDomainEntity);
     }
 
     @Override
-    public void deleteById(Long id) {
-        profileRepository.deleteById(id);
+    public void deleteByProfileId(Long profileId) {
+        profileRepository.deleteById(profileId);
     }
 
     @Override
-    public boolean existsById(Long id) {
-        return profileRepository.existsById(id);
+    public boolean existsByProfileId(Long profileId) {
+        return profileRepository.existsById(profileId);
     }
 
     @Override
@@ -62,77 +62,4 @@ public class ProfilePersistenceAdapter implements ProfileRepositoryPort {
                 .map(profileMapper::mapToDomainEntity)
                 .toList();
     }
-
-    /*
-    @Override
-    public List<Profile> findByRole(String role) {
-        return profileRepository.findByRole(role)
-                .stream()
-                .map(profileMapper::mapToDomainEntity)
-                .toList();
-    }
-
-    @Override
-    public List<Profile> findByLocation(String location) {
-        return profileRepository.findByLocation(location)
-                .stream()
-                .map(profileMapper::mapToDomainEntity)
-                .toList();
-    }
-
-    @Override
-    public List<Profile> findBySkill(String skillKeyword) {
-        return profileRepository.findBySkillKeyword(skillKeyword)
-                .stream()
-                .map(profileMapper::mapToDomainEntity)
-                .toList();
-    }
-
-    @Override
-    public List<Profile> findByTeamId(Long teamId) {
-        return profileRepository.findByTeamId(teamId)
-                .stream()
-                .map(profileMapper::mapToDomainEntity)
-                .toList();
-    }
-
-    @Override
-    public List<Profile> findByManagerId(Long managerId) {
-        return profileRepository.findByManagerId(managerId)
-                .stream()
-                .map(profileMapper::mapToDomainEntity)
-                .toList();
-    }
-
-    @Override
-    public List<Profile> findByProfileStatus(ProfileStatus status) {
-        return profileRepository.findByProfileStatus(status)
-                .stream()
-                .map(profileMapper::mapToDomainEntity)
-                .toList();
-    }
-
-    @Override
-    @Transactional
-    public Profile updateProfileStatus(Long id, ProfileStatus newStatus) {
-        return profileRepository.findById(id)
-                .map(entity -> {
-                    entity.setProfileStatus(newStatus);
-                    return profileMapper.mapToDomainEntity(profileRepository.save(entity));
-                })
-                .orElseThrow(() -> new IllegalArgumentException("Profile not found with id: " + id));
-    }
-
-    @Override
-    public Optional<Profile> findByUserId(Long userId) {
-        return profileRepository.findByUserId(userId)
-                .map(profileMapper::mapToDomainEntity);
-    }
-
-    @Override
-    public Optional<Profile> findByExternalSystemId(String externalSystemId) {
-        return profileRepository.findByExternalSystemId(externalSystemId)
-                .map(profileMapper::mapToDomainEntity);
-    }
-    */
 }

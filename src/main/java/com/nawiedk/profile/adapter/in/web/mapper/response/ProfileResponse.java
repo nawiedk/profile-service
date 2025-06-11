@@ -9,5 +9,6 @@ public record ProfileResponse(Long profileId,
                               String role,
                               String imageUrl,
                               String profileStatus,
-                              Set<SkillResponse> skills) {
+                              Set<SkillResponse> skills,
+                              Set<ProjectResponse> projects) {
 }

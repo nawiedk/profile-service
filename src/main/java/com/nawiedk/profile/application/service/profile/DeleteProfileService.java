@@ -1,7 +1,7 @@
-package com.nawiedk.profile.application.service;
+package com.nawiedk.profile.application.service.profile;
 
-import com.nawiedk.profile.application.port.in.command.DeleteProfileCommand;
-import com.nawiedk.profile.application.port.in.usecase.DeleteProfileUseCase;
+import com.nawiedk.profile.application.port.in.command.profile.DeleteProfileCommand;
+import com.nawiedk.profile.application.port.in.usecase.profile.DeleteProfileUseCase;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,10 +15,10 @@ public class DeleteProfileService implements DeleteProfileUseCase {
     private final ProfileRepositoryPort repositoryPort;
 
     @Override
-    public void deleteById(DeleteProfileCommand command) {
-        if (!repositoryPort.existsById(command.id())) {
+    public void deleteByProfileId(DeleteProfileCommand command) {
+        if (!repositoryPort.existsByProfileId(command.profileId())) {
             throw new RuntimeException("Profile not found");
         }
-        repositoryPort.deleteById(command.id());
+        repositoryPort.deleteByProfileId(command.profileId());
     }
 }

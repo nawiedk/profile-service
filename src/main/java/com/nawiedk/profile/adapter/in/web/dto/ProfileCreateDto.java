@@ -1,12 +1,10 @@
 package com.nawiedk.profile.adapter.in.web.dto;
 
 import com.nawiedk.profile.domain.util.ProfileStatus;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-
-import java.util.Set;
 
 @Data
 public class ProfileCreateDto {
@@ -27,7 +25,6 @@ public class ProfileCreateDto {
     @NotBlank
     private String imageUrl;
 
+    @NotEmpty
     private ProfileStatus profileStatus;
-
-    private Set<@Valid SkillUpdateDto> skills;
 }

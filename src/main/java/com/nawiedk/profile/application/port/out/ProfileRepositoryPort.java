@@ -9,52 +9,13 @@ import java.util.Optional;
 public interface ProfileRepositoryPort {
     Profile save(Profile profile);
 
-    Optional<Profile> findById(Long id);
+    Optional<Profile> findProfileByProfileId(Long profileId);
 
-    void deleteById(Long id);
+    void deleteByProfileId(Long profileId);
 
-    boolean existsById(Long id);
+    boolean existsByProfileId(Long profileId);
 
     List<Profile> findAll();
 
-    List<Profile> findBySearchCriteria(
-            ProfileSearchCriteria searchCriteria
-    );
-
-    /*
-    List<Profile> findByRole(String role);
-
-    List<Profile> findByLocation(String location);
-
-    List<Profile> findBySkill(String skillKeyword);
-
-    List<Profile> findByTeamId(Long teamId);
-
-    List<Profile> findByManagerId(Long managerId);
-
-    List<Profile> findByProfileStatus(ProfileStatus status);
-
-    Profile updateProfileStatus(Long id, ProfileStatus newStatus);
-
-    Optional<Profile> findByUserId(Long userId);
-
-    Optional<Profile> findByExternalSystemId(String externalSystemId);
-
-    List<Profile> findBySearchCriteria(
-            String nameKeyword,
-            String role,
-            String location,
-            String skillKeyword,
-            ProfileStatus status
-    );
-    List<Profile> findByRole(String role);
-    List<Profile> findByLocation(String location);
-    List<Profile> findBySkillKeyword(String skillKeyword);
-    List<Profile> findByTeamId(Long teamId);
-    List<Profile> findByManagerId(Long managerId);
-    List<Profile> findByProfileStatus(ProfileStatus status);
-    Profile updateProfileStatus(Long id, ProfileStatus newStatus);
-    Optional<Profile> findByUserId(Long userId);
-    Optional<Profile> findByExternalSystemId(String externalSystemId);
-     */
+    List<Profile> findBySearchCriteria(ProfileSearchCriteria searchCriteria);
 }

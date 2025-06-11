@@ -5,12 +5,12 @@ import com.nawiedk.profile.adapter.in.web.dto.ProfileUpdateDto;
 import com.nawiedk.profile.adapter.in.web.mapper.request.ProfileRequestMapper;
 import com.nawiedk.profile.adapter.in.web.mapper.response.ProfileResponse;
 import com.nawiedk.profile.adapter.in.web.mapper.response.ProfileResponseMapper;
-import com.nawiedk.profile.application.port.in.command.DeleteProfileCommand;
-import com.nawiedk.profile.application.port.in.command.GetProfileCommand;
-import com.nawiedk.profile.application.port.in.usecase.CreateProfileUseCase;
-import com.nawiedk.profile.application.port.in.usecase.DeleteProfileUseCase;
-import com.nawiedk.profile.application.port.in.usecase.GetProfileUseCase;
-import com.nawiedk.profile.application.port.in.usecase.UpdateProfileUseCase;
+import com.nawiedk.profile.application.port.in.command.profile.DeleteProfileCommand;
+import com.nawiedk.profile.application.port.in.command.profile.GetProfileCommand;
+import com.nawiedk.profile.application.port.in.usecase.profile.CreateProfileUseCase;
+import com.nawiedk.profile.application.port.in.usecase.profile.DeleteProfileUseCase;
+import com.nawiedk.profile.application.port.in.usecase.profile.GetProfileUseCase;
+import com.nawiedk.profile.application.port.in.usecase.profile.UpdateProfileUseCase;
 import com.nawiedk.profile.domain.model.Profile;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -56,13 +56,13 @@ public class ProfileController {
     @GetMapping("/{id}")
     public ResponseEntity<ProfileResponse> getById(@PathVariable Long id) {
 
-        logger.info("Get profile with id: {}", id);
+        logger.info("Get profile with profileId: {}", id);
 
-        Profile profile = getProfileUseCase.findProfileById(
+        Profile profile = getProfileUseCase.findProfileByProfileId(
                 new GetProfileCommand(id)
         );
 
-        logger.info("Found profile with id: {}", id);
+        logger.info("Found profile with profileId: {}", id);
 
         return ResponseEntity.ok(
                 profileResponseMapper.mapToResponse(profile)
@@ -78,12 +78,12 @@ public class ProfileController {
                 profileRequestMapper.generateCreateProfileCommand(dto)
         );
 
-        logger.info("Created profile with id: {}", createdProfile.getProfileId().map(Profile.ProfileId::id).orElseThrow());
+        logger.info("Created profile with profileId: {}", createdProfile.getProfileId().map(Profile.ProfileId::profileId).orElseThrow());
 
         return ResponseEntity.created(
                 ServletUriComponentsBuilder.fromCurrentRequest()
-                        .path(("/{id}"))
-                        .buildAndExpand(createdProfile.getProfileId().map(Profile.ProfileId::id).orElseThrow())
+                        .path(("/{profileId}"))
+                        .buildAndExpand(createdProfile.getProfileId().map(Profile.ProfileId::profileId).orElseThrow())
                         .toUri()
         ).body(profileResponseMapper.mapToResponse(createdProfile));
     }
@@ -91,14 +91,14 @@ public class ProfileController {
     @PutMapping("/{id}")
     public ResponseEntity<ProfileResponse> update(@PathVariable Long id, @Valid @RequestBody ProfileUpdateDto dto) {
 
-        logger.info("Update profile with id: {}", id);
+        logger.info("Update profile with profileId: {}", id);
 
         dto.setProfileId(id);
         Profile updatedProfile = updateProfileUseCase.update(
                 profileRequestMapper.generateUpdateProfileCommand(dto)
         );
 
-        logger.info("Updated profile with id: {}", updatedProfile.getProfileId().map(Profile.ProfileId::id).orElseThrow());
+        logger.info("Updated profile with profileId: {}", updatedProfile.getProfileId().map(Profile.ProfileId::profileId).orElseThrow());
 
         return ResponseEntity.ok(
                 profileResponseMapper.mapToResponse(updatedProfile)
@@ -108,11 +108,11 @@ public class ProfileController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
 
-        logger.info("Delete profile with id: {}", id);
+        logger.info("Delete profile with profileId: {}", id);
 
-        deleteProfileUseCase.deleteById(new DeleteProfileCommand(id));
+        deleteProfileUseCase.deleteByProfileId(new DeleteProfileCommand(id));
 
-        logger.info("Deleted profile with id: {}", id);
+        logger.info("Deleted profile with profileId: {}", id);
 
         return ResponseEntity.noContent().build();
     }

@@ -48,6 +48,9 @@ public class Profile {
     @Getter
     private final Set<@Valid Skill> skills;
 
+    @Getter
+    private final Set<@Valid Project> projects;
+
     public Profile(
             ProfileId profileId,
             String name,
@@ -56,7 +59,8 @@ public class Profile {
             String role,
             String imageUrl,
             ProfileStatus profileStatus,
-            Set<Skill> skills
+            Set<Skill> skills,
+            Set<Project> projects
     ) {
         this.profileId = profileId;
         this.name = name;
@@ -66,24 +70,25 @@ public class Profile {
         this.imageUrl = imageUrl;
         this.profileStatus = profileStatus;
         this.skills = skills;
+        this.projects = projects;
         validate(this);
     }
 
-    public record ProfileId(Long id) {
-        public ProfileId(@NotNull Long id) {
-            if (id == null)
+    public record ProfileId(Long profileId) {
+        public ProfileId(@NotNull Long profileId) {
+            if (profileId == null)
                 throw new ConstraintViolationException("Profile ID cannot be null", new HashSet<>());
-            this.id = id;
+            this.profileId = profileId;
             validate(this);
         }
     }
 
-    public static Profile profileWithId(ProfileId profileId, String name, String bio, String location, String role, String imageUrl, ProfileStatus profileStatus, Set<Skill> skills) {
-        return new Profile(profileId, name, bio, location, role, imageUrl, profileStatus, skills);
+    public static Profile profileWithId(ProfileId profileId, String name, String bio, String location, String role, String imageUrl, ProfileStatus profileStatus, Set<Skill> skills, Set<Project> projects) {
+        return new Profile(profileId, name, bio, location, role, imageUrl, profileStatus, skills, projects);
     }
 
-    public static Profile profileWithoutId(String name, String bio, String location, String role, String imageUrl, ProfileStatus profileStatus, Set<Skill> skills) {
-        return new Profile(null, name, bio, location, role, imageUrl, profileStatus, skills);
+    public static Profile profileWithoutId(String name, String bio, String location, String role, String imageUrl, ProfileStatus profileStatus, Set<Skill> skills, Set<Project> projects) {
+        return new Profile(null, name, bio, location, role, imageUrl, profileStatus, skills, projects);
     }
 
     public Optional<Profile.ProfileId> getProfileId() {
