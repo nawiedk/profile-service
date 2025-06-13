@@ -1,5 +1,6 @@
 package com.nawiedk.profile.application.port.in.command;
 
+import com.nawiedk.profile.application.port.in.command.profile.DeleteProfileCommand;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,7 @@ class DeleteProfileCommandTest {
     @Test
     void shouldCreateValidCommand() {
         DeleteProfileCommand command = new DeleteProfileCommand(1L);
-        assertThat(command.id()).isEqualTo(1L);
+        assertThat(command.profileId()).isEqualTo(1L);
     }
 
     @Test

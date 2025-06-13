@@ -1,7 +1,8 @@
 package com.nawiedk.profile.application.service;
 
-import com.nawiedk.profile.application.port.in.command.UpdateProfileCommand;
+import com.nawiedk.profile.application.port.in.command.profile.UpdateProfileCommand;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
+import com.nawiedk.profile.application.service.profile.UpdateProfileService;
 import com.nawiedk.profile.domain.model.Profile;
 import com.nawiedk.profile.domain.model.Skill;
 import com.nawiedk.profile.domain.util.ProfileStatus;
@@ -82,7 +83,7 @@ class UpdateProfileServiceTest {
 
     @Test
     void update_WithValidCommand_ShouldUpdateProfile() {
-        when(profileRepositoryPort.findById(existingProfileId)).thenReturn(Optional.of(existingProfile));
+        when(profileRepositoryPort.findProfileByProfileId(existingProfileId)).thenReturn(Optional.of(existingProfile));
         when(profileRepositoryPort.save(any(Profile.class))).thenReturn(updatedProfile);
 
         Profile result = updateProfileService.update(validCommand);
@@ -91,7 +92,7 @@ class UpdateProfileServiceTest {
         Profile capturedProfile = profileCaptor.getValue();
 
         assertThat(capturedProfile.getProfileId()).isPresent();
-        assertThat(capturedProfile.getProfileId().get().id()).isEqualTo(existingProfileId);
+        assertThat(capturedProfile.getProfileId().get().profileId()).isEqualTo(existingProfileId);
         assertThat(capturedProfile.getName()).isEqualTo(validCommand.name());
         assertThat(capturedProfile.getBio()).isEqualTo(validCommand.bio());
         assertThat(capturedProfile.getLocation()).isEqualTo(validCommand.location());
@@ -105,19 +106,19 @@ class UpdateProfileServiceTest {
 
     @Test
     void update_WhenProfileDoesNotExist_ShouldThrowException() {
-        when(profileRepositoryPort.findById(existingProfileId)).thenReturn(Optional.empty());
+        when(profileRepositoryPort.findProfileByProfileId(existingProfileId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> updateProfileService.update(validCommand))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Profile not found");
 
-        verify(profileRepositoryPort).findById(existingProfileId);
+        verify(profileRepositoryPort).findProfileByProfileId(existingProfileId);
         verify(profileRepositoryPort, never()).save(any());
     }
 
     @Test
     void update_ShouldPreserveSkillsWithTheirIds() {
-        when(profileRepositoryPort.findById(existingProfileId)).thenReturn(Optional.of(existingProfile));
+        when(profileRepositoryPort.findProfileByProfileId(existingProfileId)).thenReturn(Optional.of(existingProfile));
         when(profileRepositoryPort.save(any(Profile.class))).thenReturn(updatedProfile);
 
         updateProfileService.update(validCommand);

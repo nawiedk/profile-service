@@ -292,7 +292,7 @@ class ProfileTest {
             Profile.ProfileId profileId = new Profile.ProfileId(id);
 
             assertThat(profileId).isNotNull();
-            assertThat(profileId.id()).isEqualTo(id);
+            assertThat(profileId.profileId()).isEqualTo(id);
         }
 
         @Test

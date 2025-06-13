@@ -1,7 +1,8 @@
 package com.nawiedk.profile.application.service;
 
-import com.nawiedk.profile.application.port.in.command.GetProfileCommand;
+import com.nawiedk.profile.application.port.in.command.profile.GetProfileCommand;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
+import com.nawiedk.profile.application.service.profile.GetProfileService;
 import com.nawiedk.profile.domain.model.Profile;
 import com.nawiedk.profile.domain.model.Skill;
 import com.nawiedk.profile.domain.util.ProfileStatus;
@@ -52,28 +53,28 @@ class GetProfileServiceTest {
     }
 
     @Test
-    void findProfileById_WhenProfileExists_ShouldReturnProfile() {
-        when(profileRepositoryPort.findById(existingProfileId))
+    void findProfileById_WhenProfileExists_ShouldReturnProfileProfile() {
+        when(profileRepositoryPort.findProfileByProfileId(existingProfileId))
                 .thenReturn(Optional.of(testProfile));
 
-        Profile foundProfile = getProfileService.findProfileById(new GetProfileCommand(existingProfileId));
+        Profile foundProfile = getProfileService.findProfileByProfileId(new GetProfileCommand(existingProfileId));
 
         assertThat(foundProfile).isNotNull();
         assertThat(foundProfile.getProfileId()).isPresent();
-        assertThat(foundProfile.getProfileId().get().id()).isEqualTo(existingProfileId);
-        verify(profileRepositoryPort).findById(existingProfileId);
+        assertThat(foundProfile.getProfileId().get().profileId()).isEqualTo(existingProfileId);
+        verify(profileRepositoryPort).findProfileByProfileId(existingProfileId);
     }
 
     @Test
-    void findProfileById_WhenProfileDoesNotExist_ShouldThrowException() {
-        when(profileRepositoryPort.findById(existingProfileId))
+    void findProfileById_WhenProfileDoesNotExist_ShouldThrowExceptionProfile() {
+        when(profileRepositoryPort.findProfileByProfileId(existingProfileId))
                 .thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> getProfileService.findProfileById(new GetProfileCommand(existingProfileId)))
+        assertThatThrownBy(() -> getProfileService.findProfileByProfileId(new GetProfileCommand(existingProfileId)))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Profile not found");
 
-        verify(profileRepositoryPort).findById(existingProfileId);
+        verify(profileRepositoryPort).findProfileByProfileId(existingProfileId);
     }
 
     @Test
@@ -84,7 +85,7 @@ class GetProfileServiceTest {
         List<Profile> foundProfiles = getProfileService.findAll();
 
         assertThat(foundProfiles).hasSize(1);
-        assertThat(foundProfiles.get(0).getProfileId().get().id()).isEqualTo(existingProfileId);
+        assertThat(foundProfiles.get(0).getProfileId().get().profileId()).isEqualTo(existingProfileId);
         verify(profileRepositoryPort).findAll();
     }
 

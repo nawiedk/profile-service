@@ -86,7 +86,7 @@ class ProfilePersistenceAdapterTest {
 
         assertThat(savedProfile).isNotNull();
         assertThat(savedProfile.getProfileId()).isPresent();
-        Long savedProfileId = savedProfile.getProfileId().get().id();
+        Long savedProfileId = savedProfile.getProfileId().get().profileId();
 
         ProfileJpaEntity foundEntity = entityManager.find(ProfileJpaEntity.class, savedProfileId);
         assertThat(foundEntity).isNotNull();
@@ -110,7 +110,7 @@ class ProfilePersistenceAdapterTest {
         Set<Skill> initialSkills = new HashSet<>(Set.of(javaDomainSkill));
         Profile initialProfile = createTestDomainProfile("Initial Name", "Initial bio", initialSkills, ProfileStatus.ACTIVE);
         Profile savedInitialProfile = profilePersistenceAdapter.save(initialProfile);
-        Long existingProfileId = savedInitialProfile.getProfileId().orElseThrow().id();
+        Long existingProfileId = savedInitialProfile.getProfileId().orElseThrow().profileId();
 
         entityManager.flush();
         entityManager.clear();
@@ -130,7 +130,7 @@ class ProfilePersistenceAdapterTest {
         Profile updatedProfile = profilePersistenceAdapter.save(profileToUpdate);
 
         assertThat(updatedProfile).isNotNull();
-        assertThat(updatedProfile.getProfileId().orElseThrow().id()).isEqualTo(existingProfileId);
+        assertThat(updatedProfile.getProfileId().orElseThrow().profileId()).isEqualTo(existingProfileId);
         assertThat(updatedProfile.getName()).isEqualTo("Updated Name");
         assertThat(updatedProfile.getBio()).isEqualTo("Updated bio");
         assertThat(updatedProfile.getProfileStatus()).isEqualTo(ProfileStatus.INACTIVE);
@@ -148,16 +148,16 @@ class ProfilePersistenceAdapterTest {
     }
 
     @Test
-    void findById_shouldReturnDomainProfile_whenProfileExists() {
+    void findProfileByProfileId_shouldReturnDomainProfile_whenProfileExists() {
         Set<Skill> skills = new HashSet<>(Set.of(javaDomainSkill));
         Profile profileToSave = createTestDomainProfile("Findable User", "Bio", skills, ProfileStatus.ACTIVE);
         Profile savedProfile = profilePersistenceAdapter.save(profileToSave);
-        Long id = savedProfile.getProfileId().orElseThrow().id();
+        Long id = savedProfile.getProfileId().orElseThrow().profileId();
 
         entityManager.flush();
         entityManager.clear();
 
-        Optional<Profile> foundOptional = profilePersistenceAdapter.findById(id);
+        Optional<Profile> foundOptional = profilePersistenceAdapter.findProfileByProfileId(id);
 
         assertThat(foundOptional).isPresent();
         Profile foundProfile = foundOptional.get();
@@ -167,20 +167,20 @@ class ProfilePersistenceAdapterTest {
     }
 
     @Test
-    void findById_shouldReturnEmptyOptional_whenProfileDoesNotExist() {
-        Optional<Profile> foundOptional = profilePersistenceAdapter.findById(999L);
+    void findProfileByProfileId_shouldReturnEmptyOptional_whenProfileDoesNotExist() {
+        Optional<Profile> foundOptional = profilePersistenceAdapter.findProfileByProfileId(999L);
         assertThat(foundOptional).isNotPresent();
     }
 
     @Test
-    void deleteById_shouldRemoveProfile() {
+    void deleteByProfileId_shouldRemoveProfile() {
         Set<Skill> skills = new HashSet<>(Set.of(javaDomainSkill));
         Profile profileToSave = createTestDomainProfile("Deletable User", "Bio", skills, ProfileStatus.ACTIVE);
         Profile savedProfile = profilePersistenceAdapter.save(profileToSave);
-        Long id = savedProfile.getProfileId().orElseThrow().id();
+        Long id = savedProfile.getProfileId().orElseThrow().profileId();
 
         assertThat(profileRepository.existsById(id)).isTrue();
-        profilePersistenceAdapter.deleteById(id);
+        profilePersistenceAdapter.deleteByProfileId(id);
 
         entityManager.flush();
         entityManager.clear();
@@ -189,30 +189,30 @@ class ProfilePersistenceAdapterTest {
     }
 
     @Test
-    void deleteById_shouldNotThrowError_whenProfileDoesNotExist() {
+    void deleteByProfileId_shouldNotThrowError_whenProfileDoesNotExist() {
         Long nonExistentId = 999L;
         assertThat(profileRepository.existsById(nonExistentId)).isFalse();
 
-        profilePersistenceAdapter.deleteById(nonExistentId);
+        profilePersistenceAdapter.deleteByProfileId(nonExistentId);
 
         assertThat(profileRepository.existsById(nonExistentId)).isFalse();
     }
 
 
     @Test
-    void existsById_shouldReturnTrue_whenProfileExists() {
+    void existsById_shouldReturnTrue_whenProfileExistsProfile() {
         Set<Skill> skills = new HashSet<>(Set.of(javaDomainSkill));
         Profile profileToSave = createTestDomainProfile("Existing User", "Bio", skills, ProfileStatus.ACTIVE);
         Profile savedProfile = profilePersistenceAdapter.save(profileToSave);
-        Long id = savedProfile.getProfileId().orElseThrow().id();
+        Long id = savedProfile.getProfileId().orElseThrow().profileId();
 
-        boolean exists = profilePersistenceAdapter.existsById(id);
+        boolean exists = profilePersistenceAdapter.existsByProfileId(id);
         assertThat(exists).isTrue();
     }
 
     @Test
-    void existsById_shouldReturnFalse_whenProfileDoesNotExist() {
-        boolean exists = profilePersistenceAdapter.existsById(999L);
+    void existsByProfileId_shouldReturnFalse_whenProfileDoesNotExist() {
+        boolean exists = profilePersistenceAdapter.existsByProfileId(999L);
         assertThat(exists).isFalse();
     }
 
@@ -355,7 +355,7 @@ class ProfilePersistenceAdapterTest {
     void updateProfileStatus_shouldUpdateStatusAndReturnUpdatedProfile() {
         Profile profile = createTestDomainProfile("John", "Bio 1", Set.of(javaDomainSkill), ProfileStatus.ACTIVE);
         profile = profilePersistenceAdapter.save(profile);
-        Long profileId = profile.getProfileId().orElseThrow().id();
+        Long profileId = profile.getProfileId().orElseThrow().profileId();
 
         entityManager.flush();
         entityManager.clear();
@@ -374,7 +374,7 @@ class ProfilePersistenceAdapterTest {
         profile = profilePersistenceAdapter.save(profile);
 
         // We need to set the userId directly in the JPA entity since it's not part of the domain model
-        ProfileJpaEntity entity = entityManager.find(ProfileJpaEntity.class, profile.getProfileId().orElseThrow().id());
+        ProfileJpaEntity entity = entityManager.find(ProfileJpaEntity.class, profile.getProfileId().orElseThrow().profileId());
         entity.setUserId(123L);
         entityManager.flush();
         entityManager.clear();
@@ -390,7 +390,7 @@ class ProfilePersistenceAdapterTest {
         profile = profilePersistenceAdapter.save(profile);
 
         // We need to set the externalSystemId directly in the JPA entity since it's not part of the domain model
-        ProfileJpaEntity entity = entityManager.find(ProfileJpaEntity.class, profile.getProfileId().orElseThrow().id());
+        ProfileJpaEntity entity = entityManager.find(ProfileJpaEntity.class, profile.getProfileId().orElseThrow().profileId());
         entity.setExternalSystemId("EXT123");
         entityManager.flush();
         entityManager.clear();
@@ -409,9 +409,9 @@ class ProfilePersistenceAdapterTest {
         profile2 = profilePersistenceAdapter.save(profile2);
 
         // Set teamId for both profiles
-        ProfileJpaEntity entity1 = entityManager.find(ProfileJpaEntity.class, profile1.getProfileId().orElseThrow().id());
+        ProfileJpaEntity entity1 = entityManager.find(ProfileJpaEntity.class, profile1.getProfileId().orElseThrow().profileId());
         entity1.setTeamId(456L);
-        ProfileJpaEntity entity2 = entityManager.find(ProfileJpaEntity.class, profile2.getProfileId().orElseThrow().id());
+        ProfileJpaEntity entity2 = entityManager.find(ProfileJpaEntity.class, profile2.getProfileId().orElseThrow().profileId());
         entity2.setTeamId(456L);
 
         entityManager.flush();
@@ -432,9 +432,9 @@ class ProfilePersistenceAdapterTest {
         profile2 = profilePersistenceAdapter.save(profile2);
 
         // Set managerId for both profiles
-        ProfileJpaEntity entity1 = entityManager.find(ProfileJpaEntity.class, profile1.getProfileId().orElseThrow().id());
+        ProfileJpaEntity entity1 = entityManager.find(ProfileJpaEntity.class, profile1.getProfileId().orElseThrow().profileId());
         entity1.setManagerId(789L);
-        ProfileJpaEntity entity2 = entityManager.find(ProfileJpaEntity.class, profile2.getProfileId().orElseThrow().id());
+        ProfileJpaEntity entity2 = entityManager.find(ProfileJpaEntity.class, profile2.getProfileId().orElseThrow().profileId());
         entity2.setManagerId(789L);
 
         entityManager.flush();

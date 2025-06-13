@@ -1,5 +1,6 @@
 package com.nawiedk.profile.application.port.in.command;
 
+import com.nawiedk.profile.application.port.in.command.profile.UpdateProfileCommand;
 import com.nawiedk.profile.domain.model.Skill;
 import com.nawiedk.profile.domain.util.ProfileStatus;
 import jakarta.validation.ConstraintViolationException;
@@ -34,7 +35,7 @@ class UpdateProfileCommandTest {
                 validSkills
         );
 
-        assertThat(command.id()).isEqualTo(validId);
+        assertThat(command.profileId()).isEqualTo(validId);
         assertThat(command.name()).isEqualTo("John Doe");
         assertThat(command.bio()).isEqualTo("Test Bio");
         assertThat(command.location()).isEqualTo("Test Location");

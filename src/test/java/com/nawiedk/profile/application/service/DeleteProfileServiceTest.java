@@ -1,7 +1,8 @@
 package com.nawiedk.profile.application.service;
 
-import com.nawiedk.profile.application.port.in.command.DeleteProfileCommand;
+import com.nawiedk.profile.application.port.in.command.profile.DeleteProfileCommand;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
+import com.nawiedk.profile.application.service.profile.DeleteProfileService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,24 +24,24 @@ class DeleteProfileServiceTest {
     private final Long existingProfileId = 1L;
 
     @Test
-    void deleteById_WhenProfileExists_ShouldDeleteProfile() {
-        when(profileRepositoryPort.existsById(existingProfileId)).thenReturn(true);
+    void deleteById_WhenProfileExists_ShouldDeleteProfileProfile() {
+        when(profileRepositoryPort.existsByProfileId(existingProfileId)).thenReturn(true);
 
-        deleteProfileService.deleteById(new DeleteProfileCommand(existingProfileId));
+        deleteProfileService.deleteByProfileId(new DeleteProfileCommand(existingProfileId));
 
-        verify(profileRepositoryPort).existsById(existingProfileId);
-        verify(profileRepositoryPort).deleteById(existingProfileId);
+        verify(profileRepositoryPort).existsByProfileId(existingProfileId);
+        verify(profileRepositoryPort).deleteByProfileId(existingProfileId);
     }
 
     @Test
-    void deleteById_WhenProfileDoesNotExist_ShouldThrowException() {
-        when(profileRepositoryPort.existsById(existingProfileId)).thenReturn(false);
+    void deleteByProfileId_WhenProfileDoesNotExist_ShouldThrowException() {
+        when(profileRepositoryPort.existsByProfileId(existingProfileId)).thenReturn(false);
 
-        assertThatThrownBy(() -> deleteProfileService.deleteById(new DeleteProfileCommand(existingProfileId)))
+        assertThatThrownBy(() -> deleteProfileService.deleteByProfileId(new DeleteProfileCommand(existingProfileId)))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Profile not found");
 
-        verify(profileRepositoryPort).existsById(existingProfileId);
-        verify(profileRepositoryPort, never()).deleteById(any());
+        verify(profileRepositoryPort).existsByProfileId(existingProfileId);
+        verify(profileRepositoryPort, never()).deleteByProfileId(any());
     }
 }

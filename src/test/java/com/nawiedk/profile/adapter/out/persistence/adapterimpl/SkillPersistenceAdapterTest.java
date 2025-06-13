@@ -91,8 +91,8 @@ class SkillPersistenceAdapterTest {
     }
 
     @Test
-    void findById_shouldReturnDomainSkill_whenSkillExists() {
-        Optional<Skill> foundOptional = skillPersistenceAdapter.findById(javaSkillEntity.getSkillId());
+    void findSkillBySkillId_shouldReturnDomainSkill_whenSkillExists() {
+        Optional<Skill> foundOptional = skillPersistenceAdapter.findSkillBySkillId(javaSkillEntity.getSkillId());
 
         assertThat(foundOptional).isPresent();
         Skill foundSkill = foundOptional.get();
@@ -102,8 +102,8 @@ class SkillPersistenceAdapterTest {
     }
 
     @Test
-    void findById_shouldReturnEmptyOptional_whenSkillDoesNotExist() {
-        Optional<Skill> foundOptional = skillPersistenceAdapter.findById(999L);
+    void findSkillBySkillId_shouldReturnEmptyOptional_whenSkillDoesNotExist() {
+        Optional<Skill> foundOptional = skillPersistenceAdapter.findSkillBySkillId(999L);
         assertThat(foundOptional).isEmpty();
     }
 
@@ -125,10 +125,10 @@ class SkillPersistenceAdapterTest {
 //    }
 
     @Test
-    void deleteById_shouldRemoveSkill() {
+    void deleteBySkillId_shouldRemoveSkill() {
         assertThat(skillRepository.existsById(javaSkillEntity.getSkillId())).isTrue();
 
-        skillPersistenceAdapter.deleteById(javaSkillEntity.getSkillId());
+        skillPersistenceAdapter.deleteBySkillId(javaSkillEntity.getSkillId());
 
         entityManager.flush();
         entityManager.clear();
@@ -137,24 +137,24 @@ class SkillPersistenceAdapterTest {
     }
 
     @Test
-    void deleteById_shouldNotThrowError_whenSkillDoesNotExist() {
+    void deleteBySkillId_shouldNotThrowError_whenSkillDoesNotExist() {
         Long nonExistentId = 999L;
         assertThat(skillRepository.existsById(nonExistentId)).isFalse();
 
-        skillPersistenceAdapter.deleteById(nonExistentId);
+        skillPersistenceAdapter.deleteBySkillId(nonExistentId);
 
         assertThat(skillRepository.existsById(nonExistentId)).isFalse();
     }
 
     @Test
-    void existsById_shouldReturnTrue_whenSkillExists() {
-        boolean exists = skillPersistenceAdapter.existsById(javaSkillEntity.getSkillId());
+    void existsById_shouldReturnTrue_whenSkillExistsSkill() {
+        boolean exists = skillPersistenceAdapter.existsBySkillId(javaSkillEntity.getSkillId());
         assertThat(exists).isTrue();
     }
 
     @Test
-    void existsById_shouldReturnFalse_whenSkillDoesNotExist() {
-        boolean exists = skillPersistenceAdapter.existsById(999L);
+    void existsBySkillId_shouldReturnFalse_whenSkillDoesNotExist() {
+        boolean exists = skillPersistenceAdapter.existsBySkillId(999L);
         assertThat(exists).isFalse();
     }
 

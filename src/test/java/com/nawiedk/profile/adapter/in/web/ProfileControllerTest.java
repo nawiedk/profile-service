@@ -6,12 +6,12 @@ import com.nawiedk.profile.adapter.in.web.dto.SkillUpdateDto;
 import com.nawiedk.profile.adapter.in.web.mapper.request.ProfileRequestMapper;
 import com.nawiedk.profile.adapter.in.web.mapper.response.ProfileResponse;
 import com.nawiedk.profile.adapter.in.web.mapper.response.ProfileResponseMapper;
-import com.nawiedk.profile.application.port.in.command.CreateProfileCommand;
-import com.nawiedk.profile.application.port.in.command.UpdateProfileCommand;
-import com.nawiedk.profile.application.port.in.usecase.CreateProfileUseCase;
-import com.nawiedk.profile.application.port.in.usecase.DeleteProfileUseCase;
-import com.nawiedk.profile.application.port.in.usecase.GetProfileUseCase;
-import com.nawiedk.profile.application.port.in.usecase.UpdateProfileUseCase;
+import com.nawiedk.profile.application.port.in.command.profile.CreateProfileCommand;
+import com.nawiedk.profile.application.port.in.command.profile.UpdateProfileCommand;
+import com.nawiedk.profile.application.port.in.usecase.profile.CreateProfileUseCase;
+import com.nawiedk.profile.application.port.in.usecase.profile.DeleteProfileUseCase;
+import com.nawiedk.profile.application.port.in.usecase.profile.GetProfileUseCase;
+import com.nawiedk.profile.application.port.in.usecase.profile.UpdateProfileUseCase;
 import com.nawiedk.profile.domain.model.Profile;
 import com.nawiedk.profile.domain.model.Skill;
 import com.nawiedk.profile.domain.util.ProfileStatus;
@@ -151,7 +151,7 @@ class ProfileControllerTest {
 
     @Test
     void getById_whenProfileExists_shouldReturnProfile() throws Exception {
-        when(getProfileUseCase.findProfileById(any())).thenReturn(domainProfile);
+        when(getProfileUseCase.findProfileByProfileId(any())).thenReturn(domainProfile);
         when(profileResponseMapper.mapToResponse(domainProfile)).thenReturn(profileResponse);
 
         mockMvc.perform(get("/profiles/{id}", 1L))
@@ -160,18 +160,18 @@ class ProfileControllerTest {
                 .andExpect(jsonPath("$.profileId").value(1))
                 .andExpect(jsonPath("$.name").value("John Doe"));
 
-        verify(getProfileUseCase).findProfileById(any());
+        verify(getProfileUseCase).findProfileByProfileId(any());
         verify(profileResponseMapper).mapToResponse(domainProfile);
     }
 
     @Test
     void getById_whenProfileNotFound_shouldReturnNotFound() throws Exception {
-        when(getProfileUseCase.findProfileById(any())).thenThrow(new RuntimeException("Profile not found"));
+        when(getProfileUseCase.findProfileByProfileId(any())).thenThrow(new RuntimeException("Profile not found"));
 
         mockMvc.perform(get("/profiles/{id}", 999L))
                 .andExpect(status().isNotFound());
 
-        verify(getProfileUseCase).findProfileById(any());
+        verify(getProfileUseCase).findProfileByProfileId(any());
     }
 
     @Test
@@ -242,22 +242,22 @@ class ProfileControllerTest {
 
     @Test
     void delete_whenProfileExists_shouldReturnNoContent() throws Exception {
-        doNothing().when(deleteProfileUseCase).deleteById(any());
+        doNothing().when(deleteProfileUseCase).deleteByProfileId(any());
 
         mockMvc.perform(delete("/profiles/{id}", 1L))
                 .andExpect(status().isNoContent());
 
-        verify(deleteProfileUseCase).deleteById(any());
+        verify(deleteProfileUseCase).deleteByProfileId(any());
     }
 
     @Test
     void delete_whenProfileNotFound_shouldReturnNotFound() throws Exception {
         doThrow(new RuntimeException("Profile not found"))
-                .when(deleteProfileUseCase).deleteById(any());
+                .when(deleteProfileUseCase).deleteByProfileId(any());
 
         mockMvc.perform(delete("/profiles/{id}", 999L))
                 .andExpect(status().isNotFound());
 
-        verify(deleteProfileUseCase).deleteById(any());
+        verify(deleteProfileUseCase).deleteByProfileId(any());
     }
 }

@@ -2,14 +2,14 @@ package com.nawiedk.profile.application.service;
 
 import com.nawiedk.profile.adapter.out.persistence.jpaentity.SkillJpaEntity;
 import com.nawiedk.profile.adapter.out.persistence.repository.SkillRepository;
-import com.nawiedk.profile.application.port.in.command.CreateProfileCommand;
-import com.nawiedk.profile.application.port.in.command.DeleteProfileCommand;
-import com.nawiedk.profile.application.port.in.command.GetProfileCommand;
-import com.nawiedk.profile.application.port.in.command.UpdateProfileCommand;
-import com.nawiedk.profile.application.port.in.usecase.CreateProfileUseCase;
-import com.nawiedk.profile.application.port.in.usecase.DeleteProfileUseCase;
-import com.nawiedk.profile.application.port.in.usecase.GetProfileUseCase;
-import com.nawiedk.profile.application.port.in.usecase.UpdateProfileUseCase;
+import com.nawiedk.profile.application.port.in.command.profile.CreateProfileCommand;
+import com.nawiedk.profile.application.port.in.command.profile.DeleteProfileCommand;
+import com.nawiedk.profile.application.port.in.command.profile.GetProfileCommand;
+import com.nawiedk.profile.application.port.in.command.profile.UpdateProfileCommand;
+import com.nawiedk.profile.application.port.in.usecase.profile.CreateProfileUseCase;
+import com.nawiedk.profile.application.port.in.usecase.profile.DeleteProfileUseCase;
+import com.nawiedk.profile.application.port.in.usecase.profile.GetProfileUseCase;
+import com.nawiedk.profile.application.port.in.usecase.profile.UpdateProfileUseCase;
 import com.nawiedk.profile.domain.model.Profile;
 import com.nawiedk.profile.domain.model.Skill;
 import com.nawiedk.profile.domain.util.ProfileStatus;
@@ -80,10 +80,10 @@ class ProfileServiceIntegrationTest {
 
         Profile createdProfile = createProfileUseCase.create(createCommand);
         assertThat(createdProfile.getProfileId()).isPresent();
-        Long profileId = createdProfile.getProfileId().get().id();
+        Long profileId = createdProfile.getProfileId().get().profileId();
 
         // Retrieve the created profile
-        Profile retrievedProfile = getProfileUseCase.findProfileById(new GetProfileCommand(profileId));
+        Profile retrievedProfile = getProfileUseCase.findProfileByProfileId(new GetProfileCommand(profileId));
         assertThat(retrievedProfile.getName()).isEqualTo("John Doe");
         assertThat(retrievedProfile.getProfileStatus()).isEqualTo(ProfileStatus.ACTIVE);
 
@@ -110,15 +110,15 @@ class ProfileServiceIntegrationTest {
         assertThat(updatedProfile.getSkills()).hasSize(2);
 
         // Verify the update through get
-        Profile retrievedUpdatedProfile = getProfileUseCase.findProfileById(new GetProfileCommand(profileId));
+        Profile retrievedUpdatedProfile = getProfileUseCase.findProfileByProfileId(new GetProfileCommand(profileId));
         assertThat(retrievedUpdatedProfile.getRole()).isEqualTo("Senior Developer");
         assertThat(retrievedUpdatedProfile.getSkills()).hasSize(2);
 
         // Delete the profile
-        deleteProfileUseCase.deleteById(new DeleteProfileCommand(profileId));
+        deleteProfileUseCase.deleteByProfileId(new DeleteProfileCommand(profileId));
 
         // Verify deletion
-        assertThatThrownBy(() -> getProfileUseCase.findProfileById(new GetProfileCommand(profileId)))
+        assertThatThrownBy(() -> getProfileUseCase.findProfileByProfileId(new GetProfileCommand(profileId)))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Profile not found");
     }
@@ -191,7 +191,7 @@ class ProfileServiceIntegrationTest {
 
         // Then try to update it with invalid skill data
         UpdateProfileCommand invalidCommand = new UpdateProfileCommand(
-                validProfile.getProfileId().get().id(),
+                validProfile.getProfileId().get().profileId(),
                 "Valid Name",
                 "Bio",
                 "Location",

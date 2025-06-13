@@ -1,7 +1,8 @@
 package com.nawiedk.profile.application.service;
 
-import com.nawiedk.profile.application.port.in.command.CreateProfileCommand;
+import com.nawiedk.profile.application.port.in.command.profile.CreateProfileCommand;
 import com.nawiedk.profile.application.port.out.ProfileRepositoryPort;
+import com.nawiedk.profile.application.service.profile.CreateProfileService;
 import com.nawiedk.profile.domain.model.Profile;
 import com.nawiedk.profile.domain.model.Skill;
 import com.nawiedk.profile.domain.util.ProfileStatus;
@@ -84,7 +85,7 @@ class CreateProfileServiceTest {
         assertThat(capturedProfile.getSkills()).isEqualTo(validCommand.skills());
 
         assertThat(createdProfile.getProfileId()).isPresent();
-        assertThat(createdProfile.getProfileId().get().id()).isEqualTo(1L);
+        assertThat(createdProfile.getProfileId().get().profileId()).isEqualTo(1L);
     }
 
     @Test

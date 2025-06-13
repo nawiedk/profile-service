@@ -1,5 +1,6 @@
 package com.nawiedk.profile.application.port.in.command;
 
+import com.nawiedk.profile.application.port.in.command.profile.CreateProfileCommand;
 import com.nawiedk.profile.domain.model.Skill;
 import com.nawiedk.profile.domain.util.ProfileStatus;
 import jakarta.validation.ConstraintViolationException;

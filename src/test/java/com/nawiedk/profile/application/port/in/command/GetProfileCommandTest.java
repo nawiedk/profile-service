@@ -1,5 +1,6 @@
 package com.nawiedk.profile.application.port.in.command;
 
+import com.nawiedk.profile.application.port.in.command.profile.GetProfileCommand;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,7 @@ class GetProfileCommandTest {
     @Test
     void shouldCreateValidCommand() {
         GetProfileCommand command = new GetProfileCommand(1L);
-        assertThat(command.id()).isEqualTo(1L);
+        assertThat(command.profileId()).isEqualTo(1L);
     }
 
     @Test
