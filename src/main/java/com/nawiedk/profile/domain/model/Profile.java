@@ -42,6 +42,12 @@ public class Profile {
     private final String imageUrl;
 
     @Getter
+    private final String githubUrl;
+
+    @Getter
+    private final String linkedInUrl;
+
+    @Getter
     @NotNull
     private final ProfileStatus profileStatus;
 
@@ -58,6 +64,8 @@ public class Profile {
             String location,
             String role,
             String imageUrl,
+            String githubUrl,
+            String linkedInUrl,
             ProfileStatus profileStatus,
             Set<Skill> skills,
             Set<Project> projects
@@ -68,6 +76,8 @@ public class Profile {
         this.location = location;
         this.role = role;
         this.imageUrl = imageUrl;
+        this.githubUrl = githubUrl;
+        this.linkedInUrl = linkedInUrl;
         this.profileStatus = profileStatus;
         this.skills = skills;
         this.projects = projects;
@@ -83,12 +93,12 @@ public class Profile {
         }
     }
 
-    public static Profile profileWithId(ProfileId profileId, String name, String bio, String location, String role, String imageUrl, ProfileStatus profileStatus, Set<Skill> skills, Set<Project> projects) {
-        return new Profile(profileId, name, bio, location, role, imageUrl, profileStatus, skills, projects);
+    public static Profile profileWithId(ProfileId profileId, String name, String bio, String location, String role, String imageUrl, String githubUrl, String linkedInUrl, ProfileStatus profileStatus, Set<Skill> skills, Set<Project> projects) {
+        return new Profile(profileId, name, bio, location, role, imageUrl, githubUrl, linkedInUrl, profileStatus, skills, projects);
     }
 
-    public static Profile profileWithoutId(String name, String bio, String location, String role, String imageUrl, ProfileStatus profileStatus, Set<Skill> skills, Set<Project> projects) {
-        return new Profile(null, name, bio, location, role, imageUrl, profileStatus, skills, projects);
+    public static Profile profileWithoutId(String name, String bio, String location, String role, String imageUrl, String githubUrl, String linkedInUrl, ProfileStatus profileStatus, Set<Skill> skills, Set<Project> projects) {
+        return new Profile(null, name, bio, location, role, imageUrl, githubUrl, linkedInUrl, profileStatus, skills, projects);
     }
 
     public Optional<Profile.ProfileId> getProfileId() {

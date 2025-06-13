@@ -14,16 +14,17 @@ public record UpdateProfileCommand(
         @Size(max = 1000) String bio,
         @NotBlank String location,
         @NotBlank String role,
-        @NotEmpty ProfileStatus profileStatus,
-        @NotBlank String imageUrl
+        String linkedInUrl, @NotBlank String imageUrl, String githubUrl, @NotEmpty ProfileStatus profileStatus
 ) {
-    public UpdateProfileCommand(Long profileId, String name, String bio, String location, String role, ProfileStatus profileStatus, String imageUrl) {
+    public UpdateProfileCommand(Long profileId, String name, String bio, String location, String role, String linkedInUrl, String imageUrl, String githubUrl, ProfileStatus profileStatus) {
         this.profileId = profileId;
         this.name = name;
         this.bio = bio;
         this.location = location;
         this.role = role;
         this.imageUrl = imageUrl;
+        this.githubUrl = githubUrl;
+        this.linkedInUrl = linkedInUrl;
         this.profileStatus = profileStatus;
         validate(this);
     }

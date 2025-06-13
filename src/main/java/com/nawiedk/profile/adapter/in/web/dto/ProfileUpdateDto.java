@@ -29,6 +29,10 @@ public class ProfileUpdateDto {
     @NotBlank
     private String imageUrl;
 
+    private String githubUrl;
+
+    private String linkedInUrl;
+
     @NotEmpty
     private ProfileStatus profileStatus;
 }

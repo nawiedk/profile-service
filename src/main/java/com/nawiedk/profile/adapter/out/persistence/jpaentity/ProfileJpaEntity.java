@@ -34,6 +34,12 @@ public class ProfileJpaEntity {
     @Column(nullable = false, length = 500)
     private String imageUrl;
 
+    @Column
+    private String githubUrl;
+
+    @Column
+    private String linkedInUrl;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ProfileStatus profileStatus;

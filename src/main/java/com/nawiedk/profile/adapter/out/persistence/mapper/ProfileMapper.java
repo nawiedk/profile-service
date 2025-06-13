@@ -23,6 +23,8 @@ public class ProfileMapper {
                 entity.getLocation(),
                 entity.getRole(),
                 entity.getImageUrl(),
+                entity.getGithubUrl(),
+                entity.getLinkedInUrl(),
                 entity.getProfileStatus(),
                 entity.getSkills().stream().map(skillMapper::mapToDomainEntity).collect(Collectors.toSet()),
                 entity.getProjects().stream().map(projectMapper::mapToDomainEntity).collect(Collectors.toSet())
@@ -37,6 +39,8 @@ public class ProfileMapper {
         entity.setLocation(profile.getLocation());
         entity.setRole(profile.getRole());
         entity.setImageUrl(profile.getImageUrl());
+        entity.setGithubUrl(profile.getGithubUrl());
+        entity.setLinkedInUrl(profile.getLinkedInUrl());
         entity.setProfileStatus(profile.getProfileStatus());
         entity.setSkills(profile.getSkills().stream().map(skillMapper::mapToJpaEntity).collect(Collectors.toSet()));
         entity.setProjects(profile.getProjects().stream().map(projectMapper::mapToJpaEntity).collect(Collectors.toSet()));

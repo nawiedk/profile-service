@@ -30,6 +30,8 @@ public class UpdateProfileService implements UpdateProfileUseCase {
                 command.location(),
                 command.role(),
                 command.imageUrl(),
+                command.githubUrl(),
+                command.linkedInUrl(),
                 command.profileStatus(),
                 new HashSet<>(),
                 new HashSet<>()

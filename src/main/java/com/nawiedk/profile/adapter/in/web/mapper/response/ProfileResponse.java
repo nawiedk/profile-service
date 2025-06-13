@@ -8,6 +8,8 @@ public record ProfileResponse(Long profileId,
                               String location,
                               String role,
                               String imageUrl,
+                              String githubUrl,
+                              String linkedInUrl,
                               String profileStatus,
                               Set<SkillResponse> skills,
                               Set<ProjectResponse> projects) {

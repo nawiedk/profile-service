@@ -25,6 +25,10 @@ public class ProfileCreateDto {
     @NotBlank
     private String imageUrl;
 
+    private String githubUrl;
+
+    private String linkedInUrl;
+
     @NotEmpty
     private ProfileStatus profileStatus;
 }

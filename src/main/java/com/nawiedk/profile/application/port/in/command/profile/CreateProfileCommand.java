@@ -12,16 +12,20 @@ public record CreateProfileCommand(
         @Size(max = 1000) String bio,
         @NotBlank String location,
         @NotBlank String role,
-        @NotEmpty ProfileStatus profileStatus,
-        @NotBlank String imageUrl
+        @NotBlank String imageUrl,
+        String githubUrl,
+        String linkedInUrl,
+        @NotEmpty ProfileStatus profileStatus
 ) {
 
-    public CreateProfileCommand(String name, String bio, String location, String role, ProfileStatus profileStatus, String imageUrl) {
+    public CreateProfileCommand(String name, String bio, String location, String role, String imageUrl, String githubUrl, String linkedInUrl, ProfileStatus profileStatus) {
         this.name = name;
         this.bio = bio;
         this.location = location;
         this.role = role;
         this.imageUrl = imageUrl;
+        this.githubUrl = githubUrl;
+        this.linkedInUrl = linkedInUrl;
         this.profileStatus = profileStatus;
         validate(this);
     }
