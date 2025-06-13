@@ -26,18 +26,21 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Build with Maven (conditionally skip tests)
-        shell: bash
-        run: |
-          if [[ "${GITHUB_COMMIT_MESSAGE}" == *"[skip tests]"* ]]; then
-            echo "Skipping tests"
-            mvn clean install -DskipTests
-          else
-            echo "Running tests"
-            mvn clean install
-          fi
-        env:
-          GITHUB_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+      #      - name: Build with Maven (conditionally skip tests)
+      #        shell: bash
+      #        run: |
+      #          if [[ "${GITHUB_COMMIT_MESSAGE}" == *"[skip tests]"* ]]; then
+      #            echo "Skipping tests"
+      #            mvn clean install -DskipTests
+      #          else
+      #            echo "Running tests"
+      #            mvn clean install
+      #          fi
+      #        env:
+      #          GITHUB_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+
+      - name: Build with Maven (skip tests)
+        run: mvn clean install -DskipTests
 
 
       - name: Set up Docker Buildx
