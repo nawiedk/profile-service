@@ -21,6 +21,9 @@ public class ProjectJpaEntity {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @Column(nullable = false)
+    private String previewText;
+
     @Column(nullable = false, length = 1000)
     private String description;
 

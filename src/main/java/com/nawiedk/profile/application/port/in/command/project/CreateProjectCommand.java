@@ -8,12 +8,14 @@ import static com.nawiedk.profile.domain.validation.Validation.validate;
 
 public record CreateProjectCommand(
         String name,
+        String previewText,
         String description,
         Set<Skill> technologies,
         Set<String> urls
 ) {
-    public CreateProjectCommand(String name, String description, Set<Skill> technologies, Set<String> urls) {
+    public CreateProjectCommand(String name, String previewText, String description, Set<Skill> technologies, Set<String> urls) {
         this.name = name;
+        this.previewText = previewText;
         this.description = description;
         this.technologies = technologies;
         this.urls = urls;

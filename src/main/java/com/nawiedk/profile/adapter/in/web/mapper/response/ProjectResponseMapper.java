@@ -15,6 +15,7 @@ public class ProjectResponseMapper {
         return new ProjectResponse(
                 entity.getProjectId().map(Project.ProjectId::projectId).orElse(null),
                 entity.getName(),
+                entity.getPreviewText(),
                 entity.getDescription(),
                 entity.getTechnologies().stream().map(skillResponseMapper::mapToResponse).collect(Collectors.toSet()),
                 entity.getUrls()

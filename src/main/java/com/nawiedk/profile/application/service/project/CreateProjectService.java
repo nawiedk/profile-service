@@ -19,6 +19,7 @@ public class CreateProjectService implements CreateProjectUseCase {
     public Project create(CreateProjectCommand command) {
         Project project = Project.projectWithoutId(
                 command.name(),
+                command.previewText(),
                 command.description(),
                 command.technologies(),
                 command.urls()

@@ -19,6 +19,7 @@ public class ProjectRequestMapper {
     public CreateProjectCommand generateCreateProjectCommand(ProjectCreateDto dto) {
         return new CreateProjectCommand(
                 dto.getName(),
+                dto.getPreviewText(),
                 dto.getDescription(),
                 dto.getTechnologies().stream().map(skillRequestMapper::mapToDomainEntity).collect(Collectors.toSet()),
                 dto.getUrls()
@@ -29,6 +30,7 @@ public class ProjectRequestMapper {
         return new UpdateProjectCommand(
                 dto.getProjectId(),
                 dto.getName(),
+                dto.getPreviewText(),
                 dto.getDescription(),
                 dto.getTechnologies().stream().map(skillRequestMapper::mapToDomainEntity).collect(Collectors.toSet()),
                 dto.getUrls()
@@ -39,6 +41,7 @@ public class ProjectRequestMapper {
         return Project.projectWithId(
                 new Project.ProjectId(dto.getProjectId()),
                 dto.getName(),
+                dto.getPreviewText(),
                 dto.getDescription(),
                 dto.getTechnologies().stream().map(skillRequestMapper::mapToDomainEntity).collect(Collectors.toSet()),
                 dto.getUrls()

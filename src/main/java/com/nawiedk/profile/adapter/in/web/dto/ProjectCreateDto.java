@@ -14,6 +14,10 @@ public class ProjectCreateDto {
     private String name;
 
     @NotBlank
+    @Size(min = 50)
+    private String previewText;
+
+    @NotBlank
     @Size(min = 50, max = 1000)
     private String description;
 

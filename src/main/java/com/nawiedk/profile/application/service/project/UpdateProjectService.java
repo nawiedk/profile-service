@@ -24,6 +24,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         Project updatedProjectDomain = Project.projectWithId(
                 new Project.ProjectId(command.projectId()),
                 command.name(),
+                command.previewText(),
                 command.description(),
                 command.technologies(),
                 command.urls()

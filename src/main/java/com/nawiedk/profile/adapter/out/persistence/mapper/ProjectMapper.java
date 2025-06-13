@@ -18,6 +18,7 @@ public class ProjectMapper {
         return Project.projectWithId(
                 new ProjectId(entity.getProjectId()),
                 entity.getName(),
+                entity.getPreviewText(),
                 entity.getDescription(),
                 entity.getTechnologies().stream().map(skillMapper::mapToDomainEntity).collect(Collectors.toSet()),
                 entity.getUrls()
@@ -28,6 +29,7 @@ public class ProjectMapper {
         ProjectJpaEntity entity = new ProjectJpaEntity();
         entity.setProjectId(project.getProjectId().map(ProjectId::projectId).orElse(null));
         entity.setName(project.getName());
+        entity.setPreviewText(project.getPreviewText());
         entity.setDescription(project.getDescription());
         entity.setTechnologies(project.getTechnologies().stream().map(skillMapper::mapToJpaEntity).collect(Collectors.toSet()));
         entity.setUrls(project.getUrls());

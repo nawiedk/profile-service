@@ -5,6 +5,7 @@ import java.util.Set;
 public record ProjectResponse(
         Long projectId,
         String name,
+        String previewText,
         String description,
         Set<SkillResponse> technologies,
         Set<String> urls) {

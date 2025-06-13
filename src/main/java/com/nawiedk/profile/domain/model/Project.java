@@ -23,6 +23,10 @@ public class Project {
     private final String name;
 
     @Getter
+    @Size(max = 255)
+    private final String previewText;
+
+    @Getter
     @Size(max = 1000)
     private final String description;
 
@@ -34,12 +38,14 @@ public class Project {
 
     public Project(ProjectId projectId,
                    String name,
+                   String previewText,
                    String description,
                    Set<Skill> technologies,
                    Set<String> urls
     ) {
         this.projectId = projectId;
         this.name = name;
+        this.previewText = previewText;
         this.description = description;
         this.technologies = technologies;
         this.urls = urls;
@@ -57,12 +63,12 @@ public class Project {
     }
 
 
-    public static Project projectWithId(ProjectId projectId, String name, String description, Set<Skill> technologies, Set<String> urls) {
-        return new Project(projectId, name, description, technologies, urls);
+    public static Project projectWithId(ProjectId projectId, String name, String previewText, String description, Set<Skill> technologies, Set<String> urls) {
+        return new Project(projectId, name, previewText, description, technologies, urls);
     }
 
-    public static Project projectWithoutId(String name, String description, Set<Skill> technologies, Set<String> urls) {
-        return new Project(null, name, description, technologies, urls);
+    public static Project projectWithoutId(String name, String previewText, String description, Set<Skill> technologies, Set<String> urls) {
+        return new Project(null, name, description, previewText, technologies, urls);
     }
 
     public Optional<ProjectId> getProjectId() {
