@@ -36,6 +36,10 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
                 "https://nawied.de",
                 "https://www.nawied.de",
+                "https://nawied.ch",
+                "https://www.nawied.ch",
+                "https://nawied.eu",
+                "https://www.nawied.eu",
                 "http://localhost:5173"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
