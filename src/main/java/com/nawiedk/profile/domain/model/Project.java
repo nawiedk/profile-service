@@ -56,7 +56,7 @@ public class Project {
     public record ProjectId(@Valid Long projectId) {
         public ProjectId(@Valid Long projectId) {
             if (projectId == null)
-                throw new ConstraintViolationException("Profile ID cannot be null", new HashSet<>());
+                throw new ConstraintViolationException("Project ID cannot be null", new HashSet<>());
             this.projectId = projectId;
             validate(this);
         }
@@ -68,7 +68,7 @@ public class Project {
     }
 
     public static Project projectWithoutId(String name, String previewText, String description, Set<Skill> technologies, Set<String> urls) {
-        return new Project(null, name, description, previewText, technologies, urls);
+        return new Project(null, name, previewText, description, technologies, urls);
     }
 
     public Optional<ProjectId> getProjectId() {
