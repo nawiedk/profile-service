@@ -21,7 +21,8 @@ public class ProjectMapper {
                 entity.getPreviewText(),
                 entity.getDescription(),
                 entity.getTechnologies().stream().map(skillMapper::mapToDomainEntity).collect(Collectors.toSet()),
-                entity.getUrls()
+                entity.getGithubUrl(),
+                entity.getProjectStatus()
         );
     }
 
@@ -32,7 +33,8 @@ public class ProjectMapper {
         entity.setPreviewText(project.getPreviewText());
         entity.setDescription(project.getDescription());
         entity.setTechnologies(project.getTechnologies().stream().map(skillMapper::mapToJpaEntity).collect(Collectors.toSet()));
-        entity.setUrls(project.getUrls());
+        entity.setGithubUrl(project.getGithubUrl());
+        entity.setProjectStatus(project.getProjectStatus());
         return entity;
     }
 

@@ -27,7 +27,8 @@ public class UpdateProjectService implements UpdateProjectUseCase {
                 command.previewText(),
                 command.description(),
                 command.technologies(),
-                command.urls()
+                command.githubUrl(),
+                command.projectStatus()
         );
         return repositoryPort.save(updatedProjectDomain);
     }

@@ -22,7 +22,8 @@ public class CreateProjectService implements CreateProjectUseCase {
                 command.previewText(),
                 command.description(),
                 command.technologies(),
-                command.urls()
+                command.githubUrl(),
+                command.projectStatus()
         );
         return repositoryPort.save(project);
     }

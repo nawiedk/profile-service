@@ -1,8 +1,10 @@
 package com.nawiedk.profile.domain.model;
 
+import com.nawiedk.profile.domain.util.ProjectStatus;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
@@ -34,21 +36,27 @@ public class Project {
     private final Set<@Valid Skill> technologies;
 
     @Getter
-    private final Set<String> urls;
+    private final String githubUrl;
+
+    @Getter
+    @NotNull
+    private final ProjectStatus projectStatus;
 
     public Project(ProjectId projectId,
                    String name,
                    String previewText,
                    String description,
                    Set<Skill> technologies,
-                   Set<String> urls
+                   String githubUrl,
+                   ProjectStatus projectStatus
     ) {
         this.projectId = projectId;
         this.name = name;
         this.previewText = previewText;
         this.description = description;
         this.technologies = technologies;
-        this.urls = urls;
+        this.githubUrl = githubUrl;
+        this.projectStatus = projectStatus;
         validate(this);
     }
 
@@ -56,23 +64,27 @@ public class Project {
     public record ProjectId(@Valid Long projectId) {
         public ProjectId(@Valid Long projectId) {
             if (projectId == null)
-                throw new ConstraintViolationException("Project ID cannot be null", new HashSet<>());
+                throw new ConstraintViolationException("Profile ID cannot be null", new HashSet<>());
             this.projectId = projectId;
             validate(this);
         }
     }
 
 
-    public static Project projectWithId(ProjectId projectId, String name, String previewText, String description, Set<Skill> technologies, Set<String> urls) {
-        return new Project(projectId, name, previewText, description, technologies, urls);
+    public static Project projectWithId(ProjectId projectId, String name, String previewText, String description, Set<Skill> technologies, String githubUrl, ProjectStatus projectStatus) {
+        return new Project(projectId, name, previewText, description, technologies, githubUrl, projectStatus);
     }
 
-    public static Project projectWithoutId(String name, String previewText, String description, Set<Skill> technologies, Set<String> urls) {
-        return new Project(null, name, previewText, description, technologies, urls);
+    public static Project projectWithoutId(String name, String previewText, String description, Set<Skill> technologies, String githubUrl, ProjectStatus projectStatus) {
+        return new Project(null, name, description, previewText, technologies, githubUrl, projectStatus);
     }
 
     public Optional<ProjectId> getProjectId() {
         return Optional.ofNullable(this.projectId);
+    }
+
+    public String getProjectStatusAsString() {
+        return this.projectStatus.toString();
     }
 }
 

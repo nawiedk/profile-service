@@ -8,5 +8,6 @@ public record ProjectResponse(
         String previewText,
         String description,
         Set<SkillResponse> technologies,
-        Set<String> urls) {
+        String githubUrl,
+        String projectStatus) {
 }

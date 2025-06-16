@@ -1,5 +1,6 @@
 package com.nawiedk.profile.adapter.out.persistence.jpaentity;
 
+import com.nawiedk.profile.domain.util.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,11 +40,10 @@ public class ProjectJpaEntity {
     @ManyToMany(mappedBy = "projects")
     private Set<ProfileJpaEntity> profiles;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "project_urls",
-            joinColumns = @JoinColumn(name = "project_id")
-    )
-    @Column(name = "url", nullable = false, length = 500)
-    private Set<String> urls;
+    @Column
+    private String githubUrl;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus projectStatus;
 }

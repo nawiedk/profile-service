@@ -1,10 +1,12 @@
 package com.nawiedk.profile.domain.model;
 
+import com.nawiedk.profile.domain.util.ProjectStatus;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ProjectTest {
 
@@ -19,7 +21,8 @@ class ProjectTest {
                 preview,
                 description,
                 Collections.emptySet(),
-                Collections.emptySet()
+                "",
+                ProjectStatus.ONGOING
         );
 
         assertTrue(project.getProjectId().isEmpty());

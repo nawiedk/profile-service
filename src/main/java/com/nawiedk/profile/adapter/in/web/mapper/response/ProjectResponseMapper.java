@@ -18,7 +18,8 @@ public class ProjectResponseMapper {
                 entity.getPreviewText(),
                 entity.getDescription(),
                 entity.getTechnologies().stream().map(skillResponseMapper::mapToResponse).collect(Collectors.toSet()),
-                entity.getUrls()
+                entity.getGithubUrl(),
+                entity.getProjectStatusAsString()
         );
     }
 }

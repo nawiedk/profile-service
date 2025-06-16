@@ -22,7 +22,8 @@ public class ProjectRequestMapper {
                 dto.getPreviewText(),
                 dto.getDescription(),
                 dto.getTechnologies().stream().map(skillRequestMapper::mapToDomainEntity).collect(Collectors.toSet()),
-                dto.getUrls()
+                dto.getGithubUrl(),
+                dto.getProjectStatus()
         );
     }
 
@@ -33,7 +34,8 @@ public class ProjectRequestMapper {
                 dto.getPreviewText(),
                 dto.getDescription(),
                 dto.getTechnologies().stream().map(skillRequestMapper::mapToDomainEntity).collect(Collectors.toSet()),
-                dto.getUrls()
+                dto.getGithubUrl(),
+                dto.getProjectStatus()
         );
     }
 
@@ -44,7 +46,8 @@ public class ProjectRequestMapper {
                 dto.getPreviewText(),
                 dto.getDescription(),
                 dto.getTechnologies().stream().map(skillRequestMapper::mapToDomainEntity).collect(Collectors.toSet()),
-                dto.getUrls()
+                dto.getGithubUrl(),
+                dto.getProjectStatus()
         );
     }
 }

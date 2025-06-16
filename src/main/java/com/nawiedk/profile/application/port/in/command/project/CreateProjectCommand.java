@@ -1,6 +1,7 @@
 package com.nawiedk.profile.application.port.in.command.project;
 
 import com.nawiedk.profile.domain.model.Skill;
+import com.nawiedk.profile.domain.util.ProjectStatus;
 
 import java.util.Set;
 
@@ -11,14 +12,16 @@ public record CreateProjectCommand(
         String previewText,
         String description,
         Set<Skill> technologies,
-        Set<String> urls
+        String githubUrl,
+        ProjectStatus projectStatus
 ) {
-    public CreateProjectCommand(String name, String previewText, String description, Set<Skill> technologies, Set<String> urls) {
+    public CreateProjectCommand(String name, String previewText, String description, Set<Skill> technologies, String githubUrl, ProjectStatus projectStatus) {
         this.name = name;
         this.previewText = previewText;
         this.description = description;
         this.technologies = technologies;
-        this.urls = urls;
+        this.githubUrl = githubUrl;
+        this.projectStatus = projectStatus;
         validate(this);
     }
 }
