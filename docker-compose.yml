@@ -3,7 +3,7 @@ version: "3.8"
 services:
   postgres:
     image: postgres:15.2
-    container_name: profile_postgres
+    container_name: profile_postgres_dev
     restart: always
     ports:
       - "5432:5432"
@@ -12,7 +12,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - profile_db_data:/var/lib/postgresql/data
+      - profile_db_data_dev:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 10s
@@ -21,10 +21,12 @@ services:
 
   profile-service:
     build: .
-    container_name: profile_service
+    container_name: profile_service_dev
     depends_on:
       postgres:
         condition: service_healthy
+    env_file:
+      - .env
     environment:
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
@@ -33,4 +35,4 @@ services:
       - "8080:8080"
 
 volumes:
-  profile_db_data:
+  profile_db_data_dev:
