@@ -60,7 +60,7 @@ CREATE TABLE skill_technologies (
 INSERT INTO profiles (name, bio, location, role, image_url, github_url, linked_In_url, profile_status)
 VALUES (
            'Nawied Khaleqi',
-           'Ambitious software engineer focused on backend, AI, and DevOps.',
+           'Ambitious software engineer focused on backend, AI, and DevOps. Founder of DevsXplore.com (in development)',
            'Düsseldorf, Germany',
            'Software Engineer',
            'profile.jpg',
@@ -70,38 +70,9 @@ VALUES (
        );
 
 INSERT INTO skills (name, category, proficiency_level) VALUES
-                                                                     ('Java', 'Programming Language', 5),
-                                                                     ('Spring', 'Framework', 4),
-                                                                     ('Docker', 'DevOps', 3);
-
-INSERT INTO profile_skills (profile_id, skill_id) VALUES
-                                                      (1, 1),
-                                                      (1, 2),
-                                                      (1, 3);
-
-INSERT INTO projects (name, preview_text, description, github_url, project_status) VALUES
-    ('Profile Service', 'A microservice for managing personal and team member profiles', 'A microservice for managing personal and team member profiles, built with Spring Boot, Hexagonal Architecture, and Flyway. Part of a distributed system for dynamic, scalable portfolio and identity data. This API is currently being hosted on a VPS that was set up manually.', '', 'ONGOING'),
-    ('Portfolio WebClient', 'A responsive React-based frontend application', 'A responsive React-based frontend application designed to display and manage user profiles. This app interfaces with a backend API to fetch user data and present it in a clean, modern UI. Also deployed on a custom VPS setup.', '', 'ONGOING'),
-    ('Room Booking System', 'A modular and scalable backend system for internal room booking', 'A modular and scalable backend system for internal room booking, built with Java and Spring Boot. Implements Domain-Driven Design (DDD), Onion Architecture, role-based access control, and event-driven communication via Apache Kafka. Designed for enterprise-level requirements including authentication, observability, and testability.', 'https://github.com/nawiedk/Room-Booking-System', 'ONGOING'),
-    ('Cinema Database App', 'A Spring Boot web application with PostgreSQL backend', 'A Spring Boot web application with a PostgreSQL backend for managing cinema operations including movies, screenings, tickets, and customers. Built as part of an academic database project with full RESTful API support.', 'https://github.com/nawiedk/cinema-database-app', 'COMPLETED'),
-    ('Garden Management Web App', 'add text', 'add text', 'https://github.com/nawiedk/GardenManagement', 'COMPLETED'),
-    ('Bookstore App', 'add text', 'add text', 'https://github.com/nawiedk/Bookstore', 'ARCHIVED'),
-    ('Web Crawler', 'Custom web crawler with configurable search algorithms', 'A custom web crawler that can dynamically search for links on websites, with single and multithreaded modes that use different algorithms like DFS/BFS for efficiency.', '', 'COMPLETED'),
-    ('Java Redis Implementation', 'Personal Redis implementation in Java (Planned)', 'A personal implementation of Redis in Java, designed to provide similar functionality while being optimized for Java applications. Currently in planning stage.', '', 'PLANNED'),
-    ('Mobile Portfolio App', 'Cross-platform mobile application (Planned)', 'A cross-platform mobile application built with Flutter to interface with the profile service API. Will provide mobile access to profile and portfolio information. Currently in planning stage.', '', 'PLANNED');
-
-INSERT INTO profile_projects (profile_id, project_id) VALUES
-    (1, 1),
-    (1, 2),
-    (1, 3),
-    (1, 4),
-    (1, 5),
-    (1, 6),
-    (1, 7),
-    (1, 8),
-    (1, 9);
-
-INSERT INTO skills (name, category, proficiency_level) VALUES
+    ('Java', 'Programming Language', 5),
+    ('Spring', 'Framework', 4),
+    ('Docker', 'DevOps', 3),
     ('Spring Boot', 'Framework', 5),
     ('Hexagonal Architecture', 'Architecture', 4),
     ('Flyway', 'Database', 4),
@@ -112,9 +83,15 @@ INSERT INTO skills (name, category, proficiency_level) VALUES
     ('PostgreSQL', 'Database', 4),
     ('Multithreading', 'Programming', 4),
     ('Flutter', 'Mobile', 2),
-    ('REST API', 'API', 5);
+    ('REST API', 'API', 5),
+    ('Vaadin', 'Frontend', 4),
+    ('JavaScript', 'Programming Language', 3),
+    ('Python', 'Programming Language', 3);
 
 INSERT INTO profile_skills (profile_id, skill_id) VALUES
+    (1, 1),
+    (1, 2),
+    (1, 3),
     (1, 4),
     (1, 5),
     (1, 6),
@@ -125,7 +102,38 @@ INSERT INTO profile_skills (profile_id, skill_id) VALUES
     (1, 11),
     (1, 12),
     (1, 13),
-    (1, 14);
+    (1, 14),
+    (1, 15),
+    (1, 16),
+    (1, 17);
+
+INSERT INTO projects (name, preview_text, description, github_url, project_status) VALUES
+    ('Profile Service', 'A microservice for managing personal and team member profiles', 'A microservice for managing personal and team member profiles, built with Spring Boot, Hexagonal Architecture, and Flyway. Part of a distributed system for dynamic, scalable portfolio and identity data. This API is currently being hosted on a VPS that was set up manually.', '', 'ONGOING'),
+    ('Portfolio WebClient', 'A responsive React-based frontend application', 'A responsive React-based frontend application designed to display and manage user profiles. This app interfaces with a backend API to fetch user data and present it in a clean, modern UI. Also deployed on a custom VPS setup.', '', 'ONGOING'),
+    ('Room Booking System', 'A modular and scalable backend system for internal room booking', 'A modular and scalable backend system for internal room booking, built with Java and Spring Boot. Implements Domain-Driven Design (DDD), Onion Architecture, role-based access control, and event-driven communication via Apache Kafka. Designed for enterprise-level requirements including authentication, observability, and testability.', 'https://github.com/nawiedk/Room-Booking-System', 'ONGOING'),
+    ('Cinema Database App', 'A Spring Boot web application with PostgreSQL backend', 'A Spring Boot web application with a PostgreSQL backend for managing cinema operations including movies, screenings, tickets, and customers. Built as part of an academic database project with full RESTful API support.', 'https://github.com/nawiedk/cinema-database-app', 'COMPLETED'),
+    ('Garden Management RestAPI', 'A web application for managing garden operations', 'A comprehensive web application for managing garden operations, including plant tracking, maintenance schedules, and resource management.', 'https://github.com/nawiedk/GardenManagement', 'COMPLETED'),
+    ('Bookstore App', 'An online bookstore management system', 'A full-featured online bookstore management system with inventory tracking, order management, and customer accounts. Built with Spring Boot and RESTful APIs.', 'https://github.com/nawiedk/Bookstore', 'ARCHIVED'),
+    ('Web Crawler', 'Custom web crawler with configurable search algorithms', 'A custom web crawler that can dynamically search for links on websites, with single and multithreaded modes that use different algorithms like DFS/BFS for efficiency.', '', 'COMPLETED'),
+    ('Java Redis Implementation', 'Personal Redis implementation in Java', 'A personal implementation of Redis in Java, designed to provide similar functionality while being optimized for Java applications.', '', 'PLANNED'),
+    ('Mobile Portfolio App', 'Cross-platform mobile application', 'A cross-platform mobile application built with Flutter to interface with the profile service API. Will provide mobile access to profile and portfolio information.', '', 'PLANNED'),
+    ('DevsXplore.com', 'Web App for developers to showcase skills and projects', 'A platform for developers to showcase their skills and projects and to find collaborators. Will include features like project management, skill tracking, and community engagement.', '', 'PLANNED'),
+    ('Music Player', 'A music player application with a focus on user experience and performance', 'A music player application that allows users to play, pause and manage their music library. Built with Java and Vaadin for a rich user interface.', '', 'COMPLETED'),
+    ('AI Chatbot', 'An AI-powered chatbot for DevsXplore.com', 'An AI-powered chatbot for DevsXplore.com that helps users with their portfolio, projects and more. Will be integrated with the main platform to provide intelligent assistance.', '', 'PLANNED');
+
+INSERT INTO profile_projects (profile_id, project_id) VALUES
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (1, 4),
+    (1, 5),
+    (1, 6),
+    (1, 7),
+    (1, 8),
+    (1, 9),
+    (1, 10),
+    (1, 11),
+    (1, 12);
 
 INSERT INTO skill_technologies (project_id, skill_id) VALUES
     -- Profile Service
@@ -137,6 +145,7 @@ INSERT INTO skill_technologies (project_id, skill_id) VALUES
     (1, 14), -- REST API
     -- Portfolio WebClient
     (2, 7),  -- React
+    (2, 16), -- JavaScript
     -- Room Booking System
     (3, 1),  -- Java
     (3, 2),  -- Spring
@@ -156,6 +165,7 @@ INSERT INTO skill_technologies (project_id, skill_id) VALUES
     (5, 2),  -- Spring
     (5, 4),  -- Spring Boot
     (5, 14), -- REST API
+    (5, 15), -- Vaadin
     -- Bookstore App
     (6, 1),  -- Java
     (6, 2),  -- Spring
@@ -164,7 +174,23 @@ INSERT INTO skill_technologies (project_id, skill_id) VALUES
     -- Web Crawler
     (7, 1),  -- Java
     (7, 12), -- Multithreading
-    -- Java Redis Implementation (planned)
+    -- Java Redis Implementation
     (8, 1),  -- Java
-    -- Mobile Portfolio App (planned)
-    (9, 13); -- Flutter
+    -- Mobile Portfolio App
+    (9, 13), -- Flutter
+    -- DevsXplore.com
+    (10, 1), -- Java
+    (10, 2), -- Spring
+    (10, 4), -- Spring Boot
+    (10, 14), -- REST API
+    -- Music Player
+    (11, 1), -- Java
+    (11, 14), -- REST API
+    (11, 15), -- Vaadin
+    (11, 16), -- JavaScript
+    -- AI Chatbot
+    (12, 1), -- Java
+    (12, 2), -- Spring
+    (12, 4), -- Spring Boot
+    (12, 14); -- REST API
+    
