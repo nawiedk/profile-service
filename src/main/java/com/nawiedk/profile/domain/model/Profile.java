@@ -86,8 +86,8 @@ public class Profile {
 
     public record ProfileId(Long profileId) {
         public ProfileId(@NotNull Long profileId) {
-            if (profileId == null)
-                throw new ConstraintViolationException("Profile ID cannot be null", new HashSet<>());
+            if (profileId <= 0)
+                throw new ConstraintViolationException("Profile ID must be a positive number.", new HashSet<>());
             this.profileId = profileId;
             validate(this);
         }
