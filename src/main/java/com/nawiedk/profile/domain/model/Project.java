@@ -76,7 +76,7 @@ public class Project {
     }
 
     public static Project projectWithoutId(String name, String previewText, String description, Set<Skill> technologies, String githubUrl, ProjectStatus projectStatus) {
-        return new Project(null, name, description, previewText, technologies, githubUrl, projectStatus);
+        return new Project(null, name, previewText, description, technologies, githubUrl, projectStatus);
     }
 
     public Optional<ProjectId> getProjectId() {
