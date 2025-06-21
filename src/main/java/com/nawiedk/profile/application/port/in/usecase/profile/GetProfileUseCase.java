@@ -6,7 +6,7 @@ import com.nawiedk.profile.domain.model.Profile;
 import java.util.List;
 
 public interface GetProfileUseCase {
-    Profile findProfileByProfileId(GetProfileCommand command);
+    Profile getProfileByProfileId(GetProfileCommand command);
 
-    List<Profile> findAll();
+    List<Profile> getAllProfiles();
 }

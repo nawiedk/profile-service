@@ -18,12 +18,12 @@ public class GetProfileService implements GetProfileUseCase {
     private final ProfileRepositoryPort repositoryPort;
 
     @Override
-    public List<Profile> findAll() {
-        return repositoryPort.findAll();
+    public List<Profile> getAllProfiles() {
+        return repositoryPort.findAllProfiles();
     }
 
     @Override
-    public Profile findProfileByProfileId(GetProfileCommand command) {
+    public Profile getProfileByProfileId(GetProfileCommand command) {
         return repositoryPort.findProfileByProfileId(command.profileId())
                 .orElseThrow(() -> new RuntimeException("Profile not found"));
     }

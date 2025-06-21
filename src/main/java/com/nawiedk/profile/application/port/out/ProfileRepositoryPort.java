@@ -15,7 +15,7 @@ public interface ProfileRepositoryPort {
 
     boolean existsByProfileId(Long profileId);
 
-    List<Profile> findAll();
+    List<Profile> findAllProfiles();
 
     List<Profile> findBySearchCriteria(ProfileSearchCriteria searchCriteria);
 }

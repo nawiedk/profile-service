@@ -42,7 +42,7 @@ public class ProfilePersistenceAdapter implements ProfileRepositoryPort {
     }
 
     @Override
-    public List<Profile> findAll() {
+    public List<Profile> findAllProfiles() {
         return profileRepository.findAll()
                 .stream()
                 .map(profileMapper::mapToDomainEntity)
