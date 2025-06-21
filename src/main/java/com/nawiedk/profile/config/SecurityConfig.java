@@ -41,8 +41,8 @@ public class SecurityConfig {
                 "https://nawied.ch",
                 "https://www.nawied.ch",
                 "https://nawied.eu",
-                "https://www.nawied.eu",
-                "http://localhost:5173"
+                "https://www.nawied.eu"
+                
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
