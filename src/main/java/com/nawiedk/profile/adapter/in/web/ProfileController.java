@@ -64,7 +64,7 @@ public class ProfileController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProfileResponse> getById(@PathVariable Long id) {
+    public ResponseEntity<ProfileResponse> getById(@PathVariable Long id, @RequestHeader(value = "X-Client-Domain", required = false) String domain) {
 
         logger.info("Get profile with profileId: {}", id);
 
@@ -76,7 +76,7 @@ public class ProfileController {
 
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy 'at' HH.mm");
-        logs.addFirst("Log: " + LocalDateTime.now().format(formatter));
+        logs.addFirst(domain + " was visited at: " + LocalDateTime.now().format(formatter));
         if (logs.size() > 1000) {
             logs.removeLast();
         }
