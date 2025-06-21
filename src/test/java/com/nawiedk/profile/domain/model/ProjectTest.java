@@ -22,7 +22,7 @@ class ProjectTest {
                 name,
                 preview,
                 description,
-                Collections.emptySet(),
+                Collections.emptyList(),
                 "",
                 ProjectStatus.ONGOING
         );
