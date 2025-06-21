@@ -20,6 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -37,13 +41,19 @@ public class ProfileController {
     private final ProfileResponseMapper profileResponseMapper;
     private final ProfileRequestMapper profileRequestMapper;
 
+    private final List<String> logs = Collections.synchronizedList(new LinkedList<>());
+
+    @GetMapping("/logs")
+    public ResponseEntity<List<String>> getLogs() {
+        return ResponseEntity.ok(logs);
+    }
 
     @GetMapping()
     public ResponseEntity<List<ProfileResponse>> getAllProfiles() {
 
         logger.info("Get all profiles");
 
-        List<ProfileResponse> profiles = getProfileUseCase.findAll()
+        List<ProfileResponse> profiles = getProfileUseCase.getAllProfiles()
                 .stream()
                 .map(profileResponseMapper::mapToResponse)
                 .toList();
@@ -58,11 +68,18 @@ public class ProfileController {
 
         logger.info("Get profile with profileId: {}", id);
 
-        Profile profile = getProfileUseCase.findProfileByProfileId(
+        Profile profile = getProfileUseCase.getProfileByProfileId(
                 new GetProfileCommand(id)
         );
 
         logger.info("Found profile with profileId: {}", id);
+
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy 'at' HH.mm");
+        logs.addFirst("Log: " + LocalDateTime.now().format(formatter));
+        if (logs.size() > 1000) {
+            logs.removeLast();
+        }
 
         return ResponseEntity.ok(
                 profileResponseMapper.mapToResponse(profile)
