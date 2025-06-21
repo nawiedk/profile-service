@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .env
+build.sh
 
 ### STS ###
 .apt_generated
