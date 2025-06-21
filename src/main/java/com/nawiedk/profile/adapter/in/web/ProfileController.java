@@ -43,9 +43,15 @@ public class ProfileController {
 
     private final List<String> logs = Collections.synchronizedList(new LinkedList<>());
 
-    @GetMapping("/logs")
+    @GetMapping("/logs/load")
     public ResponseEntity<List<String>> getLogs() {
         return ResponseEntity.ok(logs);
+    }
+
+    @GetMapping("/logs/clear")
+    public ResponseEntity<Void> clearLogs() {
+        logs.clear();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping()
