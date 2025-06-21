@@ -9,8 +9,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static com.nawiedk.profile.domain.validation.Validation.validate;
 
@@ -33,7 +33,7 @@ public class Project {
     private final String description;
 
     @Getter
-    private final Set<@Valid Skill> technologies;
+    private final List<@Valid Skill> technologies;
 
     @Getter
     private final String githubUrl;
@@ -46,7 +46,7 @@ public class Project {
                    String name,
                    String previewText,
                    String description,
-                   Set<Skill> technologies,
+                   List<Skill> technologies,
                    String githubUrl,
                    ProjectStatus projectStatus
     ) {
@@ -71,11 +71,11 @@ public class Project {
     }
 
 
-    public static Project projectWithId(ProjectId projectId, String name, String previewText, String description, Set<Skill> technologies, String githubUrl, ProjectStatus projectStatus) {
+    public static Project projectWithId(ProjectId projectId, String name, String previewText, String description, List<Skill> technologies, String githubUrl, ProjectStatus projectStatus) {
         return new Project(projectId, name, previewText, description, technologies, githubUrl, projectStatus);
     }
 
-    public static Project projectWithoutId(String name, String previewText, String description, Set<Skill> technologies, String githubUrl, ProjectStatus projectStatus) {
+    public static Project projectWithoutId(String name, String previewText, String description, List<Skill> technologies, String githubUrl, ProjectStatus projectStatus) {
         return new Project(null, name, previewText, description, technologies, githubUrl, projectStatus);
     }
 

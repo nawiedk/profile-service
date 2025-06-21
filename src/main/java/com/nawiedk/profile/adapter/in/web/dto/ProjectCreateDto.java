@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 public class ProjectCreateDto {
@@ -23,7 +23,7 @@ public class ProjectCreateDto {
     @Size(min = 50, max = 1000)
     private String description;
 
-    private Set<@Valid SkillUpdateDto> technologies;
+    private List<@Valid SkillUpdateDto> technologies;
 
     private String githubUrl;
 

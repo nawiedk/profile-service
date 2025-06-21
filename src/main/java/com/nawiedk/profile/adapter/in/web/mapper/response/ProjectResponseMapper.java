@@ -17,7 +17,7 @@ public class ProjectResponseMapper {
                 entity.getName(),
                 entity.getPreviewText(),
                 entity.getDescription(),
-                entity.getTechnologies().stream().map(skillResponseMapper::mapToResponse).collect(Collectors.toSet()),
+                entity.getTechnologies().stream().map(skillResponseMapper::mapToResponse).collect(Collectors.toList()),
                 entity.getGithubUrl(),
                 entity.getProjectStatusAsString()
         );

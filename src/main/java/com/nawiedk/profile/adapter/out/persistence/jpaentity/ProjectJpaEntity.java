@@ -4,7 +4,7 @@ import com.nawiedk.profile.domain.util.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "projects")
@@ -19,7 +19,7 @@ public class ProjectJpaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long projectId;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 100, unique = true)
     private String name;
 
     @Column(nullable = false)
@@ -34,11 +34,12 @@ public class ProjectJpaEntity {
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
-    private Set<SkillJpaEntity> technologies;
+    @OrderBy("name ASC")
+    private List<SkillJpaEntity> technologies;
 
     @Column(nullable = false)
     @ManyToMany(mappedBy = "projects")
-    private Set<ProfileJpaEntity> profiles;
+    private List<ProfileJpaEntity> profiles;
 
     @Column
     private String githubUrl;

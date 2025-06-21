@@ -1,13 +1,13 @@
 package com.nawiedk.profile.adapter.in.web.mapper.response;
 
-import java.util.Set;
+import java.util.List;
 
 public record ProjectResponse(
         Long projectId,
         String name,
         String previewText,
         String description,
-        Set<SkillResponse> technologies,
+        List<SkillResponse> technologies,
         String githubUrl,
         String projectStatus) {
 }
