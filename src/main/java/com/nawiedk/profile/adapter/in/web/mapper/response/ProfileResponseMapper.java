@@ -24,8 +24,8 @@ public class ProfileResponseMapper {
                 entity.getGithubUrl(),
                 entity.getLinkedInUrl(),
                 entity.getProfileStatusAsString(),
-                entity.getSkills().stream().map(skillResponseMapper::mapToResponse).collect(Collectors.toSet()),
-                entity.getProjects().stream().map(projectResponseMapper::mapToResponse).collect(Collectors.toSet())
+                entity.getSkills().stream().map(skillResponseMapper::mapToResponse).collect(Collectors.toList()),
+                entity.getProjects().stream().map(projectResponseMapper::mapToResponse).collect(Collectors.toList())
         );
     }
 }

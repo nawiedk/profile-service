@@ -4,7 +4,7 @@ import com.nawiedk.profile.domain.util.ProfileStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "profiles")
@@ -50,7 +50,7 @@ public class ProfileJpaEntity {
             joinColumns = @JoinColumn(name = "profile_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
-    private Set<SkillJpaEntity> skills;
+    private List<SkillJpaEntity> skills;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -58,5 +58,6 @@ public class ProfileJpaEntity {
             joinColumns = @JoinColumn(name = "profile_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id")
     )
-    private Set<ProjectJpaEntity> projects;
+    @OrderBy("name ASC")
+    private List<ProjectJpaEntity> projects;
 }

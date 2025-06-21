@@ -9,8 +9,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static com.nawiedk.profile.domain.validation.Validation.validate;
 
@@ -52,10 +52,10 @@ public class Profile {
     private final ProfileStatus profileStatus;
 
     @Getter
-    private final Set<@Valid Skill> skills;
+    private final List<@Valid Skill> skills;
 
     @Getter
-    private final Set<@Valid Project> projects;
+    private final List<@Valid Project> projects;
 
     public Profile(
             ProfileId profileId,
@@ -67,8 +67,8 @@ public class Profile {
             String githubUrl,
             String linkedInUrl,
             ProfileStatus profileStatus,
-            Set<Skill> skills,
-            Set<Project> projects
+            List<Skill> skills,
+            List<Project> projects
     ) {
         this.profileId = profileId;
         this.name = name;
@@ -93,11 +93,11 @@ public class Profile {
         }
     }
 
-    public static Profile profileWithId(ProfileId profileId, String name, String bio, String location, String role, String imageUrl, String githubUrl, String linkedInUrl, ProfileStatus profileStatus, Set<Skill> skills, Set<Project> projects) {
+    public static Profile profileWithId(ProfileId profileId, String name, String bio, String location, String role, String imageUrl, String githubUrl, String linkedInUrl, ProfileStatus profileStatus, List<Skill> skills, List<Project> projects) {
         return new Profile(profileId, name, bio, location, role, imageUrl, githubUrl, linkedInUrl, profileStatus, skills, projects);
     }
 
-    public static Profile profileWithoutId(String name, String bio, String location, String role, String imageUrl, String githubUrl, String linkedInUrl, ProfileStatus profileStatus, Set<Skill> skills, Set<Project> projects) {
+    public static Profile profileWithoutId(String name, String bio, String location, String role, String imageUrl, String githubUrl, String linkedInUrl, ProfileStatus profileStatus, List<Skill> skills, List<Project> projects) {
         return new Profile(null, name, bio, location, role, imageUrl, githubUrl, linkedInUrl, profileStatus, skills, projects);
     }
 

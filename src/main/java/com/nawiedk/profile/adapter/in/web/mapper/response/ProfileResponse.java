@@ -1,6 +1,6 @@
 package com.nawiedk.profile.adapter.in.web.mapper.response;
 
-import java.util.Set;
+import java.util.List;
 
 public record ProfileResponse(Long profileId,
                               String name,
@@ -11,6 +11,6 @@ public record ProfileResponse(Long profileId,
                               String githubUrl,
                               String linkedInUrl,
                               String profileStatus,
-                              Set<SkillResponse> skills,
-                              Set<ProjectResponse> projects) {
+                              List<SkillResponse> skills,
+                              List<ProjectResponse> projects) {
 }

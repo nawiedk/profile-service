@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 @Service
 @Transactional
@@ -33,8 +33,8 @@ public class UpdateProfileService implements UpdateProfileUseCase {
                 command.githubUrl(),
                 command.linkedInUrl(),
                 command.profileStatus(),
-                new HashSet<>(),
-                new HashSet<>()
+                new ArrayList<>(),
+                new ArrayList<>()
         );
         return repositoryPort.save(updatedProfileDomain);
     }

@@ -26,8 +26,8 @@ public class ProfileMapper {
                 entity.getGithubUrl(),
                 entity.getLinkedInUrl(),
                 entity.getProfileStatus(),
-                entity.getSkills().stream().map(skillMapper::mapToDomainEntity).collect(Collectors.toSet()),
-                entity.getProjects().stream().map(projectMapper::mapToDomainEntity).collect(Collectors.toSet())
+                entity.getSkills().stream().map(skillMapper::mapToDomainEntity).collect(Collectors.toList()),
+                entity.getProjects().stream().map(projectMapper::mapToDomainEntity).collect(Collectors.toList())
         );
     }
 
@@ -42,8 +42,8 @@ public class ProfileMapper {
         entity.setGithubUrl(profile.getGithubUrl());
         entity.setLinkedInUrl(profile.getLinkedInUrl());
         entity.setProfileStatus(profile.getProfileStatus());
-        entity.setSkills(profile.getSkills().stream().map(skillMapper::mapToJpaEntity).collect(Collectors.toSet()));
-        entity.setProjects(profile.getProjects().stream().map(projectMapper::mapToJpaEntity).collect(Collectors.toSet()));
+        entity.setSkills(profile.getSkills().stream().map(skillMapper::mapToJpaEntity).collect(Collectors.toList()));
+        entity.setProjects(profile.getProjects().stream().map(projectMapper::mapToJpaEntity).collect(Collectors.toList()));
         return entity;
     }
 }
