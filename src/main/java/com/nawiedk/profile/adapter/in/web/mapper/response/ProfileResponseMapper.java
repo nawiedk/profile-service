@@ -17,7 +17,7 @@ public class ProfileResponseMapper {
         return new ProfileResponse(
                 entity.getProfileId().map(Profile.ProfileId::profileId).orElse(null),
                 entity.getName(),
-                entity.getBio(),
+                entity.getBio().isEmpty() ? new String[0] : entity.getBio().split("(?:\r\n|\n){2,}"),
                 entity.getLocation(),
                 entity.getRole(),
                 entity.getImageUrl(),

@@ -4,7 +4,7 @@ import java.util.List;
 
 public record ProfileResponse(Long profileId,
                               String name,
-                              String bio,
+                              String[] bio,
                               String location,
                               String role,
                               String imageUrl,
