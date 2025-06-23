@@ -60,7 +60,7 @@ CREATE TABLE skill_technologies (
 INSERT INTO profiles (name, bio, location, role, image_url, github_url, linked_In_url, profile_status)
 VALUES (
            'Nawied Khaleqi',
-           'Hi, I am Nawied Khaleqi. I am a computer science student from Düsseldorf and an experienced self-taught fullstack and DevOps engineer.
+           $$Hi, I am Nawied Khaleqi. I am a computer science student from Düsseldorf and an experienced self-taught fullstack and DevOps engineer.
 
 I have been working on software projects for a few years now. Most of my experience is in backend systems and software architecture. For quite a while now I have started focusing more and more on DevOps as well.
 
@@ -72,7 +72,8 @@ I am also starting to get more engaged at university because I want to contribut
 
 I do not have everything figured out yet, but I know the direction I want to take. I want to keep learning, keep building and one day create something of my own. I want to become someone I can be proud of. Not just because of the code I write, but because of the way I grow and how I treat the people around me.
 
-Thank you very much for taking the time to read this.',
+Thank you very much for taking the time to read this.
+$$,
            'Düsseldorf, Germany',
            'CS student, self-taught fullstack and DevOps engineer',
            'profile.jpg',
