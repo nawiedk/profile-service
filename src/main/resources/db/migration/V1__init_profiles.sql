@@ -75,7 +75,7 @@ I do not have everything figured out yet, but I know the direction I want to tak
 Thank you very much for taking the time to read this.
 $$,
            'Düsseldorf, Germany',
-           'CS student, self-taught fullstack and DevOps engineer',
+           'Fullstack and DevOps engineer',
            'profile.jpg',
            'https://github.com/nawiedk',
            'https://www.linkedin.com/in/nawiedk/',
