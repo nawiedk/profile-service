@@ -17,7 +17,7 @@ public class ProfileUpdateDto {
     @Size(min = 2, max = 100)
     private String name;
 
-    @Size(max = 1000)
+    @Size(max = 2000)
     private String bio;
 
     @NotBlank

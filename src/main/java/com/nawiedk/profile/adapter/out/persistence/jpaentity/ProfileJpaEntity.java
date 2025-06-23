@@ -22,7 +22,7 @@ public class ProfileJpaEntity {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(length = 1000)
+    @Column(length = 2000)
     private String bio;
 
     @Column(nullable = false)

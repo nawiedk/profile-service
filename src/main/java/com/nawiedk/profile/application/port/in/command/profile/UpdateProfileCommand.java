@@ -11,7 +11,7 @@ import static com.nawiedk.profile.domain.validation.Validation.validate;
 public record UpdateProfileCommand(
         @NotNull Long profileId,
         @NotBlank @Size(min = 2, max = 100) String name,
-        @Size(max = 1000) String bio,
+        @Size(max = 2000) String bio,
         @NotBlank String location,
         @NotBlank String role,
         String linkedInUrl, @NotBlank String imageUrl, String githubUrl, @NotEmpty ProfileStatus profileStatus

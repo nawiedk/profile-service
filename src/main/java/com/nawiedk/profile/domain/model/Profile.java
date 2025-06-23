@@ -26,7 +26,7 @@ public class Profile {
 
 
     @Getter
-    @Size(max = 1000)
+    @Size(max = 2000)
     private final String bio;
 
     @Getter

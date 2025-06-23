@@ -9,7 +9,7 @@ import static com.nawiedk.profile.domain.validation.Validation.validate;
 
 public record CreateProfileCommand(
         @NotBlank @Size(min = 2, max = 100) String name,
-        @Size(max = 1000) String bio,
+        @Size(max = 2000) String bio,
         @NotBlank String location,
         @NotBlank String role,
         @NotBlank String imageUrl,
