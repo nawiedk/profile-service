@@ -12,7 +12,7 @@ public class SkillRequestMapper {
     public CreateSkillCommand generateCreateSkillCommand(SkillUpdateDto dto) {
         return new CreateSkillCommand(
                 dto.getName(),
-                dto.getProficiencyLevel()
+                dto.getCategory()
         );
     }
 
@@ -20,7 +20,7 @@ public class SkillRequestMapper {
         return new UpdateSkillCommand(
                 dto.getSkillId(),
                 dto.getName(),
-                dto.getProficiencyLevel()
+                dto.getCategory()
         );
     }
 
@@ -28,6 +28,7 @@ public class SkillRequestMapper {
         return Skill.skillWithId(
                 new Skill.SkillId(dto.getSkillId()),
                 dto.getName(),
-                dto.getProficiencyLevel());
+                dto.getCategory()
+        );
     }
 }

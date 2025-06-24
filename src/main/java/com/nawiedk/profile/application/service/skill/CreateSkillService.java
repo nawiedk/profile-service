@@ -19,7 +19,7 @@ public class CreateSkillService implements CreateSkillUseCase {
     public Skill create(CreateSkillCommand command) {
         Skill skill = Skill.skillWithoutId(
                 command.name(),
-                command.proficiencyLevel()
+                command.category()
         );
         return repositoryPort.save(skill);
     }

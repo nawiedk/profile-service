@@ -6,7 +6,7 @@ public record ProjectResponse(
         Long projectId,
         String name,
         String previewText,
-        String description,
+        String[] description,
         List<SkillResponse> technologies,
         String githubUrl,
         String projectStatus) {

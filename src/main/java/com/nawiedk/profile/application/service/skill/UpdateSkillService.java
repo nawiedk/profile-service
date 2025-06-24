@@ -23,7 +23,7 @@ public class UpdateSkillService implements UpdateSkillUseCase {
         Skill updatedSkillDomain = Skill.skillWithId(
                 new Skill.SkillId(command.skillId()),
                 command.name(),
-                command.proficiencyLevel()
+                command.category()
         );
         return repositoryPort.save(updatedSkillDomain);
     }

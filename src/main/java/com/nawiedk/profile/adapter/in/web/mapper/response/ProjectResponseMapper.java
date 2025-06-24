@@ -16,7 +16,7 @@ public class ProjectResponseMapper {
                 entity.getProjectId().map(Project.ProjectId::projectId).orElse(null),
                 entity.getName(),
                 entity.getPreviewText(),
-                entity.getDescription(),
+                entity.getDescription().isEmpty() ? new String[0] : entity.getDescription().split("(?:\r\n|\n){2,}"),
                 entity.getTechnologies().stream().map(skillResponseMapper::mapToResponse).collect(Collectors.toList()),
                 entity.getGithubUrl(),
                 entity.getProjectStatusAsString()

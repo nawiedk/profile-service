@@ -1,8 +1,6 @@
 package com.nawiedk.profile.domain.model;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -21,14 +19,13 @@ public class Skill {
     private final String name;
 
     @Getter
-    @Min(0)
-    @Max(10)
-    private final int proficiencyLevel;
+    @NotBlank
+    private final String category;
 
-    public Skill(SkillId skillId, String name, int proficiencyLevel) {
+    public Skill(SkillId skillId, String name, String category) {
         this.skillId = skillId;
         this.name = name;
-        this.proficiencyLevel = proficiencyLevel;
+        this.category = category;
         validate(this);
     }
 
@@ -41,12 +38,12 @@ public class Skill {
         }
     }
 
-    public static Skill skillWithId(SkillId skillId, String name, int proficiencyLevel) {
-        return new Skill(skillId, name, proficiencyLevel);
+    public static Skill skillWithId(SkillId skillId, String name, String category) {
+        return new Skill(skillId, name, category);
     }
 
-    public static Skill skillWithoutId(String name, int proficiencyLevel) {
-        return new Skill(null, name, proficiencyLevel);
+    public static Skill skillWithoutId(String name, String category) {
+        return new Skill(null, name, category);
     }
 
     public Optional<SkillId> getSkillId() {
