@@ -240,61 +240,63 @@ INSERT INTO profile_projects (profile_id, project_id) VALUES
     (1, 12);
 
 INSERT INTO skill_technologies (project_id, skill_id) VALUES
-    -- Profile Service
-    (1, 1),  -- Java
-    (1, 2),  -- Spring
-    (1, 4),  -- Spring Boot
-    (1, 5),  -- Hexagonal Architecture
-    (1, 6),  -- Flyway
-    (1, 14), -- REST API
-    -- Portfolio WebClient
-    (2, 7),  -- React
-    (2, 16), -- JavaScript
-    -- Room Booking System
-    (3, 1),  -- Java
-    (3, 2),  -- Spring
-    (3, 4),  -- Spring Boot
-    (3, 8),  -- Domain-Driven Design
-    (3, 9),  -- Onion Architecture
-    (3, 10), -- Apache Kafka
-    (3, 14), -- REST API
-    -- Cinema Database App
-    (4, 1),  -- Java
-    (4, 2),  -- Spring
-    (4, 4),  -- Spring Boot
-    (4, 11), -- PostgreSQL
-    (4, 14), -- REST API
-    -- Garden Management Web App
-    (5, 1),  -- Java
-    (5, 2),  -- Spring
-    (5, 4),  -- Spring Boot
-    (5, 14), -- REST API
-    (5, 15), -- Vaadin
-    -- Bookstore App
-    (6, 1),  -- Java
-    (6, 2),  -- Spring
-    (6, 4),  -- Spring Boot
-    (6, 14), -- REST API
-    -- Web Crawler
-    (7, 1),  -- Java
-    (7, 12), -- Multithreading
-    -- Java Redis Implementation
-    (8, 1),  -- Java
-    -- Mobile Portfolio App
-    (9, 13), -- Flutter
-    -- DevsXplore.com
-    (10, 1), -- Java
-    (10, 2), -- Spring
-    (10, 4), -- Spring Boot
-    (10, 14), -- REST API
-    -- Music Player
-    (11, 1), -- Java
-    (11, 14), -- REST API
-    (11, 15), -- Vaadin
-    (11, 16), -- JavaScript
-    -- AI Chatbot
-    (12, 1), -- Java
-    (12, 2), -- Spring
-    (12, 4), -- Spring Boot
-    (12, 14); -- REST API
+                                                          -- Profile Service
+                                                          (1, 1),  -- Java
+                                                          (1, 5),  -- Spring Boot
+                                                          (1, 18), -- Hexagonal Architecture
+                                                          (1, 9),  -- Flyway
+                                                          (1, 6),  -- REST API Design
+
+                                                          -- Portfolio WebClient
+                                                          (2, 46), -- React
+                                                          (2, 3),  -- JavaScript
+
+                                                          -- Room Booking System
+                                                          (3, 1),  -- Java
+                                                          (3, 5),  -- Spring Boot
+                                                          (3, 20), -- Domain-Driven Design
+                                                          (3, 19), -- Onion Architecture
+                                                          (3, 50), -- Apache Kafka
+                                                          (3, 6),  -- REST API Design
+
+                                                          -- Cinema Database App
+                                                          (4, 1),  -- Java
+                                                          (4, 5),  -- Spring Boot
+                                                          (4, 15), -- PostgreSQL
+                                                          (4, 6),  -- REST API Design
+
+                                                          -- Garden Management Web App
+                                                          (5, 1),  -- Java
+                                                          (5, 5),  -- Spring Boot
+                                                          (5, 6),  -- REST API Design
+
+                                                          -- Bookstore App
+                                                          (6, 1),  -- Java
+                                                          (6, 5),  -- Spring Boot
+                                                          (6, 6),  -- REST API Design
+
+                                                          -- Web Crawler
+                                                          (7, 1),  -- Java
+
+                                                          -- Java Redis Implementation
+                                                          (8, 1),  -- Java
+
+                                                          -- Mobile Portfolio App
+                                                          -- No valid skills listed
+
+                                                          -- DevsXplore.com
+                                                          (10, 1), -- Java
+                                                          (10, 5), -- Spring Boot
+                                                          (10, 6), -- REST API Design
+
+                                                          -- Music Player
+                                                          (11, 1), -- Java
+                                                          (11, 6), -- REST API Design
+                                                          (11, 3), -- JavaScript
+
+                                                          -- AI Chatbot
+                                                          (12, 1), -- Java
+                                                          (12, 5), -- Spring Boot
+                                                          (12, 6); -- REST API Design
+
     
