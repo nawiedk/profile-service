@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -44,6 +45,7 @@ public class ProfileController {
     private final List<String> logs = Collections.synchronizedList(new LinkedList<>());
 
     @GetMapping("/logs/load")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<String>> getLogs() {
         return ResponseEntity.ok(logs);
     }
@@ -54,6 +56,7 @@ public class ProfileController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping()
     public ResponseEntity<List<ProfileResponse>> getAllProfiles() {
 
@@ -70,7 +73,16 @@ public class ProfileController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProfileResponse> getById(@PathVariable Long id, @RequestHeader(value = "X-Client-Domain", required = false) String domain) {
+    public ResponseEntity<ProfileResponse> getById(@PathVariable Long id, @RequestHeader(value = "X-Client-Domain") String domain) {
+        if (!List.of(
+                "https://nawied.de",
+                "https://www.nawied.de",
+                "https://nawied.ch",
+                "https://www.nawied.ch",
+                "https://nawied.eu",
+                "https://www.nawied.eu").contains(domain)
+        )
+            return ResponseEntity.badRequest().build();
 
         logger.info("Get profile with profileId: {}", id);
 
@@ -92,6 +104,7 @@ public class ProfileController {
         );
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<ProfileResponse> create(@Valid @RequestBody ProfileCreateDto dto) {
 
@@ -111,6 +124,7 @@ public class ProfileController {
         ).body(profileResponseMapper.mapToResponse(createdProfile));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ProfileResponse> update(@PathVariable Long id, @Valid @RequestBody ProfileUpdateDto dto) {
 
@@ -128,6 +142,7 @@ public class ProfileController {
         );
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
 
