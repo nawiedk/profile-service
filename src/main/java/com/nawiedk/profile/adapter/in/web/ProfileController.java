@@ -45,7 +45,7 @@ public class ProfileController {
     private final List<String> logs = Collections.synchronizedList(new LinkedList<>());
 
     @GetMapping("/logs/load")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<String>> getLogs() {
         return ResponseEntity.ok(logs);
     }
@@ -80,7 +80,9 @@ public class ProfileController {
                 "https://nawied.ch",
                 "https://www.nawied.ch",
                 "https://nawied.eu",
-                "https://www.nawied.eu").contains(domain)
+                "https://www.nawied.eu",
+                "http://localhost:5173",
+                "http://localhost:8080").contains(domain)
         )
             return ResponseEntity.badRequest().build();
 
