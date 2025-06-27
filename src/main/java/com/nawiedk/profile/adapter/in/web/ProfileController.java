@@ -28,7 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/profiles")
+@RequestMapping()
 @RequiredArgsConstructor
 public class ProfileController {
 
