@@ -31,8 +31,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/1").permitAll()
-                        .requestMatchers("/logs/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/profiles/1").permitAll()
+                        .requestMatchers("/profiles/logs/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
