@@ -34,7 +34,8 @@ public class UpdateProfileService implements UpdateProfileUseCase {
                 command.linkedInUrl(),
                 command.profileStatus(),
                 new ArrayList<>(),
-                new ArrayList<>()
+                new ArrayList<>(),
+                new Profile.UserId(command.userId())
         );
         return repositoryPort.save(updatedProfileDomain);
     }

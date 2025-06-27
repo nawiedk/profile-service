@@ -57,6 +57,9 @@ public class Profile {
     @Getter
     private final List<@Valid Project> projects;
 
+    @Getter
+    private final UserId userId;
+
     public Profile(
             ProfileId profileId,
             String name,
@@ -68,7 +71,9 @@ public class Profile {
             String linkedInUrl,
             ProfileStatus profileStatus,
             List<Skill> skills,
-            List<Project> projects
+            List<Project> projects,
+            UserId userId
+
     ) {
         this.profileId = profileId;
         this.name = name;
@@ -81,6 +86,7 @@ public class Profile {
         this.profileStatus = profileStatus;
         this.skills = skills;
         this.projects = projects;
+        this.userId = userId;
         validate(this);
     }
 
@@ -93,16 +99,30 @@ public class Profile {
         }
     }
 
-    public static Profile profileWithId(ProfileId profileId, String name, String bio, String location, String role, String imageUrl, String githubUrl, String linkedInUrl, ProfileStatus profileStatus, List<Skill> skills, List<Project> projects) {
-        return new Profile(profileId, name, bio, location, role, imageUrl, githubUrl, linkedInUrl, profileStatus, skills, projects);
+    public record UserId(Long userId) {
+        public UserId(@NotNull Long userId) {
+            if (userId <= 0)
+                throw new ConstraintViolationException("User ID must be a positive number.", new HashSet<>());
+            this.userId = userId;
+            validate(this);
+        }
     }
 
-    public static Profile profileWithoutId(String name, String bio, String location, String role, String imageUrl, String githubUrl, String linkedInUrl, ProfileStatus profileStatus, List<Skill> skills, List<Project> projects) {
-        return new Profile(null, name, bio, location, role, imageUrl, githubUrl, linkedInUrl, profileStatus, skills, projects);
+
+    public static Profile profileWithId(ProfileId profileId, String name, String bio, String location, String role, String imageUrl, String githubUrl, String linkedInUrl, ProfileStatus profileStatus, List<Skill> skills, List<Project> projects, UserId userId) {
+        return new Profile(profileId, name, bio, location, role, imageUrl, githubUrl, linkedInUrl, profileStatus, skills, projects, userId);
+    }
+
+    public static Profile profileWithoutId(String name, String bio, String location, String role, String imageUrl, String githubUrl, String linkedInUrl, ProfileStatus profileStatus, List<Skill> skills, List<Project> projects, UserId userId) {
+        return new Profile(null, name, bio, location, role, imageUrl, githubUrl, linkedInUrl, profileStatus, skills, projects, userId);
     }
 
     public Optional<Profile.ProfileId> getProfileId() {
         return Optional.ofNullable(this.profileId);
+    }
+
+    public Optional<Profile.UserId> getUserId() {
+        return Optional.ofNullable(this.userId);
     }
 
     public String getProfileStatusAsString() {

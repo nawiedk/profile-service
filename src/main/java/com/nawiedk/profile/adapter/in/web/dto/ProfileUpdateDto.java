@@ -35,4 +35,7 @@ public class ProfileUpdateDto {
 
     @NotEmpty
     private ProfileStatus profileStatus;
+
+    @NotNull
+    private Long userId;
 }

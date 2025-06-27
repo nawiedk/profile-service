@@ -29,7 +29,8 @@ public class CreateProfileService implements CreateProfileUseCase {
                 command.linkedInUrl(),
                 command.profileStatus(),
                 new ArrayList<>(),
-                new ArrayList<>()
+                new ArrayList<>(),
+                new Profile.UserId(command.userId())
         );
         return repositoryPort.save(profile);
     }

@@ -25,7 +25,8 @@ public class ProfileResponseMapper {
                 entity.getLinkedInUrl(),
                 entity.getProfileStatusAsString(),
                 entity.getSkills().stream().map(skillResponseMapper::mapToResponse).collect(Collectors.toList()),
-                entity.getProjects().stream().map(projectResponseMapper::mapToResponse).collect(Collectors.toList())
+                entity.getProjects().stream().map(projectResponseMapper::mapToResponse).collect(Collectors.toList()),
+                entity.getUserId().map(Profile.UserId::userId).orElse(null)
         );
     }
 }

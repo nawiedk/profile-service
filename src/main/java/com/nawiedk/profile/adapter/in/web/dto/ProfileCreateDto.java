@@ -3,6 +3,7 @@ package com.nawiedk.profile.adapter.in.web.dto;
 import com.nawiedk.profile.domain.util.ProfileStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -31,4 +32,7 @@ public class ProfileCreateDto {
 
     @NotEmpty
     private ProfileStatus profileStatus;
+
+    @NotNull
+    private Long userId;
 }

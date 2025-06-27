@@ -20,7 +20,8 @@ public class ProfileRequestMapper {
                 dto.getImageUrl(),
                 dto.getGithubUrl(),
                 dto.getLinkedInUrl(),
-                dto.getProfileStatus()
+                dto.getProfileStatus(),
+                dto.getUserId()
         );
     }
 
@@ -34,7 +35,8 @@ public class ProfileRequestMapper {
                 dto.getImageUrl(),
                 dto.getGithubUrl(),
                 dto.getLinkedInUrl(),
-                dto.getProfileStatus()
+                dto.getProfileStatus(),
+                dto.getUserId()
         );
     }
 }

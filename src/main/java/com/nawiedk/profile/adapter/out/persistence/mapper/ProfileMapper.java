@@ -27,7 +27,8 @@ public class ProfileMapper {
                 entity.getLinkedInUrl(),
                 entity.getProfileStatus(),
                 entity.getSkills().stream().map(skillMapper::mapToDomainEntity).collect(Collectors.toList()),
-                entity.getProjects().stream().map(projectMapper::mapToDomainEntity).collect(Collectors.toList())
+                entity.getProjects().stream().map(projectMapper::mapToDomainEntity).collect(Collectors.toList()),
+                new Profile.UserId(entity.getUserId())
         );
     }
 
@@ -44,6 +45,7 @@ public class ProfileMapper {
         entity.setProfileStatus(profile.getProfileStatus());
         entity.setSkills(profile.getSkills().stream().map(skillMapper::mapToJpaEntity).collect(Collectors.toList()));
         entity.setProjects(profile.getProjects().stream().map(projectMapper::mapToJpaEntity).collect(Collectors.toList()));
+        entity.setUserId(profile.getUserId().map(Profile.UserId::userId).orElse(null));
         return entity;
     }
 }

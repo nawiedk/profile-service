@@ -12,5 +12,6 @@ public record ProfileResponse(Long profileId,
                               String linkedInUrl,
                               String profileStatus,
                               List<SkillResponse> skills,
-                              List<ProjectResponse> projects) {
+                              List<ProjectResponse> projects,
+                              Long userId) {
 }

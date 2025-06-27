@@ -60,4 +60,7 @@ public class ProfileJpaEntity {
     )
     @OrderBy("name ASC")
     private List<ProjectJpaEntity> projects;
+
+    @Column(nullable = false)
+    private Long userId;
 }

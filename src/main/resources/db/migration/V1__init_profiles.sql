@@ -14,7 +14,8 @@ CREATE TABLE profiles (
                           image_url VARCHAR(500) NOT NULL,
                           github_url VARCHAR(500),
                           linked_In_url VARCHAR(500),
-                          profile_status VARCHAR(20) NOT NULL
+                          profile_status VARCHAR(20) NOT NULL,
+                          user_id BIGINT NOT NULL
 );
 
 CREATE TABLE skills (
@@ -56,7 +57,7 @@ CREATE TABLE skill_technologies (
     FOREIGN KEY (skill_id) REFERENCES skills (skill_id)
 );
 
-INSERT INTO profiles (name, bio, location, role, image_url, github_url, linked_In_url, profile_status)
+INSERT INTO profiles (name, bio, location, role, image_url, github_url, linked_In_url, profile_status, user_id)
 VALUES (
            'Nawied Khaleqi',
            'Hi, I am Nawied Khaleqi. I am a computer science student from Düsseldorf and an experienced self-taught fullstack and DevOps engineer.
@@ -77,7 +78,8 @@ Thank you very much for taking the time to read this.',
            'profile.jpg',
            'https://github.com/nawiedk',
            'https://www.linkedin.com/in/nawiedk/',
-           'ACTIVE'
+           'ACTIVE',
+        '1'
        );
 
 INSERT INTO skills (name, category) VALUES
