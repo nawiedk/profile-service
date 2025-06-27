@@ -31,8 +31,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/profiles/1").permitAll()
-                        .requestMatchers("/profiles/logs/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/1").permitAll()
+                        .requestMatchers("/logs/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -49,9 +49,7 @@ public class SecurityConfig {
                 "https://nawied.ch",
                 "https://www.nawied.ch",
                 "https://nawied.eu",
-                "https://www.nawied.eu",
-                "http://localhost:5173",
-                "http://localhost:8080"
+                "https://www.nawied.eu"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
