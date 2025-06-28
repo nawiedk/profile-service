@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -28,7 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/profiles")
 @RequiredArgsConstructor
 public class ProfileController {
 
@@ -43,6 +44,16 @@ public class ProfileController {
     private final ProfileRequestMapper profileRequestMapper;
 
     private final List<String> logs = Collections.synchronizedList(new LinkedList<>());
+
+    private final List<String> domains = List.of(
+            "https://nawied.de",
+            "https://www.nawied.de",
+            "https://nawied.ch",
+            "https://www.nawied.ch",
+            "https://nawied.eu",
+            "https://www.nawied.eu",
+            "http://localhost:5173",
+            "http://localhost:8080");
 
     @GetMapping("/logs/load")
 //    @PreAuthorize("hasRole('ADMIN')")
@@ -72,27 +83,27 @@ public class ProfileController {
         return ResponseEntity.ok(profiles);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProfileResponse> getById(@PathVariable Long id, @RequestHeader(value = "X-Client-Domain") String domain) {
-        if (!List.of(
-                "https://nawied.de",
-                "https://www.nawied.de",
-                "https://nawied.ch",
-                "https://www.nawied.ch",
-                "https://nawied.eu",
-                "https://www.nawied.eu",
-                "http://localhost:5173",
-                "http://localhost:8080").contains(domain)
-        )
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ProfileResponse> getMyProfile(@RequestHeader(value = "X-Client-Domain") String domain, Authentication authentication) {
+        if (!domains.contains(domain))
             return ResponseEntity.badRequest().build();
 
-        logger.info("Get profile with profileId: {}", id);
+        return null;
+    }
+
+    @GetMapping("/1")
+    public ResponseEntity<ProfileResponse> getById(@RequestHeader(value = "X-Client-Domain") String domain) {
+        if (!domains.contains(domain))
+            return ResponseEntity.badRequest().build();
+
+        logger.info("Get profile with profileId: 1");
 
         Profile profile = getProfileUseCase.getProfileByProfileId(
-                new GetProfileCommand(id)
+                new GetProfileCommand(1L)
         );
 
-        logger.info("Found profile with profileId: {}", id);
+        logger.info("Found profile with profileId: 1");
 
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy 'at' HH.mm");
