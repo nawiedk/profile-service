@@ -225,7 +225,14 @@ INSERT INTO projects (name, preview_text, description, github_url, project_statu
 
     ('Music Player', 'A music player application with a focus on user experience and performance', 'A music player application that allows users to play, pause and manage their music library. Built with Java and Vaadin for a rich user interface.', '', 'COMPLETED'),
 
-    ('AI Chatbot', 'An AI-powered chatbot for DevsXplore.com', 'An AI-powered chatbot for DevsXplore.com that helps users with their portfolio, projects and more. Will be integrated with the main platform to provide intelligent assistance.', '', 'PLANNED');
+    ('AI Chatbot', 'An AI-powered chatbot for DevsXplore.com', 'An AI-powered chatbot for DevsXplore.com that helps users with their portfolio, projects and more. Will be integrated with the main platform to provide intelligent assistance.', '', 'PLANNED'),
+    ('Auth Service', 'A comprehensive authentication and authorization microservice', 'A robust authentication and authorization microservice built with Spring Boot, following Hexagonal Architecture and Domain-Driven Design principles.
+
+It provides user registration, login, and role-based access control (ADMIN/USER) with JWT token management for stateless security. The service uses Spring Security with custom JWT filters, global exception handling, and CORS configuration.
+
+Data persistence is handled with PostgreSQL and Flyway for database migrations. The architecture enforces clear separation of concerns, command/query responsibility segregation, and adapter patterns for external integrations.
+
+Containerized with Docker, the service acts as the central authentication layer for securing other microservices like the Profile Service and future applications within the ecosystem.', '', 'ONGOING');
 
 INSERT INTO profile_projects (profile_id, project_id) VALUES
     (1, 1),
@@ -239,7 +246,8 @@ INSERT INTO profile_projects (profile_id, project_id) VALUES
     (1, 9),
     (1, 10),
     (1, 11),
-    (1, 12);
+    (1, 12),
+    (1, 13);
 
 INSERT INTO skill_technologies (project_id, skill_id) VALUES
                                                           -- Profile Service
@@ -299,6 +307,12 @@ INSERT INTO skill_technologies (project_id, skill_id) VALUES
                                                           -- AI Chatbot
                                                           (12, 1), -- Java
                                                           (12, 5), -- Spring Boot
-                                                          (12, 6); -- REST API Design
+                                                          (12, 6), -- REST API Design
+                                                            -- Auth Service
+                                                            (13, 1), -- Java
+                                                            (13, 5), -- Spring Boot
+                                                            (13, 18), -- Hexagonal Architecture
+                                                            (13, 9), -- Flyway
+                                                            (13, 20); -- Domain-Driven Design
 
     
