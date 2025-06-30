@@ -1,6 +1,8 @@
 package com.nawiedk.profile.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.actuate.metrics.export.prometheus.PrometheusScrapeEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -31,6 +33,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(EndpointRequest.to(PrometheusScrapeEndpoint.class)).permitAll()
                         .requestMatchers("/profiles/1").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -48,7 +51,8 @@ public class SecurityConfig {
                 "https://nawied.ch",
                 "https://www.nawied.ch",
                 "https://nawied.eu",
-                "https://www.nawied.eu"
+                "https://www.nawied.eu",
+                "https://prometheus.nawied.de/"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Client-Domain"));
