@@ -11,6 +11,10 @@ jobs:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
 
+    env:
+      JWT_SECRET: ${{ secrets.VPS_JWT_SECRET }}
+      JWT_EXPIRATION: ${{ secrets.VPS_JWT_EXPIRATION }}
+
     permissions:
       contents: read
       packages: write

@@ -56,19 +56,20 @@ public class ProfileController {
             "http://localhost:8080");
 
     @GetMapping("/logs/load")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<String>> getLogs() {
         return ResponseEntity.ok(logs);
     }
 
     @GetMapping("/logs/clear")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> clearLogs() {
         logs.clear();
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasRole('USER')")
     @GetMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ProfileResponse>> getAllProfiles() {
 
         logger.info("Get all profiles");
