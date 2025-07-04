@@ -137,7 +137,7 @@ INSERT INTO skills (name, category) VALUES
                                         ('Hadoop', 'Distributed Systems & Big Data'),
                                         ('HDFS', 'Distributed Systems & Big Data'),
                                         ('Prometheus', 'Distributed Systems & Big Data'),
-                                        ('C', 'Programming Languages'),,
+                                        ('C', 'Programming Languages'),
                                         ('C++', 'Programming Languages');
 
 INSERT INTO profile_skills (profile_id, skill_id) VALUES
