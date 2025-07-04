@@ -136,7 +136,9 @@ INSERT INTO skills (name, category) VALUES
                                         ('MapReduce', 'Distributed Systems & Big Data'),
                                         ('Hadoop', 'Distributed Systems & Big Data'),
                                         ('HDFS', 'Distributed Systems & Big Data'),
-                                        ('Prometheus', 'Distributed Systems & Big Data');
+                                        ('Prometheus', 'Distributed Systems & Big Data'),
+                                        ('C', 'Programming Languages'),,
+                                        ('C++', 'Programming Languages');
 
 INSERT INTO profile_skills (profile_id, skill_id) VALUES
                                                       (1, 1),
@@ -192,7 +194,9 @@ INSERT INTO profile_skills (profile_id, skill_id) VALUES
                                                       (1, 51),
                                                       (1, 52),
                                                       (1, 53),
-                                                      (1, 54);
+                                                      (1, 54),
+                                                      (1, 55),
+                                                      (1, 56);
 
 INSERT INTO projects (name, preview_text, description, github_url, project_status) VALUES
     ('Profile Service', 'A microservice for managing personal and team member profiles', 'A microservice for managing personal and team member profiles, built with Spring Boot, Hexagonal Architecture, and Flyway. The service is part of a larger distributed system designed to support dynamic, scalable portfolio and identity data.
