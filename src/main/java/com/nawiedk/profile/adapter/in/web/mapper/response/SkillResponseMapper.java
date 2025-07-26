@@ -8,7 +8,6 @@ public class SkillResponseMapper {
 
     public SkillResponse mapToResponse(Skill entity) {
         return new SkillResponse(
-                entity.getSkillId().map(Skill.SkillId::id).orElse(null),
                 entity.getName(),
                 entity.getCategory()
         );

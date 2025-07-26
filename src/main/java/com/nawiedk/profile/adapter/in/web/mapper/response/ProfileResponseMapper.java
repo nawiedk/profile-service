@@ -15,7 +15,6 @@ public class ProfileResponseMapper {
 
     public ProfileResponse mapToResponse(Profile entity) {
         return new ProfileResponse(
-                entity.getProfileId().map(Profile.ProfileId::profileId).orElse(null),
                 entity.getName(),
                 entity.getBio().isEmpty() ? new String[0] : entity.getBio().split("(?:\r\n|\n){2,}"),
                 entity.getLocation(),
@@ -25,8 +24,7 @@ public class ProfileResponseMapper {
                 entity.getLinkedInUrl(),
                 entity.getProfileStatusAsString(),
                 entity.getSkills().stream().map(skillResponseMapper::mapToResponse).collect(Collectors.toList()),
-                entity.getProjects().stream().map(projectResponseMapper::mapToResponse).collect(Collectors.toList()),
-                entity.getUserId().map(Profile.UserId::userId).orElse(null)
+                entity.getProjects().stream().map(projectResponseMapper::mapToResponse).collect(Collectors.toList())
         );
     }
 }

@@ -13,7 +13,6 @@ public class ProjectResponseMapper {
 
     public ProjectResponse mapToResponse(Project entity) {
         return new ProjectResponse(
-                entity.getProjectId().map(Project.ProjectId::projectId).orElse(null),
                 entity.getName(),
                 entity.getPreviewText(),
                 entity.getDescription().isEmpty() ? new String[0] : entity.getDescription().split("(?:\r\n|\n){2,}"),
